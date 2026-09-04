@@ -503,9 +503,9 @@ function applyTheme(theme) {
   const icon = document.getElementById("themeIcon");
   const text = document.getElementById("themeText");
   const btn = document.getElementById("themeToggleBtn");
-  if (icon) icon.textContent = isDark ? "☀️" : "🌙";
-  if (text) text.textContent = isDark ? "Theme: Light" : "Theme: Dark";
-  if (btn) btn.title = isDark ? "Active: Dark Mode. Click to switch to Light Theme." : "Active: Light Mode. Click to switch to Dark Theme.";
+  if (icon) icon.textContent = isDark ? "🌙" : "☀️";
+  if (text) text.textContent = isDark ? "Dark Theme" : "Light Theme";
+  if (btn) btn.title = isDark ? "Currently on Dark Theme (click to switch to Light Theme)" : "Currently on Light Theme (click to switch to Dark Theme)";
 }
 
 function toggleTheme() {
