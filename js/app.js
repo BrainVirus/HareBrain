@@ -1055,15 +1055,23 @@ function initTheme() {
   applyTheme(saved);
 }
 
-// 🧩 INPUT FOCUS / CLEAR LOGIC
+// 🧩 INPUT FOCUS & AUTO-HIGHLIGHT LOGIC
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   loadUrlState();
 
   document.querySelectorAll('input[type="number"]').forEach(input => {
-    input.addEventListener("focus", () => {
-      if (input.value === "0") input.value = "";
+    input.addEventListener("focus", function() {
+      this.select();
+      setTimeout(() => {
+        this.select();
+      }, 0);
     });
+
+    input.addEventListener("click", function() {
+      this.select();
+    });
+
     input.addEventListener("blur", () => {
       if (input.value.trim() === "") {
         input.value = (input.id === "Cnum" || input.id === "Knum") ? "1" : "0";
