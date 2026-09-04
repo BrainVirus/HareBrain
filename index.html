@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,14 +22,10 @@
   (function() {
     try {
       var saved = localStorage.getItem("harebrain_theme");
-      if (!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      if (!saved) {
         saved = "dark";
       }
-      if (saved === "dark") {
-        document.documentElement.setAttribute("data-theme", "dark");
-      } else {
-        document.documentElement.setAttribute("data-theme", "light");
-      }
+      document.documentElement.setAttribute("data-theme", saved);
     } catch(e) {}
   })();
 </script>
@@ -41,8 +37,8 @@
 <div class="card">
   <div class="header-top-bar">
     <span class="tag-badge">MTG Rabbit Calculator</span>
-    <button id="themeToggleBtn" class="theme-btn" onclick="toggleTheme()" title="Switch between Dark and Light theme" aria-label="Switch Theme">
-      <span id="themeIcon">🌙</span> <span id="themeText">Theme: Dark</span>
+    <button id="themeToggleBtn" class="theme-btn" onclick="toggleTheme()" title="Active: Dark Mode. Click to switch to Light Theme." aria-label="Switch Theme">
+      <span id="themeIcon">☀️</span> <span id="themeText">Theme: Light</span>
     </button>
   </div>
   <h1>🐇 HareBrain 🧠</h1>

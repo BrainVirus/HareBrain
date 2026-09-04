@@ -523,7 +523,7 @@ function initTheme() {
     saved = localStorage.getItem("harebrain_theme");
   } catch (e) {}
   if (!saved) {
-    saved = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    saved = "dark";
   }
   applyTheme(saved);
 }
