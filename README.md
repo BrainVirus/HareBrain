@@ -56,6 +56,7 @@ $$\text{Rabbits} = C \cdot (A + 1) \cdot (H + C - 1) \cdot (3^O \cdot 2^T)$$
 - 🧱 **Interactive Stack Resolution**: Click **Resolve Stack** for an animated, step-by-step breakdown of how the stack resolves with arrows and trigger counts.
 - 📋 **Copy Breakdown Button**: 1-click summary to paste directly into Discord to prove to your friends you didn't cheat the math.
 - 📱 **Tabletop Ready**: Built with a fantasy parchment aesthetic that looks great on your phone during game night.
+- 🌓 **Dark & Light Modes**: 1-tap theme toggle with saved user preference and automatic system theme detection.
 - 🚀 **Zero Dependencies**: Pure HTML5, CSS3, and modern Vanilla JS. No build step, no Node server needed to host.
 
 ---

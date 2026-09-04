@@ -18,6 +18,22 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Uncial+Antiqua&display=swap" rel="stylesheet">
 
+<script>
+  (function() {
+    try {
+      var saved = localStorage.getItem("harebrain_theme");
+      if (!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        saved = "dark";
+      }
+      if (saved === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    } catch(e) {}
+  })();
+</script>
+
 <style>
 /* ══════════════════════════════════════════════ */
 /* ✨ BASE PAGE STYLING */
@@ -579,14 +595,295 @@ footer {
   .art-card img {
     max-width: 100%;
   }
+/* ══════════════════════════════════════════════ */
+/* 🌓 THEME TOGGLE & HEADER BAR */
+/* ══════════════════════════════════════════════ */
+.header-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.theme-btn {
+  background: #fbf6e8;
+  border: 1.5px solid #d8b552;
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-family: "Cardo", Georgia, serif;
+  font-size: 0.85em;
+  font-weight: 700;
+  color: #4a3617;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  text-shadow: none;
+  user-select: none;
+}
+
+.theme-btn:hover {
+  background: #f8e8b8;
+  border-color: #b58c29;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(216,181,82,0.3);
+}
+
+/* ══════════════════════════════════════════════ */
+/* 🌙 DARK MODE STYLES */
+/* ══════════════════════════════════════════════ */
+[data-theme="dark"] body {
+  background: radial-gradient(circle at 50% 15%, #181d2e 0%, #0d101a 55%, #05060a 100%);
+  color: #e4e0d7;
+}
+
+[data-theme="dark"] .card {
+  background: linear-gradient(180deg, rgba(25, 29, 43, 0.98), rgba(18, 21, 31, 0.98));
+  border-color: #d4af37;
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.85), 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+[data-theme="dark"] h1 {
+  color: #79b8ff;
+  text-shadow: 0 0 12px rgba(100, 181, 246, 0.6);
+}
+
+[data-theme="dark"] .subtitle {
+  color: #d8c29d;
+}
+
+[data-theme="dark"] .tag-badge {
+  background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+  box-shadow: 0 2px 8px rgba(29, 78, 216, 0.4);
+}
+
+[data-theme="dark"] .theme-btn {
+  background: #232738;
+  border-color: #c9a848;
+  color: #ffd54f;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .theme-btn:hover {
+  background: #2e344a;
+  border-color: #ffd54f;
+  box-shadow: 0 0 10px rgba(255, 213, 79, 0.35);
+}
+
+[data-theme="dark"] .preset-chip {
+  background: #222636;
+  border-color: #9e8338;
+  color: #f0e6d2;
+}
+
+[data-theme="dark"] .preset-chip:hover {
+  background: #2f354c;
+  border-color: #ffd54f;
+  color: #fff;
+}
+
+[data-theme="dark"] .preset-chip.danger {
+  background: #3a1c1c;
+  border-color: #a84242;
+  color: #ff9b9b;
+}
+
+[data-theme="dark"] .preset-chip.danger:hover {
+  background: #4c2222;
+}
+
+[data-theme="dark"] label {
+  color: #ded7c8;
+}
+
+[data-theme="dark"] input[type="range"] {
+  accent-color: #60a5fa;
+}
+
+[data-theme="dark"] input[type="number"] {
+  background: #141724;
+  border-color: #c9a848;
+  color: #f7f3ea;
+}
+
+[data-theme="dark"] input[type="number"]:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 8px rgba(96, 165, 250, 0.6);
+}
+
+[data-theme="dark"] .mode-toggle-group {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: #8f742c;
+}
+
+[data-theme="dark"] .mode-label {
+  color: #ffd54f;
+}
+
+[data-theme="dark"] .mode-pill {
+  background: #181c2b;
+  border-color: #8d732c;
+  color: #e6dfd1;
+}
+
+[data-theme="dark"] .mode-pill.active {
+  background: #2563eb;
+  border-color: #60a5fa;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.5);
+}
+
+[data-theme="dark"] button {
+  background: linear-gradient(180deg, #d4af37, #9b7e1c);
+  border-color: #ffd54f;
+  color: #0b1526;
+  text-shadow: 0 0 3px rgba(255,255,255,0.4);
+}
+
+[data-theme="dark"] button:hover {
+  background: linear-gradient(180deg, #ffd700, #b59325);
+  box-shadow: 0 0 16px rgba(255, 213, 79, 0.5);
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: #1e2232;
+  border-color: #c9a848;
+  color: #e2dbcd;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: #2a3047;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+[data-theme="dark"] #result {
+  color: #64b5f6;
+  text-shadow: 0 0 12px rgba(100, 181, 246, 0.6);
+}
+
+[data-theme="dark"] .result-sub {
+  color: #e2cca0;
+}
+
+[data-theme="dark"] .result-stat-pill {
+  background: rgba(212, 175, 55, 0.16);
+  border-color: #c9a848;
+  color: #f7edd7;
+}
+
+[data-theme="dark"] .section-heading {
+  color: #79b8ff;
+  text-shadow: 0 0 8px rgba(121, 184, 255, 0.35);
+}
+
+[data-theme="dark"] .narrative {
+  background: rgba(20, 23, 34, 0.95);
+  border-color: #d4af37;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.7);
+  color: #e4e0d7;
+}
+
+[data-theme="dark"] ul, [data-theme="dark"] ul li {
+  color: #ded7c8;
+}
+
+[data-theme="dark"] .stack-update {
+  color: #90caf9;
+}
+
+[data-theme="dark"] .stack-line {
+  background: rgba(14, 16, 25, 0.94);
+  border-color: #b58c29;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .stack-box {
+  background: linear-gradient(180deg, #282d42, #1a1e2d);
+  border-color: #d4af37;
+  color: #f7f1e4;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .stack-arrow {
+  color: #ffd54f;
+}
+
+[data-theme="dark"] .explanation {
+  background: linear-gradient(180deg, #1b1e2e, #131622);
+  border-color: #d4af37;
+  color: #e4dfd3;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .explanation-title {
+  color: #ffd54f;
+  text-shadow: 0 0 10px rgba(255, 213, 79, 0.4);
+}
+
+[data-theme="dark"] .math-formula-box {
+  background: #141724;
+  border-color: #8d732c;
+  color: #f0ebe1;
+}
+
+[data-theme="dark"] .math-formula-box p {
+  color: #d0c8b8 !important;
+}
+
+[data-theme="dark"] mjx-container {
+  color: #f0ebe1 !important;
+}
+
+[data-theme="dark"] .art-card img {
+  border-color: #c9a848;
+  background: #141724;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .art-card img:hover {
+  box-shadow: 0 0 22px rgba(255, 213, 79, 0.6);
+}
+
+[data-theme="dark"] .art-caption {
+  color: #d8c29d;
+}
+
+[data-theme="dark"] .credits-box {
+  background: linear-gradient(180deg, #1c2032, #131624);
+  border-color: #c9a848;
+  color: #e2dbcc;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .credits-heading {
+  color: #79b8ff;
+}
+
+[data-theme="dark"] .credits-box a {
+  color: #64b5f6;
+}
+
+[data-theme="dark"] .credits-box a:hover {
+  color: #90caf9;
+}
+
+[data-theme="dark"] footer {
+  color: #b8a58a;
 }
 </style>
 </head>
 
 <body>
 <div class="card">
-  <div>
+  <div class="header-top-bar">
     <span class="tag-badge">MTG Rabbit Calculator</span>
+    <button id="themeToggleBtn" class="theme-btn" onclick="toggleTheme()" title="Switch theme (Light / Dark)" aria-label="Switch Theme">
+      <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
+    </button>
   </div>
   <h1>HareBrain 🪄</h1>
   <p class="subtitle">A fast, flexible MTG calculator for <strong>Hare Apparent</strong>.<br>Handles standard casts, Ripple chains, mass reanimation, and optional <em>Offspring</em>.</p>
@@ -1257,8 +1554,43 @@ function copyBreakdown() {
   });
 }
 
+// 🌓 THEME MANAGEMENT (LIGHT / DARK)
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  const icon = document.getElementById("themeIcon");
+  const text = document.getElementById("themeText");
+  if (theme === "dark") {
+    if (icon) icon.textContent = "☀️";
+    if (text) text.textContent = "Light";
+  } else {
+    if (icon) icon.textContent = "🌙";
+    if (text) text.textContent = "Dark";
+  }
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+  applyTheme(newTheme);
+  try {
+    localStorage.setItem("harebrain_theme", newTheme);
+  } catch (e) {}
+}
+
+function initTheme() {
+  let saved = null;
+  try {
+    saved = localStorage.getItem("harebrain_theme");
+  } catch (e) {}
+  if (!saved) {
+    saved = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  applyTheme(saved);
+}
+
 // 🧩 INPUT FOCUS / CLEAR LOGIC
 document.addEventListener("DOMContentLoaded", () => {
+  initTheme();
   document.querySelectorAll('input[type="number"]').forEach(input => {
     input.addEventListener("focus", () => {
       if (input.value === "0") input.value = "";
