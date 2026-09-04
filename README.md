@@ -48,6 +48,13 @@ If you cast $C > 1$ Hares in a turn (e.g. 3 Hares) but only have mana to pay Off
 2. Resolving the remaining $(C - K)$ standard casts with the newly expanded warren.
 3. Enforces MTG rules via auto-switching: selecting Offspring automatically switches entry mode to Sequential, while selecting Simultaneous entry automatically resets Offspring to No.
 
+#### 6. ETB Damage & Life Gain/Loss Synergy
+Total entering creatures $E = C + \text{Offspring Hares} + X$. Every entering creature triggers damage to opponents, life lost by you, and lifegain:
+- $\text{Damage to Each Opponent} = E \cdot D$
+- $\text{Life Lost by You} = E \cdot B$
+- $\text{Life Gained by You} = E \cdot L$
+- $\text{Net Life Change} = (E \cdot L) - (E \cdot B) = E \cdot (L - B)$
+
 *(Arbitrary-precision `BigInt` is used under the hood so your browser won't crash when you casually generate $10^{18}$ rabbits).*
 
 ---
@@ -55,7 +62,7 @@ If you cast $C > 1$ Hares in a turn (e.g. 3 Hares) but only have mana to pay Off
 ## ✨ Features
 
 - 🐇 **Flexible Offspring & Partial Payment**: Toggle Offspring on/off, and when casting multiple Hares ($C > 1$), customize how many times you pay Offspring ($K \le C$, default 1) inside a cohesive dashed modifier card. Intelligent mutual auto-switching between Offspring and Simultaneous entry ensures MTG rule accuracy.
-- 🩸 **Optional ETB Burn & Life Gain Synergy**: Calculate direct burn damage to each opponent (*Purphoros*, *Impact Tremors*, *Witty Roastmaster*, *Mirkwood Bats*) and life gained (*Soul Warden*, *Essence Warden*). Neatly collapsed by default with dynamic live status badges to keep the interface clean.
+- 🩸 **Optional ETB Damage & Life Gain/Loss Synergy**: Calculate direct burn damage dealt to each opponent (*Purphoros*, *Impact Tremors*, *Witty Roastmaster*), life lost by you per entering creature (*Carnival of Souls*, *Trespasser's Curse*, *Suture Priest*), and life gained by you (*Soul Warden*, *Essence Warden*). Computes the live **Net Life Change** between life lost and gained with dynamic positive, negative, and self-lethal danger indicators. Neatly collapsed by default with live status badges to keep the interface clean.
 - 🔗 **Share Current Board State**: Deep linking via URL parameters and a 1-click **"🔗 Share Current Board State"** button with clear clipboard notifications to easily share your exact board state with your playgroup.
 - 💥 **"Hare-pocalypse" Milestones**: Dynamic milestone badges when crossing 10, 100, 1,000, 1,000,000, or cosmic-scale rabbit counts.
 - 🧱 **Interactive Stack Resolution**: Click **Resolve Stack** (*Step-by-step walkthrough of token creation*) for a comprehensive, illustrated breakdown of how spells and abilities resolve.

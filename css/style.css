@@ -754,6 +754,27 @@ body.dark-mode .signature-box strong {
   100% { transform: scale(1.03); box-shadow: 0 0 16px rgba(229, 57, 53, 0.7); }
 }
 
+.result-loss-pill {
+  display: inline-block;
+  background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+  border: 1.5px solid #ab47bc;
+  color: #4a148c;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.6em;
+  font-weight: 700;
+  margin: 4px 3px;
+  box-shadow: 0 2px 6px rgba(171, 71, 188, 0.18);
+}
+
+.result-loss-pill.lethal {
+  background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+  border-color: #d81b60;
+  color: #880e4f;
+  box-shadow: 0 0 10px rgba(216, 27, 96, 0.4);
+  animation: pulseLethal 1.5s infinite alternate ease-in-out;
+}
+
 .result-life-pill {
   display: inline-block;
   background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
@@ -765,6 +786,47 @@ body.dark-mode .signature-box strong {
   font-weight: 700;
   margin: 4px 3px;
   box-shadow: 0 2px 6px rgba(67, 160, 71, 0.15);
+}
+
+/* ⚖️ RESULT NET LIFE PILL */
+.result-net-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.6em;
+  font-weight: 700;
+  margin: 4px 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.result-net-pill.positive {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  border: 1.5px solid #22c55e;
+  color: #14532d;
+  box-shadow: 0 2px 6px rgba(34, 197, 94, 0.2);
+}
+
+.result-net-pill.negative {
+  background: linear-gradient(135deg, #ffe4e6, #fecdd3);
+  border: 1.5px solid #f43f5e;
+  color: #881337;
+  box-shadow: 0 2px 6px rgba(244, 63, 94, 0.2);
+}
+
+.result-net-pill.negative.lethal {
+  background: linear-gradient(135deg, #ffebee, #ffcdd2);
+  border-color: #e53935;
+  color: #b71c1c;
+  box-shadow: 0 0 10px rgba(229, 57, 53, 0.5);
+  animation: pulseLethal 1.5s infinite alternate ease-in-out;
+}
+
+.result-net-pill.neutral {
+  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+  border: 1.5px solid #94a3b8;
+  color: #334155;
+  box-shadow: 0 2px 6px rgba(148, 163, 184, 0.2);
 }
 
 /* 💥 HARE-POCALYPSE MILESTONES */
@@ -829,7 +891,9 @@ body.dark-mode .signature-box strong {
   .milestone-badge {
     animation: none !important;
   }
-  .result-burn-pill.lethal {
+  .result-burn-pill.lethal,
+  .result-loss-pill.lethal,
+  .result-net-pill.negative.lethal {
     animation: none !important;
   }
 }
@@ -1330,6 +1394,24 @@ body.dark-mode .result-burn-pill.lethal {
   box-shadow: 0 0 16px rgba(239, 83, 80, 0.5) !important;
 }
 
+html[data-theme="dark"] .result-loss-pill,
+body[data-theme="dark"] .result-loss-pill,
+body.dark-mode .result-loss-pill {
+  background: linear-gradient(135deg, #2a1335, #190921) !important;
+  border-color: #ba68c8 !important;
+  color: #e1bee7 !important;
+  box-shadow: 0 0 12px rgba(186, 104, 200, 0.3) !important;
+}
+
+html[data-theme="dark"] .result-loss-pill.lethal,
+body[data-theme="dark"] .result-loss-pill.lethal,
+body.dark-mode .result-loss-pill.lethal {
+  background: linear-gradient(135deg, #3d0c26, #230414) !important;
+  border-color: #f06292 !important;
+  color: #f8bbd0 !important;
+  box-shadow: 0 0 16px rgba(240, 98, 146, 0.5) !important;
+}
+
 html[data-theme="dark"] .result-life-pill,
 body[data-theme="dark"] .result-life-pill,
 body.dark-mode .result-life-pill {
@@ -1337,6 +1419,42 @@ body.dark-mode .result-life-pill {
   border-color: #4caf50 !important;
   color: #a5d6a7 !important;
   box-shadow: 0 0 12px rgba(76, 175, 80, 0.3) !important;
+}
+
+html[data-theme="dark"] .result-net-pill.positive,
+body[data-theme="dark"] .result-net-pill.positive,
+body.dark-mode .result-net-pill.positive {
+  background: linear-gradient(135deg, #0f381e, #092413) !important;
+  border-color: #4ade80 !important;
+  color: #86efac !important;
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.3) !important;
+}
+
+html[data-theme="dark"] .result-net-pill.negative,
+body[data-theme="dark"] .result-net-pill.negative,
+body.dark-mode .result-net-pill.negative {
+  background: linear-gradient(135deg, #3b1016, #24080d) !important;
+  border-color: #fb7185 !important;
+  color: #fecdd3 !important;
+  box-shadow: 0 0 12px rgba(251, 113, 133, 0.3) !important;
+}
+
+html[data-theme="dark"] .result-net-pill.negative.lethal,
+body[data-theme="dark"] .result-net-pill.negative.lethal,
+body.dark-mode .result-net-pill.negative.lethal {
+  background: linear-gradient(135deg, #4c0d13, #2e0508) !important;
+  border-color: #f87171 !important;
+  color: #fca5a5 !important;
+  box-shadow: 0 0 16px rgba(248, 113, 113, 0.5) !important;
+}
+
+html[data-theme="dark"] .result-net-pill.neutral,
+body[data-theme="dark"] .result-net-pill.neutral,
+body.dark-mode .result-net-pill.neutral {
+  background: linear-gradient(135deg, #1e2433, #151924) !important;
+  border-color: #64748b !important;
+  color: #cbd5e1 !important;
+  box-shadow: 0 0 10px rgba(100, 116, 139, 0.25) !important;
 }
 
 /* 🌙 DARK MODE: HARE-POCALYPSE MILESTONES */

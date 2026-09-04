@@ -37,13 +37,14 @@ function setOffspring(val) {
 }
 
 // 🧮 CALCULATION CORE WITH BIGINT (prevents integer overflow)
-function calcHareMath(H, C, T, A, O, mode, payOffspring, D = 0, L = 0, K = 1) {
+function calcHareMath(H, C, T, A, O, mode, payOffspring, D = 0, L = 0, K = 1, B = 0) {
   H = BigInt(H);
   C = BigInt(C);
   T = BigInt(T);
   A = BigInt(A);
   O = BigInt(O);
   const D_val = BigInt(D || 0);
+  const B_val = BigInt(B || 0);
   const L_val = BigInt(L || 0);
 
   const perToken = (3n ** O) * (2n ** T);
@@ -108,7 +109,9 @@ function calcHareMath(H, C, T, A, O, mode, payOffspring, D = 0, L = 0, K = 1) {
   const totalTriggers = (C + offspringHaresCreated) * trigsPerHare;
   const enteringCreatures = C + offspringHaresCreated + totalRabbits;
   const totalDamage = D_val * enteringCreatures;
+  const totalLifeLoss = B_val * enteringCreatures;
   const totalLife = L_val * enteringCreatures;
+  const netLife = totalLife - totalLifeLoss;
 
   return {
     H, C, T, A, O, mode, payOffspring: effectiveOffspring, K: K_val,
@@ -120,10 +123,13 @@ function calcHareMath(H, C, T, A, O, mode, payOffspring, D = 0, L = 0, K = 1) {
     nontokenHaresOnBoard: H + C,
     finalHaresOnBoard,
     D: D_val,
+    B: B_val,
     L: L_val,
     enteringCreatures,
     totalDamage,
-    totalLife
+    totalLifeLoss,
+    totalLife,
+    netLife
   };
 }
 
@@ -135,6 +141,7 @@ function readInputs() {
   const O = Math.max(0, parseInt(document.getElementById('Onum')?.value, 10) || 0);
   const R = Math.max(0, parseInt(document.getElementById('Rnum')?.value, 10) || 0);
   const D = Math.max(0, parseInt(document.getElementById('Dnum')?.value, 10) || 0);
+  const B = Math.max(0, parseInt(document.getElementById('Bnum')?.value, 10) || 0);
   const L = Math.max(0, parseInt(document.getElementById('Lnum')?.value, 10) || 0);
   let K = 1;
   if (payOffspring) {
@@ -146,7 +153,7 @@ function readInputs() {
   } else {
     K = 0;
   }
-  return { H, C, T, A, O, R, D, L, K };
+  return { H, C, T, A, O, R, D, B, L, K };
 }
 
 function syncInputs(id) {
@@ -286,8 +293,8 @@ function getMilestone(rabbits) {
 }
 
 function updateResult() {
-  const { H, C, T, A, O, R, D, L, K } = readInputs();
-  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L, K);
+  const { H, C, T, A, O, R, D, B, L, K } = readInputs();
+  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L, K, B);
   const grandRabbits = data.totalRabbits + BigInt(R);
   const finalHares = data.finalHaresOnBoard;
 
@@ -326,7 +333,44 @@ function updateResult() {
     `;
   }
 
-  if (data.L > 0n) {
+  if (data.B > 0n && data.L > 0n) {
+    html += `
+      <div class="result-life-pill">
+        ❤️ You gain <strong>${data.totalLife.toLocaleString()}</strong> life
+      </div>
+      <div class="result-loss-pill">
+        💀 You lose <strong>${data.totalLifeLoss.toLocaleString()}</strong> life
+      </div>
+    `;
+    if (data.netLife > 0n) {
+      html += `
+        <div class="result-net-pill positive">
+          💚 Net Life: +<strong>${data.netLife.toLocaleString()}</strong> life gained!
+        </div>
+      `;
+    } else if (data.netLife < 0n) {
+      const netLost = -data.netLife;
+      const isNetLethal = netLost >= 40n;
+      html += `
+        <div class="result-net-pill negative ${isNetLethal ? 'lethal' : ''}">
+          🩸 Net Life: -<strong>${netLost.toLocaleString()}</strong> life lost!${isNetLethal ? ' ⚠️ Lethal to you!' : ''}
+        </div>
+      `;
+    } else {
+      html += `
+        <div class="result-net-pill neutral">
+          ⚖️ Net Life: <strong>0</strong> (Broke even)
+        </div>
+      `;
+    }
+  } else if (data.B > 0n) {
+    const isSelfLethal = data.totalLifeLoss >= 40n;
+    html += `
+      <div class="result-loss-pill ${isSelfLethal ? 'lethal' : ''}">
+        💀 You lose <strong>${data.totalLifeLoss.toLocaleString()}</strong> life!${isSelfLethal ? ' ⚠️ Lethal to you!' : ''}
+      </div>
+    `;
+  } else if (data.L > 0n) {
     html += `
       <div class="result-life-pill">
         ❤️ You gain <strong>${data.totalLife.toLocaleString()}</strong> life!
@@ -376,8 +420,8 @@ function resolveStack() {
   }
   btn.classList.add("resolving");
 
-  const { H, C, T, A, O, R, D, L, K } = readInputs();
-  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L, K);
+  const { H, C, T, A, O, R, D, B, L, K } = readInputs();
+  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L, K, B);
   const grandRabbits = data.totalRabbits + BigInt(R);
 
   updateResult();
@@ -407,7 +451,11 @@ function resolveStack() {
             ? `PAID on all ${C} entering Hares ({${C * 2}} mana total) — creating 1/1 token copies`
             : "PAID — creating 1/1 token copies of Hare Apparent"
     }</strong>.</li>
-    ${D > 0 || L > 0 ? `<li>ETB Synergy: <strong>${D > 0 ? `${D} damage per creature` : ''}${D > 0 && L > 0 ? ' & ' : ''}${L > 0 ? `${L} life gained per creature` : ''}</strong>.</li>` : ''}
+    ${D > 0 || B > 0 || L > 0 ? `<li>ETB Synergy: <strong>${[
+      D > 0 ? `${D} damage to opponents per creature` : '',
+      B > 0 ? `${B} life lost by you per creature` : '',
+      L > 0 ? `${L} life gained by you per creature` : ''
+    ].filter(Boolean).join(' & ')}</strong>.</li>` : ''}
   </ul>`;
 
   // 📝 2. ENTERING & STACK PLACEMENT
@@ -580,16 +628,29 @@ function resolveStack() {
     }
   }
 
-  // 📝 3. ETB DAMAGE & LIFE GAIN
-  if (D > 0 || L > 0) {
-    nar += `<p class="section-heading">🩸 ETB Damage &amp; Lifegain Triggers</p>
+  // 📝 3. ETB DAMAGE & LIFE GAIN/LOSS
+  if (D > 0 || B > 0 || L > 0) {
+    nar += `<p class="section-heading">🩸 ETB Damage &amp; Life Gain/Loss Triggers</p>
     <ul>
       <li>Total creatures entering the battlefield this turn: <strong>${data.enteringCreatures.toLocaleString()}</strong> (${C} cast${C > 1 ? 's' : ''}${offspringHares > 0n ? ` + ${offspringHares.toLocaleString()} Offspring token copy${offspringHares === 1n ? '' : 'ies'}` : ''} + ${totalCreated.toLocaleString()} Rabbit token${totalCreated === 1n ? '' : 's'}).</li>`;
     if (D > 0) {
-      nar += `<li><strong>Damage to Each Opponent:</strong> With ${D} damage per entering creature (<em>Purphoros</em>, <em>Impact Tremors</em>, <em>Mirkwood Bats</em>), you deal <strong>${data.totalDamage.toLocaleString()}</strong> direct damage to each opponent!${data.totalDamage >= 120n ? ' 💀 <em>(Entire table wiped out!)</em>' : data.totalDamage >= 40n ? ' 💀 <em>(Lethal damage to a player!)</em>' : ''}</li>`;
+      nar += `<li><strong>Damage to Each Opponent:</strong> With ${D} damage per entering creature (<em>Purphoros</em>, <em>Impact Tremors</em>, <em>Terror of the Peaks</em>), you deal <strong>${data.totalDamage.toLocaleString()}</strong> direct damage to each opponent!${data.totalDamage >= 120n ? ' 💀 <em>(Entire table wiped out!)</em>' : data.totalDamage >= 40n ? ' 💀 <em>(Lethal damage to a player!)</em>' : ''}</li>`;
+    }
+    if (B > 0) {
+      nar += `<li><strong>Life Lost by You:</strong> With ${B} life lost per entering creature (<em>Carnival of Souls</em>, <em>Trespasser's Curse</em>, <em>Suture Priest</em>), you lose <strong>${data.totalLifeLoss.toLocaleString()}</strong> life!${data.totalLifeLoss >= 40n ? ' ⚠️ <em>(Lethal to you without lifegain!)</em>' : ''}</li>`;
     }
     if (L > 0) {
-      nar += `<li><strong>Life Gained:</strong> With ${L} life gained per entering creature (<em>Soul Warden</em>, <em>Essence Warden</em>), you gain <strong>${data.totalLife.toLocaleString()}</strong> life!</li>`;
+      nar += `<li><strong>Life Gained by You:</strong> With ${L} life gained per entering creature (<em>Soul Warden</em>, <em>Essence Warden</em>), you gain <strong>${data.totalLife.toLocaleString()}</strong> life!</li>`;
+    }
+    if (B > 0 && L > 0) {
+      if (data.netLife > 0n) {
+        nar += `<li><strong>⚖️ Net Life Change:</strong> You come out ahead with a net gain of <strong>+${data.netLife.toLocaleString()}</strong> life (+${data.totalLife.toLocaleString()} gained − ${data.totalLifeLoss.toLocaleString()} lost)!</li>`;
+      } else if (data.netLife < 0n) {
+        const netLost = -data.netLife;
+        nar += `<li><strong>⚖️ Net Life Change:</strong> You suffer a net loss of <strong>-${netLost.toLocaleString()}</strong> life (${data.totalLife.toLocaleString()} gained − ${data.totalLifeLoss.toLocaleString()} lost)${netLost >= 40n ? ' 💀 <em>(Lethal to you!)</em>' : ''}!</li>`;
+      } else {
+        nar += `<li><strong>⚖️ Net Life Change:</strong> You break even at exactly <strong>0</strong> net life change (${data.totalLife.toLocaleString()} gained = ${data.totalLifeLoss.toLocaleString()} lost).</li>`;
+      }
     }
     nar += `</ul>`;
   }
@@ -668,7 +729,7 @@ function resolveStack() {
 // ↺ RESET ALL HANDLER
 function resetInputs() {
   setOffspring(false);
-  ['H', 'T', 'O', 'A', 'D', 'L'].forEach(id => {
+  ['H', 'T', 'O', 'A', 'D', 'B', 'L'].forEach(id => {
     const slider = document.getElementById(id);
     const numInput = document.getElementById(id + 'num');
     if (slider) slider.value = 0;
@@ -711,7 +772,7 @@ function showToast(msg) {
 
 // 🔗 URL STATE MANAGEMENT (DEEP LINKING)
 function updateUrlState() {
-  const { H, C, T, A, O, R, D, L, K } = readInputs();
+  const { H, C, T, A, O, R, D, B, L, K } = readInputs();
   const params = new URLSearchParams();
   if (H > 0) params.set("h", H);
   if (C > 1) params.set("c", C);
@@ -720,6 +781,7 @@ function updateUrlState() {
   if (A > 0) params.set("a", A);
   if (R > 0) params.set("r", R);
   if (D > 0) params.set("d", D);
+  if (B > 0) params.set("b", B);
   if (L > 0) params.set("l", L);
   if (payOffspring) {
     params.set("offspring", "1");
@@ -780,6 +842,12 @@ function loadUrlState() {
     if (el) el.value = v;
     syncSliders("D");
   }
+  if (params.has("b")) {
+    const v = Math.max(0, parseInt(params.get("b"), 10) || 0);
+    const el = document.getElementById("Bnum");
+    if (el) el.value = v;
+    syncSliders("B");
+  }
   if (params.has("l")) {
     const v = Math.max(0, parseInt(params.get("l"), 10) || 0);
     const el = document.getElementById("Lnum");
@@ -804,10 +872,11 @@ function loadUrlState() {
       setEntryMode("sequential");
     }
   }
-  if (params.has("d") || params.has("l")) {
+  if (params.has("d") || params.has("b") || params.has("l")) {
     const dVal = parseInt(params.get("d"), 10) || 0;
+    const bVal = parseInt(params.get("b"), 10) || 0;
     const lVal = parseInt(params.get("l"), 10) || 0;
-    if (dVal > 0 || lVal > 0) {
+    if (dVal > 0 || bVal > 0 || lVal > 0) {
       toggleSynergySection(true);
     }
   }
@@ -824,8 +893,8 @@ function shareLink() {
 }
 
 function copyBreakdown() {
-  const { H, C, T, A, O, R, D, L, K } = readInputs();
-  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L, K);
+  const { H, C, T, A, O, R, D, B, L, K } = readInputs();
+  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L, K, B);
   const grandRabbits = data.totalRabbits + BigInt(R);
   const finalHares = data.finalHaresOnBoard;
   const totalPower = data.nontokenHaresOnBoard * 2n + data.offspringHaresCreated + grandRabbits;
@@ -847,8 +916,18 @@ function copyBreakdown() {
 • Additional Triggers: ${A} (Total triggers per Hare: ${data.trigsPerHare})
 • Existing Rabbits: ${R}`;
 
-  if (D > 0) text += `\n• Damage per ETB: ${D} (Total burn: ${data.totalDamage.toLocaleString()} to each opponent${data.totalDamage >= 40n ? ' - LETHAL' : ''})`;
-  if (L > 0) text += `\n• Life gained per ETB: ${L} (Total life gained: ${data.totalLife.toLocaleString()})`;
+  if (D > 0) text += `\n• Damage to Opponents per ETB: ${D} (Total burn: ${data.totalDamage.toLocaleString()} to each opponent${data.totalDamage >= 40n ? ' - LETHAL' : ''})`;
+  if (B > 0) text += `\n• Life lost by you per ETB: ${B} (Total self life loss: ${data.totalLifeLoss.toLocaleString()}${data.totalLifeLoss >= 40n ? ' - LETHAL' : ''})`;
+  if (L > 0) text += `\n• Life gained by you per ETB: ${L} (Total life gained: ${data.totalLife.toLocaleString()})`;
+  if (B > 0 && L > 0) {
+    if (data.netLife > 0n) {
+      text += `\n• ⚖️ Net Life Change: +${data.netLife.toLocaleString()} life gained`;
+    } else if (data.netLife < 0n) {
+      text += `\n• ⚖️ Net Life Change: -${(-data.netLife).toLocaleString()} life lost${(-data.netLife) >= 40n ? ' (LETHAL TO YOU)' : ''}`;
+    } else {
+      text += `\n• ⚖️ Net Life Change: 0 life (broke even)`;
+    }
+  }
 
   text += `\n────────────────────────────────────────
 🐇 Rabbit Tokens Created: ${data.totalRabbits.toLocaleString()}
@@ -923,16 +1002,21 @@ function updateSynergyBtnLabel(isOpen) {
   const btn = document.getElementById("toggleSynergyBtn");
   if (!btn) return;
   const D = parseInt(document.getElementById("Dnum")?.value, 10) || 0;
+  const B = parseInt(document.getElementById("Bnum")?.value, 10) || 0;
   const L = parseInt(document.getElementById("Lnum")?.value, 10) || 0;
-  const hasValues = D > 0 || L > 0;
+  const hasValues = D > 0 || B > 0 || L > 0;
 
   if (isOpen) {
-    btn.innerHTML = `🩸 Hide ETB Damage &amp; Life Gain ▴`;
+    btn.innerHTML = `🩸 Hide ETB Damage &amp; Life Gain/Loss ▴`;
   } else {
     if (hasValues) {
-      btn.innerHTML = `🩸 ETB Synergy (Active: ${D > 0 ? `${D} dmg` : ''}${D > 0 && L > 0 ? ', ' : ''}${L > 0 ? `${L} life` : ''}) ▾`;
+      const parts = [];
+      if (D > 0) parts.push(`${D} dmg`);
+      if (B > 0) parts.push(`${B} self-loss`);
+      if (L > 0) parts.push(`${L} life`);
+      btn.innerHTML = `🩸 ETB Synergy (Active: ${parts.join(', ')}) ▾`;
     } else {
-      btn.innerHTML = `🩸 ETB Damage &amp; Life Gain (Optional) ▾`;
+      btn.innerHTML = `🩸 ETB Damage &amp; Life Gain/Loss (Optional) ▾`;
     }
   }
 }

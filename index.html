@@ -59,7 +59,7 @@
   })();
 </script>
 
-  <link rel="stylesheet" href="css/style.css?v=2.8">
+  <link rel="stylesheet" href="css/style.css?v=3.0">
 </head>
 
 <body>
@@ -139,21 +139,27 @@
     <input id="Rnum" type="number" value="0" min="0" max="1000000000" oninput="updateResult()">
   </div>
 
-  <!-- 🩸 ETB TRIGGERS & SYNERGY (BURN / LIFE GAIN) - OPTIONAL COLLAPSIBLE -->
+  <!-- 🩸 ETB TRIGGERS & SYNERGY (BURN / LIFE GAIN / LIFE LOSS) - OPTIONAL COLLAPSIBLE -->
   <div class="synergy-toggle-wrap">
-    <button type="button" id="toggleSynergyBtn" class="btn-secondary synergy-toggle-btn" onclick="toggleSynergySection()" aria-expanded="false" aria-controls="synergyBox" title="Toggle optional ETB Damage & Life Gain synergy inputs">
-      🩸 ETB Damage &amp; Life Gain (Optional) ▾
+    <button type="button" id="toggleSynergyBtn" class="btn-secondary synergy-toggle-btn" onclick="toggleSynergySection()" aria-expanded="false" aria-controls="synergyBox" title="Toggle optional ETB Damage & Life Gain/Loss synergy inputs">
+      🩸 ETB Damage &amp; Life Gain/Loss (Optional) ▾
     </button>
   </div>
 
   <div id="synergyBox" class="synergy-box" style="display: none;">
-    <div class="synergy-title">🩸 ETB Damage &amp; Life Gain Synergy</div>
-    <span class="synergy-subtitle">Damage dealt to opponents and life gained per entering creature or token</span>
+    <div class="synergy-title">🩸 ETB Damage &amp; Life Gain/Loss Synergy</div>
+    <span class="synergy-subtitle">Damage dealt to opponents, life lost by you, and life gained by you per entering creature or token</span>
     
     <div class="slider-group" style="margin: 8px auto 4px;">
-      <label for="D">🔥 Damage per ETB (D):</label>
+      <label for="D">🔥 Damage Dealt per ETB (D):</label>
       <input id="D" type="range" min="0" max="10" value="0" oninput="syncInputs('D')">
       <input id="Dnum" type="number" value="0" min="0" max="100" oninput="syncSliders('D')">
+    </div>
+
+    <div class="slider-group" style="margin: 8px auto 4px;">
+      <label for="B">💀 Life Lost per ETB (B):</label>
+      <input id="B" type="range" min="0" max="10" value="0" oninput="syncInputs('B')">
+      <input id="Bnum" type="number" value="0" min="0" max="100" oninput="syncSliders('B')">
     </div>
 
     <div class="slider-group" style="margin: 8px auto 4px;">
@@ -202,7 +208,8 @@
     <p><strong>A</strong> — Number of <em>additional trigger</em> effects.</p>
     <p><strong>R</strong> — Number of <em>existing Rabbit tokens</em> already on your battlefield.</p>
     <p><strong>D</strong> — Damage dealt to each opponent per entering creature/token.</p>
-    <p><strong>L</strong> — Life gained per entering creature/token.</p>
+    <p><strong>B</strong> — Life lost by you per entering creature/token.</p>
+    <p><strong>L</strong> — Life gained by you per entering creature/token.</p>
 
     <div class="math-formula-box">
       <strong>Case 1A: Single Hare Cast — Standard / No Offspring ($C = 1$)</strong>
@@ -229,9 +236,10 @@
     </div>
 
     <div class="math-formula-box">
-      <strong>Case 4: ETB Burn &amp; Life Gain Synergy</strong>
-      <p style="margin: 4px 0 8px; font-size: 0.9em; color: #5a421b;">Total entering creatures $E = C + \text{Offspring Hares} + X$. Every entering creature triggers burn to each opponent and lifegain:</p>
-      $$\text{Damage to Each Opponent} = E \cdot D, \qquad \text{Life Gained} = E \cdot L$$
+      <strong>Case 4: ETB Damage &amp; Life Gain/Loss Synergy</strong>
+      <p style="margin: 4px 0 8px; font-size: 0.9em; color: #5a421b;">Total entering creatures $E = C + \text{Offspring Hares} + X$. Every entering creature triggers damage to opponents, life lost by you, and lifegain:</p>
+      $$\text{Damage to Opponents} = E \cdot D, \qquad \text{Life Lost by You} = E \cdot B, \qquad \text{Life Gained} = E \cdot L$$
+      $$\text{Net Life Change} = (E \cdot L) - (E \cdot B) = E \cdot (L - B)$$
     </div>
 
     <div style="text-align: center; margin-top: 10px;">
@@ -257,7 +265,7 @@
 <!-- ⚙️ JAVASCRIPT LOGIC -->
 <!-- ══════════════════════════════════════════════ -->
   <!-- ⚙️ SCRIPTS -->
-  <script src="js/app.js?v=2.8"></script>
+  <script src="js/app.js?v=3.0"></script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </body>
 </html>
