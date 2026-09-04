@@ -291,6 +291,41 @@ button.resolving {
   pointer-events: none;
 }
 
+.btn-resolve {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 24px 9px;
+  line-height: 1.25;
+}
+
+.btn-resolve-main {
+  font-family: "Uncial Antiqua", serif;
+  font-size: 1.1em;
+  color: #124e88;
+  text-shadow: 0 0 5px rgba(255,255,255,0.6);
+}
+
+.btn-resolve-sub {
+  font-family: "Cardo", Georgia, serif;
+  font-size: 0.73em;
+  font-style: italic;
+  font-weight: 600;
+  color: #5c431d;
+  letter-spacing: 0.3px;
+  margin-top: 2px;
+}
+
+button.resolving .btn-resolve-main {
+  color: #fff;
+  text-shadow: none;
+}
+
+button.resolving .btn-resolve-sub {
+  color: #e8f0fe;
+}
+
 .btn-secondary {
   font-family: "Cardo", serif;
   font-weight: 700;
@@ -572,6 +607,34 @@ body.dark-mode .signature-box strong {
 /* ══════════════════════════════════════════════ */
 /* 🩸 ETB SYNERGY & WIN CONDITIONS */
 /* ══════════════════════════════════════════════ */
+.synergy-toggle-wrap {
+  text-align: center;
+  margin: 10px auto 14px;
+}
+
+.synergy-toggle-btn {
+  font-size: 0.88em;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: rgba(216, 181, 82, 0.15);
+  border: 1.5px dashed #d8b552;
+  color: #725a2e;
+  transition: all 0.2s ease;
+}
+
+.synergy-toggle-btn:hover {
+  background: rgba(216, 181, 82, 0.28);
+  border-color: #b59235;
+}
+
+.synergy-toggle-btn.active {
+  background: #fdf3d0;
+  border-style: solid;
+  border-color: #c99c36;
+  font-weight: bold;
+}
+
 .synergy-box {
   margin: 16px auto;
   background: rgba(216, 181, 82, 0.12);
@@ -939,6 +1002,32 @@ body.dark-mode button:hover {
   box-shadow: 0 0 16px rgba(255, 213, 79, 0.5) !important;
 }
 
+html[data-theme="dark"] .btn-resolve-main,
+body[data-theme="dark"] .btn-resolve-main,
+body.dark-mode .btn-resolve-main {
+  color: #0b1526 !important;
+  text-shadow: 0 0 3px rgba(255,255,255,0.4) !important;
+}
+
+html[data-theme="dark"] .btn-resolve-sub,
+body[data-theme="dark"] .btn-resolve-sub,
+body.dark-mode .btn-resolve-sub {
+  color: #3b2a0c !important;
+}
+
+html[data-theme="dark"] button.resolving .btn-resolve-main,
+body[data-theme="dark"] button.resolving .btn-resolve-main,
+body.dark-mode button.resolving .btn-resolve-main {
+  color: #fff !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="dark"] button.resolving .btn-resolve-sub,
+body[data-theme="dark"] button.resolving .btn-resolve-sub,
+body.dark-mode button.resolving .btn-resolve-sub {
+  color: #e8f0fe !important;
+}
+
 html[data-theme="dark"] .btn-secondary,
 body[data-theme="dark"] .btn-secondary,
 body.dark-mode .btn-secondary {
@@ -1120,6 +1209,30 @@ body.dark-mode footer {
 }
 
 /* 🌙 DARK MODE: SYNERGY & WIN CONDITIONS */
+html[data-theme="dark"] .synergy-toggle-btn,
+body[data-theme="dark"] .synergy-toggle-btn,
+body.dark-mode .synergy-toggle-btn {
+  background: rgba(216, 181, 82, 0.1) !important;
+  border-color: #8c7335 !important;
+  color: #d8c28c !important;
+}
+
+html[data-theme="dark"] .synergy-toggle-btn:hover,
+body[data-theme="dark"] .synergy-toggle-btn:hover,
+body.dark-mode .synergy-toggle-btn:hover {
+  background: rgba(216, 181, 82, 0.2) !important;
+  color: #f0dfb2 !important;
+}
+
+html[data-theme="dark"] .synergy-toggle-btn.active,
+body[data-theme="dark"] .synergy-toggle-btn.active,
+body.dark-mode .synergy-toggle-btn.active {
+  background: rgba(216, 181, 82, 0.25) !important;
+  border-style: solid !important;
+  border-color: #d8b552 !important;
+  color: #ffe8a8 !important;
+}
+
 html[data-theme="dark"] .synergy-box,
 body[data-theme="dark"] .synergy-box,
 body.dark-mode .synergy-box {

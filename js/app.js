@@ -349,6 +349,9 @@ function updateResult() {
   }
 
   updateUrlState();
+  const synBox = document.getElementById("synergyBox");
+  const isSynOpen = synBox && synBox.style.display === "block";
+  updateSynergyBtnLabel(isSynOpen);
 }
 
 function buildStackDisplay(groups) {
@@ -365,7 +368,12 @@ function buildStackDisplay(groups) {
 
 function resolveStack() {
   const btn = document.getElementById("resolveBtn");
-  btn.textContent = "Resolving...";
+  const mainText = document.getElementById("resolveBtnText");
+  if (mainText) {
+    mainText.textContent = "Resolving...";
+  } else {
+    btn.textContent = "Resolving...";
+  }
   btn.classList.add("resolving");
 
   const { H, C, T, A, O, R, D, L, K } = readInputs();
@@ -609,6 +617,14 @@ function resolveStack() {
     `;
   }
 
+  nar += `
+    <div style="text-align: center; margin-top: 20px; padding-top: 14px; border-top: 1px dashed rgba(216, 181, 82, 0.4);">
+      <button type="button" class="btn-secondary" onclick="copyBreakdown()" title="Copy formatted text summary of this board to clipboard">
+        📋 Copy Text Summary
+      </button>
+    </div>
+  `;
+
   const narrativeBox = document.getElementById("narrative");
   if (narrativeBox) {
     narrativeBox.style.display = "block";
@@ -629,12 +645,20 @@ function resolveStack() {
         } catch (e) {}
       }
       window.MathJax.typesetPromise([narrativeBox]).catch(() => {}).finally(() => {
-        btn.textContent = "Resolve Stack";
+        if (mainText) {
+          mainText.textContent = "Resolve Stack";
+        } else {
+          btn.textContent = "Resolve Stack";
+        }
         btn.classList.remove("resolving");
       });
     } else {
       setTimeout(() => {
-        btn.textContent = "Resolve Stack";
+        if (mainText) {
+          mainText.textContent = "Resolve Stack";
+        } else {
+          btn.textContent = "Resolve Stack";
+        }
         btn.classList.remove("resolving");
       }, 400);
     }
@@ -660,6 +684,7 @@ function resetInputs() {
   entryMode = 'sequential';
   document.getElementById('modeSequential').classList.add('active');
   document.getElementById('modeSimultaneous').classList.remove('active');
+  toggleSynergySection(false);
   checkModeToggle();
   updateResult();
   const narrativeBox = document.getElementById("narrative");
@@ -778,6 +803,12 @@ function loadUrlState() {
     } else {
       setEntryMode("sequential");
     }
+  if (params.has("d") || params.has("l")) {
+    const dVal = parseInt(params.get("d"), 10) || 0;
+    const lVal = parseInt(params.get("l"), 10) || 0;
+    if (dVal > 0 || lVal > 0) {
+      toggleSynergySection(true);
+    }
   }
 }
 
@@ -785,9 +816,9 @@ function shareLink() {
   updateUrlState();
   const url = window.location.href;
   navigator.clipboard.writeText(url).then(() => {
-    showToast("🔗 Share link copied to clipboard!");
+    showToast("🔗 Link to current board state copied to clipboard!");
   }).catch(() => {
-    prompt("Copy this share link:", url);
+    prompt("Copy link to this board state:", url);
   });
 }
 
@@ -864,6 +895,45 @@ function toggleTheme() {
   try {
     localStorage.setItem("harebrain_theme", newTheme);
   } catch (e) {}
+}
+
+// 🩸 TOGGLE ETB SYNERGY SECTION (OPTIONAL)
+function toggleSynergySection(forceState) {
+  const box = document.getElementById("synergyBox");
+  const btn = document.getElementById("toggleSynergyBtn");
+  if (!box || !btn) return;
+
+  const isCurrentlyOpen = box.style.display === "block";
+  const shouldOpen = typeof forceState === "boolean" ? forceState : !isCurrentlyOpen;
+
+  if (shouldOpen) {
+    box.style.display = "block";
+    btn.setAttribute("aria-expanded", "true");
+    btn.classList.add("active");
+  } else {
+    box.style.display = "none";
+    btn.setAttribute("aria-expanded", "false");
+    btn.classList.remove("active");
+  }
+  updateSynergyBtnLabel(shouldOpen);
+}
+
+function updateSynergyBtnLabel(isOpen) {
+  const btn = document.getElementById("toggleSynergyBtn");
+  if (!btn) return;
+  const D = parseInt(document.getElementById("Dnum")?.value, 10) || 0;
+  const L = parseInt(document.getElementById("Lnum")?.value, 10) || 0;
+  const hasValues = D > 0 || L > 0;
+
+  if (isOpen) {
+    btn.innerHTML = `🩸 Hide ETB Damage &amp; Life Gain ▴`;
+  } else {
+    if (hasValues) {
+      btn.innerHTML = `🩸 ETB Synergy (Active: ${D > 0 ? `${D} dmg` : ''}${D > 0 && L > 0 ? ', ' : ''}${L > 0 ? `${L} life` : ''}) ▾`;
+    } else {
+      btn.innerHTML = `🩸 ETB Damage &amp; Life Gain (Optional) ▾`;
+    }
+  }
 }
 
 // 📐 TOGGLE NERD MATH BREAKDOWN

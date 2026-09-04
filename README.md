@@ -55,12 +55,12 @@ If you cast $C > 1$ Hares in a turn (e.g. 3 Hares) but only have mana to pay Off
 ## ✨ Features
 
 - 🐇 **Flexible Offspring & Partial Payment**: Toggle Offspring on/off, and when casting multiple Hares ($C > 1$), customize how many times you pay Offspring ($K \le C$, default 1). Intelligent mutual auto-switching between Offspring and Simultaneous entry ensures MTG rule accuracy.
-- 🩸 **ETB Burn & Life Gain Tracker**: Calculate direct burn damage to each opponent (*Purphoros*, *Impact Tremors*, *Witty Roastmaster*, *Mirkwood Bats*) and life gained (*Soul Warden*, *Essence Warden*), complete with table wipe and lethal alerts (`💀`).
-- 🔗 **Shareable Board States**: Deep linking via URL parameters and 1-click **"🔗 Share Link"** so you can text or post your exact board state to your playgroup.
+- 🩸 **Optional ETB Burn & Life Gain Synergy**: Calculate direct burn damage to each opponent (*Purphoros*, *Impact Tremors*, *Witty Roastmaster*, *Mirkwood Bats*) and life gained (*Soul Warden*, *Essence Warden*). Neatly collapsed by default with dynamic live status badges to keep the interface clean.
+- 🔗 **Share Current Board State**: Deep linking via URL parameters and a 1-click **"🔗 Share Current Board State"** button with clear clipboard notifications to easily share your exact board state with your playgroup.
 - 💥 **"Hare-pocalypse" Milestones**: Dynamic milestone badges when crossing 10, 100, 1,000, 1,000,000, or cosmic-scale rabbit counts.
-- 🧱 **Interactive Stack Resolution**: Click **Resolve Stack** for a step-by-step breakdown of how the stack resolves with arrows and trigger counts.
+- 🧱 **Interactive Stack Resolution**: Click **Resolve Stack** (*Step-by-step walkthrough of token creation*) for a comprehensive, illustrated breakdown of how spells and abilities resolve.
 - 📐 **Collapsible "Nerd Math"**: View comprehensive LaTeX formulas and rules breakdowns on demand without cluttering the screen.
-- 📋 **Copy Breakdown Button**: 1-click summary with clipboard toast notifications to paste directly into Discord.
+- 📋 **Formatted Discord Summary**: A dedicated **Copy Text Summary** button situated conveniently at the bottom of the narrative walkthrough, perfect for pasting into Discord or SpellTable chat.
 - 📱 **Tabletop Ready**: Clean, mobile-optimized, responsive layout designed for quick use during Friday Night Magic.
 - 🌓 **Dark & Light Modes**: Seamless 1-tap theme toggle, defaulting to dark mode with saved preference support.
 - 🚀 **Zero Dependencies**: Pure HTML5, CSS3, and modern Vanilla JS with arbitrary-precision `BigInt`. No build step or server required.

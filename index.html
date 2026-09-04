@@ -30,7 +30,7 @@
   })();
 </script>
 
-  <link rel="stylesheet" href="css/style.css?v=2.5">
+  <link rel="stylesheet" href="css/style.css?v=2.6">
 </head>
 
 <body>
@@ -110,8 +110,14 @@
     <input id="Rnum" type="number" value="0" min="0" max="1000000000" oninput="updateResult()">
   </div>
 
-  <!-- 🩸 ETB TRIGGERS & SYNERGY (BURN / LIFE GAIN) -->
-  <div class="synergy-box">
+  <!-- 🩸 ETB TRIGGERS & SYNERGY (BURN / LIFE GAIN) - OPTIONAL COLLAPSIBLE -->
+  <div class="synergy-toggle-wrap">
+    <button type="button" id="toggleSynergyBtn" class="btn-secondary synergy-toggle-btn" onclick="toggleSynergySection()" aria-expanded="false" aria-controls="synergyBox" title="Toggle optional ETB Damage & Life Gain synergy inputs">
+      🩸 ETB Damage &amp; Life Gain (Optional) ▾
+    </button>
+  </div>
+
+  <div id="synergyBox" class="synergy-box" style="display: none;">
     <div class="synergy-title">🩸 ETB Damage &amp; Life Gain Synergy</div>
     <span class="synergy-subtitle">Damage dealt to opponents and life gained per entering creature or token</span>
     
@@ -134,9 +140,11 @@
 
   <!-- 🪄 ACTION BUTTONS -->
   <div class="btn-group">
-    <button id="resolveBtn" onclick="resolveStack()">Resolve Stack</button>
-    <button class="btn-secondary" onclick="shareLink()" title="Copy shareable URL link">🔗 Share Link</button>
-    <button class="btn-secondary" onclick="copyBreakdown()" title="Copy board state to clipboard">📋 Copy Summary</button>
+    <button id="resolveBtn" class="btn-resolve" onclick="resolveStack()" title="Step-by-step walkthrough of the token creation">
+      <span id="resolveBtnText" class="btn-resolve-main">Resolve Stack</span>
+      <span class="btn-resolve-sub">Step-by-step walkthrough of token creation</span>
+    </button>
+    <button class="btn-secondary" onclick="shareLink()" title="Copy link to this exact calculator state to share with your playgroup">🔗 Share Current Board State</button>
   </div>
 
   <!-- 🍞 TOAST NOTIFICATION -->
@@ -220,7 +228,7 @@
 <!-- ⚙️ JAVASCRIPT LOGIC -->
 <!-- ══════════════════════════════════════════════ -->
   <!-- ⚙️ SCRIPTS -->
-  <script src="js/app.js?v=2.5"></script>
+  <script src="js/app.js?v=2.6"></script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </body>
 </html>
