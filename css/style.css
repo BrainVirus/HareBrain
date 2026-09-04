@@ -84,11 +84,12 @@ h1 {
 }
 
 .preset-chip {
+  font-family: inherit;
   background: #fbf6e8;
   border: 1.5px solid #d8b552;
   border-radius: 16px;
-  padding: 4px 10px;
-  font-size: 0.82em;
+  padding: 6px 14px;
+  font-size: 0.85em;
   color: #4a3617;
   cursor: pointer;
   font-weight: 700;
@@ -450,44 +451,6 @@ ul li { margin-bottom: 6px; }
   box-shadow: inset 0 0 8px rgba(0,0,0,0.03);
 }
 
-/* 🎨 ART & GALLERY */
-.art-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.art-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.art-card img {
-  width: 100%;
-  max-width: 320px;
-  border-radius: 12px;
-  border: 2px solid #d8b552;
-  box-shadow: 0 0 14px rgba(28,105,175,0.35);
-  transition: all 0.25s ease;
-  background: #fdf3c8;
-}
-
-.art-card img:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 20px rgba(255,221,130,0.8);
-}
-
-.art-caption {
-  font-size: 0.82em;
-  font-style: italic;
-  color: #6a4f22;
-  margin-top: 6px;
-  text-align: center;
-}
 
 /* 📜 CREDITS & ACKNOWLEDGMENTS BOX */
 .credits-box {
@@ -570,13 +533,6 @@ footer {
   .explanation {
     font-size: 0.88em;
     padding: 16px 14px;
-  }
-  .art-row {
-    flex-direction: row;
-    gap: 8px;
-  }
-  .art-card img {
-    max-width: 100%;
   }
 }
 
@@ -745,45 +701,7 @@ footer {
   opacity: 1;
 }
 
-/* 🐇 CONFETTI / RABBIT SHOWER */
-#confetti-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 10000;
-}
-
-.confetti-particle {
-  position: absolute;
-  user-select: none;
-  pointer-events: none;
-  animation: confettiFall var(--fall-duration, 2.5s) linear forwards;
-  font-size: var(--particle-size, 24px);
-  will-change: transform, opacity;
-}
-
-@keyframes confettiFall {
-  0% {
-    transform: translate3d(var(--x-start, 0), -10vh, 0) rotate(0deg);
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate3d(var(--x-end, 0), 105vh, 0) rotate(var(--rot-end, 360deg));
-    opacity: 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  #confetti-container {
-    display: none !important;
-  }
   .milestone-badge {
     animation: none !important;
   }

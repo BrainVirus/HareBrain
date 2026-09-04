@@ -1,9 +1,6 @@
 # 🐇 HareBrain 🧠
 ### *The Complete Hare Apparent MTG Token & Trigger Calculator*
 
-> *“Why you getting mad at my 4 vampires — you're about to make like 30 rabbits?”*  
-> — Cody Rich, seconds before witnessing a 300-rabbit avalanche of biblical proportions.
-
 ---
 
 ## 🧐 What is This?
@@ -12,7 +9,7 @@ You built a Commander deck with 30 copies of **[Hare Apparent](https://scryfall.
 
 Many Hare Apparent decks don't actually run or focus on paying for *Offspring* — prioritizing trigger multipliers and synergy pieces like *Delney*, *Elesh Norn*, *Panharmonicon*, and *Thrumming Stone*. Existing calculators often assumed every cast paid the {2} Offspring cost, making it tricky to calculate standard turns or Ripple cascades.
 
-Enter **HareBrain**: a versatile MTG calculator that handles standard casts, Ripple sequences, and mass reanimation without assuming Offspring — while still giving you the option to toggle Offspring on when you do pay the {2}!
+Enter **HareBrain**: a fast, versatile MTG calculator for Hare Apparent decks that handles standard casts, Ripple sequences, and mass reanimation without assuming Offspring — while still giving you the option to toggle Offspring on when you do pay the {2}!
 
 ---
 
@@ -26,7 +23,7 @@ Enter **HareBrain**: a versatile MTG calculator that handles standard casts, Rip
 #### 1. Standard Cast (Without Offspring, $C = 1$)
 You control $H$ other Hares on the board. You cast 1 Hare Apparent without paying Offspring. It triggers $(A + 1)$ times (thanks to *Delney* or *Panharmonicon*). Each trigger counts the $H$ other Hares and multiplies by your doublers ($2^T$) and triplers ($3^O$):
 
-$$\text{Rabbits Created} = (A + 1) \cdot H \cdot (3^O \cdot 2^T)$$
+$$\text{Rabbit Tokens Created} = (A + 1) \cdot H \cdot (3^O \cdot 2^T)$$
 
 > *Note: If $H = 0$, your first bunny enters, looks around the empty field, sees 0 friends, and makes 0 tokens. Do not panic. The next one will see it, and that's when the breeding program begins.*
 
@@ -54,11 +51,10 @@ $$\text{Rabbits} = C \cdot (A + 1) \cdot (H + C - 1) \cdot (3^O \cdot 2^T)$$
 - 🐇 **Flexible Offspring Toggle**: Easily switch between standard casts and paying the {2} Offspring cost.
 - 🩸 **ETB Burn & Life Gain Tracker**: Calculate direct burn damage to each opponent (*Purphoros*, *Impact Tremors*, *Witty Roastmaster*, *Mirkwood Bats*) and life gained (*Soul Warden*, *Essence Warden*), complete with table wipe and lethal alerts (`💀`).
 - 🔗 **Shareable Board States**: Deep linking via URL parameters and 1-click **"🔗 Share Link"** so you can text or post your exact board state to your playgroup.
-- 💥 **"Hare-pocalypse" Milestones & Confetti**: Dynamic milestone badges and falling rabbit emoji showers when crossing 100, 1,000, 1,000,000, or cosmic-scale rabbit counts.
-- ⚡ **Commander Presets**: Quick tap buttons for *Delney* (+1 trigger), *Panharmonicon*, *Anointed Procession* (2×), *Ojer Taq* (3×), and more.
-- 🧱 **Interactive Stack Resolution**: Click **Resolve Stack** for an animated, step-by-step breakdown of how the stack resolves with arrows and trigger counts.
+- 💥 **"Hare-pocalypse" Milestones**: Dynamic milestone badges when crossing 10, 100, 1,000, 1,000,000, or cosmic-scale rabbit counts.
+- 🧱 **Interactive Stack Resolution**: Click **Resolve Stack** for a step-by-step breakdown of how the stack resolves with arrows and trigger counts.
 - 📋 **Copy Breakdown Button**: 1-click summary with clipboard toast notifications to paste directly into Discord.
-- 📱 **Tabletop Ready**: Mobile-optimized, responsive layout designed for quick use during Friday Night Magic.
+- 📱 **Tabletop Ready**: Clean, mobile-optimized, responsive layout designed for quick use during Friday Night Magic.
 - 🌓 **Dark & Light Modes**: Seamless 1-tap theme toggle, defaulting to dark mode with saved preference support.
 - 🚀 **Zero Dependencies**: Pure HTML5, CSS3, and modern Vanilla JS with arbitrary-precision `BigInt`. No build step or server required.
 
@@ -66,6 +62,6 @@ $$\text{Rabbits} = C \cdot (A + 1) \cdot (H + C - 1) \cdot (3^O \cdot 2^T)$$
 
 ## 🙏 Credits & Acknowledgments
 
-- 💡 **Original Concept & Inspiration**: Immense credit to [solveforhare.com](https://solveforhare.com/) for the brilliant concept, quote, and idea that sparked this project!
+- 💡 **Original Concept & Inspiration**: Immense credit to [solveforhare.com](https://solveforhare.com/) for the brilliant concept and idea that sparked this project!
 - 🤖 **Created with AI**: Developed, calculated, and refined with the help of **Antigravity AI**.
-- 🃏 **Magic: The Gathering**: All card names, art, and mechanics are copyright Wizards of the Coast LLC. Art fetched via Scryfall.
+- 🃏 **Magic: The Gathering**: All card names and mechanics are copyright Wizards of the Coast LLC.

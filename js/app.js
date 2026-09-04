@@ -186,7 +186,7 @@ function getMilestone(rabbits) {
     return {
       tier: "tier-5",
       title: "🚨 Warren Breach!",
-      subtitle: "“Why you getting mad at my 4 vampires — you're about to make like 1,000 rabbits?”"
+      subtitle: "The warren is expanding rapidly across the battlefield."
     };
   }
   if (rabbits < 100000n) {
@@ -224,42 +224,6 @@ function getMilestone(rabbits) {
   };
 }
 
-// 🐇 CONFETTI & RABBIT SHOWER
-function launchRabbitShower(customSymbols) {
-  let container = document.getElementById("confetti-container");
-  if (!container) {
-    container = document.createElement("div");
-    container.id = "confetti-container";
-    document.body.appendChild(container);
-  }
-  const symbols = customSymbols || ["🐇", "🐰", "✨", "🥕", "💥", "🧠", "🔥"];
-  const count = 35;
-  const vw = window.innerWidth;
-  for (let i = 0; i < count; i++) {
-    const p = document.createElement("span");
-    p.className = "confetti-particle";
-    p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-    const xStart = (Math.random() * vw).toFixed(0) + "px";
-    const xEnd = (parseFloat(xStart) + (Math.random() * 200 - 100)).toFixed(0) + "px";
-    const duration = (1.8 + Math.random() * 1.5).toFixed(2) + "s";
-    const delay = (Math.random() * 0.4).toFixed(2) + "s";
-    const size = (22 + Math.random() * 16).toFixed(0) + "px";
-    const rot = (Math.random() * 720 - 360).toFixed(0) + "deg";
-
-    p.style.setProperty("--x-start", xStart);
-    p.style.setProperty("--x-end", xEnd);
-    p.style.setProperty("--fall-duration", duration);
-    p.style.setProperty("--particle-size", size);
-    p.style.setProperty("--rot-end", rot);
-    p.style.animationDelay = delay;
-
-    container.appendChild(p);
-    setTimeout(() => {
-      p.remove();
-    }, 3500);
-  }
-}
-
 function updateResult() {
   const { H, C, T, A, O, R, D, L } = readInputs();
   const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L);
@@ -277,7 +241,7 @@ function updateResult() {
   const totalPower = harePower + rabbitPower;
 
   const resultBox = document.getElementById("result");
-  let html = `Rabbits created: ${data.totalRabbits.toLocaleString()}`;
+  let html = `Rabbit Tokens Created: ${data.totalRabbits.toLocaleString()}`;
   
   if (R > 0 || grandRabbits > data.totalRabbits) {
     html += `<span class="result-sub">🐰 Total Rabbits now: <strong>${grandRabbits.toLocaleString()}</strong></span>`;
@@ -349,16 +313,15 @@ function resolveStack() {
 
   updateResult();
 
-  if (grandRabbits > 0n || data.totalDamage > 0n) {
-    const symbols = data.totalDamage >= 40n
-      ? ["🔥", "💀", "🐇", "💥", "🌋", "✨"]
-      : ["🐇", "🐰", "✨", "🥕", "💥", "🧠"];
-    launchRabbitShower(symbols);
-  }
-
   const perToken = data.perToken;
   const trigs = data.trigsPerHare;
   const totalCreated = data.totalRabbits;
+  const finalHares = data.finalHaresOnBoard;
+  const nontokenHares = data.nontokenHaresOnBoard;
+  const offspringHares = data.offspringHaresCreated;
+  const harePower = nontokenHares * 2n + offspringHares;
+  const rabbitPower = grandRabbits;
+  const totalPower = harePower + rabbitPower;
 
   // 📝 1. STARTING CONDITIONS
   let nar = `<p class="section-heading">Starting Conditions:</p>
@@ -398,14 +361,14 @@ function resolveStack() {
       nar += `<p class="section-heading"><strong>${C}</strong> Hare Apparents enter the battlefield simultaneously!</p>
       <ul>
         <li>E.g., via mass reanimation or blink (<em>Patriarch's Bidding</em>, <em>Raise the Past</em>, <em>Return to the Ranks</em>).</li>
-        <li>All <strong>${C}</strong> Hares enter together, bringing total Hares on the battlefield to <strong>${data.finalHaresOnBoard.toLocaleString()}</strong>.</li>
+        <li>All <strong>${C}</strong> Hares enter together, bringing total Hares on the battlefield to <strong>${finalHares.toLocaleString()}</strong>.</li>
         <li>Each entering Hare triggers <strong>${trigs.toLocaleString()}</strong> time${trigs > 1n ? "s" : ""}, putting a total of <strong>${data.totalTriggers.toLocaleString()}</strong> Make Rabbits triggers on the stack!</li>
       </ul>`;
 
       let stack = { "Make Rabbits ETB Trigger": data.totalTriggers };
       nar += buildStackDisplay(stack);
 
-      const otherHares = data.finalHaresOnBoard - 1n;
+      const otherHares = finalHares - 1n;
       const rabbitsPerTrigger = otherHares * perToken;
 
       nar += `<p class="section-heading">Simultaneous Triggers Resolution</p>
@@ -482,11 +445,20 @@ function resolveStack() {
         <li>It sees all starting Hares plus all Offspring token copies: <strong>${otherHaresSeenByOriginal.toLocaleString()}</strong> other Hares!</li>
         <li>Each trigger makes ${(otherHaresSeenByOriginal * perToken).toLocaleString()} Rabbit tokens, creating <strong>${rabFromOriginal.toLocaleString()}</strong> Rabbit tokens!</li>
       </ul>`;
-    } else {
-      nar += `<p class="section-heading"><strong>${C}</strong> Hare Apparents enter with Offspring paid!</p>
+    } else if (entryMode === "simultaneous") {
+      nar += `<p class="section-heading"><strong>${C}</strong> Hare Apparents enter simultaneously with Offspring paid!</p>
       <ul>
-        <li>Each cast creates 1 original Hare plus <strong>${(trigs * perToken).toLocaleString()}</strong> 1/1 token copies from Offspring.</li>
-        <li>All Offspring token copies and original Hares resolve their triggers sequentially, generating <strong>${totalCreated.toLocaleString()}</strong> Rabbit tokens!</li>
+        <li>All <strong>${C}</strong> original Hares enter together, each placing <strong>${trigs.toLocaleString()}</strong> Offspring triggers and <strong>${trigs.toLocaleString()}</strong> Make Rabbits triggers on the stack.</li>
+        <li>Offspring triggers resolve first, creating <strong>${offspringHares.toLocaleString()}</strong> 1/1 token copies of Hare Apparent.</li>
+        <li>Each of the <strong>${(BigInt(C) + offspringHares).toLocaleString()}</strong> entering Hares resolves its triggers seeing all other Hares in play.</li>
+        <li>Resolving all <strong>${data.totalTriggers.toLocaleString()}</strong> total triggers creates <strong>${totalCreated.toLocaleString()}</strong> Rabbit tokens!</li>
+      </ul>`;
+    } else {
+      nar += `<p class="section-heading"><strong>${C}</strong> Hare Apparents enter sequentially with Offspring paid</p>
+      <ul>
+        <li>Each Hare cast creates 1 original 2/2 Hare plus <strong>${(trigs * perToken).toLocaleString()}</strong> 1/1 token copies from Offspring.</li>
+        <li>Each entering token copy and original Hare triggers its ETB ability, continuously multiplying the number of Hares in play.</li>
+        <li>Across all ${C} sequential casts, this creates <strong>${offspringHares.toLocaleString()}</strong> Offspring token copies and <strong>${totalCreated.toLocaleString()}</strong> Rabbit tokens!</li>
       </ul>`;
     }
   }
@@ -506,13 +478,6 @@ function resolveStack() {
   }
 
   // 📝 4. FINAL BOARD STATE
-  const finalHares = data.finalHaresOnBoard;
-  const nontokenHares = data.nontokenHaresOnBoard;
-  const offspringHares = data.offspringHaresCreated;
-  const harePower = nontokenHares * 2n + offspringHares;
-  const rabbitPower = grandRabbits;
-  const totalPower = harePower + rabbitPower;
-
   nar += `<p class="section-heading">Final Board State</p>
   <ul>
     <li>When all spells and abilities finish resolving, you control:
@@ -536,118 +501,38 @@ function resolveStack() {
   }
 
   const narrativeBox = document.getElementById("narrative");
-  narrativeBox.innerHTML = nar;
+  if (narrativeBox) {
+    narrativeBox.style.display = "block";
+    narrativeBox.innerHTML = nar;
 
-  // Smooth scroll and unroll animation
-  narrativeBox.classList.remove("show-scroll");
-  void narrativeBox.offsetWidth; // trigger reflow
-  narrativeBox.classList.add("show-scroll");
+    // Smooth scroll and unroll animation
+    narrativeBox.classList.remove("show-scroll");
+    void narrativeBox.offsetWidth; // trigger reflow
+    narrativeBox.classList.add("show-scroll");
 
-  // MathJax re-render if available
-  if (window.MathJax && window.MathJax.typesetPromise) {
-    window.MathJax.typesetPromise([narrativeBox]).catch(() => {}).finally(() => {
-      btn.textContent = "Resolve Stack";
-      btn.classList.remove("resolving");
-    });
-  } else {
-    setTimeout(() => {
-      btn.textContent = "Resolve Stack";
-      btn.classList.remove("resolving");
-    }, 400);
+    narrativeBox.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // MathJax re-render if available
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      if (window.MathJax.typesetClear) {
+        try {
+          window.MathJax.typesetClear([narrativeBox]);
+        } catch (e) {}
+      }
+      window.MathJax.typesetPromise([narrativeBox]).catch(() => {}).finally(() => {
+        btn.textContent = "Resolve Stack";
+        btn.classList.remove("resolving");
+      });
+    } else {
+      setTimeout(() => {
+        btn.textContent = "Resolve Stack";
+        btn.classList.remove("resolving");
+      }, 400);
+    }
   }
 }
 
-// ⚡ PRESETS HANDLER
-function applyPreset(name) {
-  if (name === 'standard') {
-    setOffspring(false);
-    document.getElementById('H').value = 3;
-    document.getElementById('Hnum').value = 3;
-    document.getElementById('C').value = 1;
-    document.getElementById('Cnum').value = 1;
-    document.getElementById('T').value = 0;
-    document.getElementById('Tnum').value = 0;
-    document.getElementById('O').value = 0;
-    document.getElementById('Onum').value = 0;
-    document.getElementById('A').value = 0;
-    document.getElementById('Anum').value = 0;
-    document.getElementById('D').value = 0;
-    document.getElementById('Dnum').value = 0;
-    document.getElementById('L').value = 0;
-    document.getElementById('Lnum').value = 0;
-  } else if (name === 'offspring') {
-    setOffspring(true);
-    document.getElementById('H').value = 3;
-    document.getElementById('Hnum').value = 3;
-    document.getElementById('C').value = 1;
-    document.getElementById('Cnum').value = 1;
-    document.getElementById('T').value = 0;
-    document.getElementById('Tnum').value = 0;
-    document.getElementById('O').value = 0;
-    document.getElementById('Onum').value = 0;
-    document.getElementById('A').value = 0;
-    document.getElementById('Anum').value = 0;
-    document.getElementById('D').value = 0;
-    document.getElementById('Dnum').value = 0;
-    document.getElementById('L').value = 0;
-    document.getElementById('Lnum').value = 0;
-  }
-  checkModeToggle();
-  updateResult();
-}
-
-function addTrigger(card) {
-  const aInput = document.getElementById('Anum');
-  const cur = parseInt(aInput.value, 10) || 0;
-  aInput.value = cur + 1;
-  syncSliders('A');
-}
-
-function addDoubler() {
-  const tInput = document.getElementById('Tnum');
-  const cur = parseInt(tInput.value, 10) || 0;
-  tInput.value = cur + 1;
-  syncSliders('T');
-}
-
-function addTripler() {
-  const oInput = document.getElementById('Onum');
-  const cur = parseInt(oInput.value, 10) || 0;
-  oInput.value = cur + 1;
-  syncSliders('O');
-}
-
-function addEnteringHare() {
-  const cInput = document.getElementById('Cnum');
-  const cur = parseInt(cInput.value, 10) || 1;
-  cInput.value = cur + 1;
-  syncSliders('C');
-}
-
-function addDmg(amt) {
-  const input = document.getElementById('Dnum');
-  if (!input) return;
-  const cur = parseInt(input.value, 10) || 0;
-  input.value = cur + amt;
-  syncSliders('D');
-  if (amt === 1) {
-    showToast("🔥 Added Impact Tremors (+1 ETB Damage)!");
-  } else if (amt === 2) {
-    showToast("🌋 Added Purphoros (+2 ETB Damage)!");
-  } else {
-    showToast(`🔥 Added +${amt} ETB Damage!`);
-  }
-}
-
-function addLife(amt) {
-  const input = document.getElementById('Lnum');
-  if (!input) return;
-  const cur = parseInt(input.value, 10) || 0;
-  input.value = cur + amt;
-  syncSliders('L');
-  showToast(`❤️ Added Soul Warden (+${amt} ETB Life Gain)!`);
-}
-
+// ↺ RESET ALL HANDLER
 function resetInputs() {
   setOffspring(false);
   ['H', 'T', 'O', 'A', 'D', 'L'].forEach(id => {
@@ -665,10 +550,13 @@ function resetInputs() {
   checkModeToggle();
   updateResult();
   const narrativeBox = document.getElementById("narrative");
-  narrativeBox.classList.remove("show-scroll");
-  narrativeBox.style.display = "none";
+  if (narrativeBox) {
+    narrativeBox.classList.remove("show-scroll");
+    narrativeBox.style.display = "none";
+  }
   const badge = document.getElementById("milestoneBadge");
   if (badge) badge.style.display = "none";
+  showToast("↺ All inputs reset to default");
 }
 
 // 🍞 TOAST NOTIFICATION
@@ -800,7 +688,7 @@ function copyBreakdown() {
   if (L > 0) text += `\n• Life gained per ETB: ${L} (Total life gained: ${data.totalLife.toLocaleString()})`;
 
   text += `\n────────────────────────────────────────
-🐇 Rabbits Created: ${data.totalRabbits.toLocaleString()}
+🐇 Rabbit Tokens Created: ${data.totalRabbits.toLocaleString()}
 🐰 Total Rabbits on Board: ${grandRabbits.toLocaleString()}
 🐇 Total Hare Apparents: ${finalHares.toLocaleString()}${data.offspringHaresCreated > 0n ? ` (${data.offspringHaresCreated.toLocaleString()} from Offspring)` : ''}
 ⚔️ Total Board Power/Toughness: ${totalPower.toLocaleString()}/${totalPower.toLocaleString()}`;

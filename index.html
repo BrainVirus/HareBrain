@@ -30,33 +30,23 @@
   })();
 </script>
 
-  <link rel="stylesheet" href="css/style.css?v=2.2">
+  <link rel="stylesheet" href="css/style.css?v=2.3">
 </head>
 
 <body>
 <div class="card">
   <div class="header-top-bar">
-    <span class="tag-badge">MTG Rabbit Calculator</span>
+    <span class="tag-badge">MTG Hare Apparent Token Calculator</span>
     <button id="themeToggleBtn" class="theme-btn" onclick="toggleTheme()" title="Currently on Dark Theme (click to switch to Light Theme)" aria-label="Switch Theme">
       <span id="themeIcon">🌙</span> <span id="themeText">Dark Theme</span>
     </button>
   </div>
   <h1>🐇 HareBrain 🧠</h1>
-  <p class="subtitle">A fast, flexible MTG calculator for <strong>Hare Apparent</strong>.<br>Handles standard casts, Ripple chains, mass reanimation, and optional <em>Offspring</em>.</p>
+  <p class="subtitle">A fast, flexible MTG calculator for <strong>Hare Apparent Decks</strong>.<br>Handles standard casts, Ripple chains, mass reanimation, and optional <em>Offspring</em>.</p>
 
-  <!-- ⚡ QUICK COMMANDER / TABLE PRESETS -->
+  <!-- ↺ RESET BUTTON -->
   <div class="presets-wrap">
-    <div class="preset-chip" onclick="applyPreset('standard')">🐰 Standard Cast</div>
-    <div class="preset-chip" onclick="applyPreset('offspring')">🐣 Cast with Offspring</div>
-    <div class="preset-chip" onclick="addTrigger('delney')">⚡ +Delney (+1 Trigger)</div>
-    <div class="preset-chip" onclick="addTrigger('pan')">🔔 +Panharmonicon (+1 Trigger)</div>
-    <div class="preset-chip" onclick="addDoubler()">✨ +1 Doubler (2×)</div>
-    <div class="preset-chip" onclick="addTripler()">⚜️ +1 Tripler (3×)</div>
-    <div class="preset-chip" onclick="addEnteringHare()">🐇 +1 Hare Entering</div>
-    <div class="preset-chip burn-chip" onclick="addDmg(1)" title="Add +1 ETB Damage (Impact Tremors, Witty Roastmaster, Mirkwood Bats)">🔥 +Impact Tremors (+1 Dmg)</div>
-    <div class="preset-chip burn-chip" onclick="addDmg(2)" title="Add +2 ETB Damage (Purphoros, God of the Forge)">🌋 +Purphoros (+2 Dmg)</div>
-    <div class="preset-chip life-chip" onclick="addLife(1)" title="Add +1 ETB Life Gain (Soul Warden, Essence Warden)">❤️ +Soul Warden (+1 Life)</div>
-    <div class="preset-chip danger" onclick="resetInputs()">↺ Reset to 0</div>
+    <button type="button" class="preset-chip danger" onclick="resetInputs()" title="Reset all inputs to default">↺ Reset All</button>
   </div>
 
   <!-- 🧮 INPUTS -->
@@ -116,16 +106,12 @@
   <!-- 🩸 ETB TRIGGERS & SYNERGY (BURN / LIFE GAIN) -->
   <div class="synergy-box">
     <div class="synergy-title">🩸 ETB Damage &amp; Life Gain Synergy</div>
-    <span class="synergy-subtitle">Impact Tremors, Purphoros, Witty Roastmaster, Mirkwood Bats, Soul Warden</span>
+    <span class="synergy-subtitle">Damage dealt to opponents and life gained per entering creature or token</span>
     
     <div class="slider-group" style="margin: 8px auto 4px;">
       <label for="D">🔥 Damage per ETB (D):</label>
       <input id="D" type="range" min="0" max="10" value="0" oninput="syncInputs('D')">
       <input id="Dnum" type="number" value="0" min="0" max="100" oninput="syncSliders('D')">
-    </div>
-    <div class="synergy-chips">
-      <span class="synergy-chip burn-chip" onclick="addDmg(1)" title="Add +1 damage (Impact Tremors, Witty Roastmaster, Mirkwood Bats, Warleader's Call)">+1 Dmg (Impact Tremors)</span>
-      <span class="synergy-chip burn-chip" onclick="addDmg(2)" title="Add +2 damage (Purphoros, God of the Forge / Terror of the Peaks)">+2 Dmg (Purphoros)</span>
     </div>
 
     <div class="slider-group" style="margin: 8px auto 4px;">
@@ -133,13 +119,10 @@
       <input id="L" type="range" min="0" max="10" value="0" oninput="syncInputs('L')">
       <input id="Lnum" type="number" value="0" min="0" max="100" oninput="syncSliders('L')">
     </div>
-    <div class="synergy-chips">
-      <span class="synergy-chip life-chip" onclick="addLife(1)" title="Add +1 life gained (Soul Warden, Essence Warden, Soul's Attendant)">+1 Life (Soul Warden)</span>
-    </div>
   </div>
 
   <!-- 📜 RESULT DISPLAY -->
-  <div id="result">Rabbits created: 0</div>
+  <div id="result">Rabbit Tokens Created: 0</div>
   <div id="milestoneBadge" class="milestone-badge" style="display: none;"></div>
 
   <!-- 🪄 ACTION BUTTONS -->
@@ -205,75 +188,6 @@
     </div>
   </div>
 
-  <!-- ════════════ 🎨 ART & GALLERY ════════════ -->
-  <p class="section-heading">Key Cards &amp; Synergy Pieces</p>
-
-  <div class="art-row">
-    <div class="art-card">
-      <img src="./img/delney.jpg" alt="Delney, Streetwise Lookout" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Delney,%20Streetwise%20Lookout&format=image'">
-      <div class="art-caption">Delney, Streetwise Lookout<br>(Triggers power &le; 2 abilities again!)</div>
-    </div>
-    <div class="art-card">
-      <img src="./img/hare.jpg" alt="Hare Apparent" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Hare%20Apparent&format=image'">
-      <div class="art-caption">Hare Apparent<br>(The star of the burrow)</div>
-    </div>
-  </div>
-
-  <div class="art-row">
-    <div class="art-card">
-      <img src="./img/rabbit.jpg" alt="Rabbit Token" loading="lazy">
-      <div class="art-caption">1/1 White Rabbit Token<br>(Multiply without limits)</div>
-    </div>
-    <div class="art-card">
-      <img src="./img/pan.jpg" alt="Panharmonicon" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Panharmonicon&format=image'">
-      <div class="art-caption">Panharmonicon<br>(Additional ETB Triggers)</div>
-    </div>
-  </div>
-
-  <div class="art-row">
-    <div class="art-card">
-      <img src="./img/proc.jpg" alt="Anointed Procession" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Anointed%20Procession&format=image'">
-      <div class="art-caption">Anointed Procession<br>(Token Doubler)</div>
-    </div>
-    <div class="art-card">
-      <img src="./img/ojer.jpg" alt="Ojer Taq, Deepest Foundation" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Ojer%20Taq,%20Deepest%20Foundation&format=image'">
-      <div class="art-caption">Ojer Taq, Deepest Foundation<br>(Token Tripler)</div>
-    </div>
-  </div>
-
-  <div class="art-row">
-    <div class="art-card">
-      <img src="./img/thrumming.jpg" alt="Thrumming Stone" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Thrumming%20Stone&format=image'">
-      <div class="art-caption">Thrumming Stone<br>(Ripple 4 through your library)</div>
-    </div>
-    <div class="art-card">
-      <img src="./img/elesh.jpg" alt="Elesh Norn, Mother of Machines" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Elesh%20Norn,%20Mother%20of%20Machines&format=image'">
-      <div class="art-caption">Elesh Norn, Mother of Machines<br>(Double all creature ETBs)</div>
-    </div>
-  </div>
-
-  <div class="art-row">
-    <div class="art-card">
-      <img src="https://api.scryfall.com/cards/named?exact=Purphoros,%20God%20of%20the%20Forge&format=image" alt="Purphoros, God of the Forge" loading="lazy">
-      <div class="art-caption">Purphoros, God of the Forge<br>(2 direct damage per ETB!)</div>
-    </div>
-    <div class="art-card">
-      <img src="https://api.scryfall.com/cards/named?exact=Impact%20Tremors&format=image" alt="Impact Tremors" loading="lazy">
-      <div class="art-caption">Impact Tremors<br>(1 direct damage per ETB!)</div>
-    </div>
-  </div>
-
-  <div class="art-row">
-    <div class="art-card">
-      <img src="https://api.scryfall.com/cards/named?exact=Soul%20Warden&format=image" alt="Soul Warden" loading="lazy">
-      <div class="art-caption">Soul Warden<br>(Gain 1 life per creature ETB!)</div>
-    </div>
-    <div class="art-card">
-      <img src="https://api.scryfall.com/cards/named?exact=Mirkwood%20Bats&format=image" alt="Mirkwood Bats" loading="lazy">
-      <div class="art-caption">Mirkwood Bats<br>(Each opponent loses 1 life per token!)</div>
-    </div>
-  </div>
-
   <!-- 📜 CREDITS & ACKNOWLEDGMENTS -->
   <div class="credits-box">
     <div class="credits-heading">✨ Credits &amp; Acknowledgments ✨</div>
@@ -281,18 +195,13 @@
     <p>🤖 <strong>Created with AI:</strong> Designed, adapted, and engineered with the help of Antigravity AI.</p>
     <p>🐇 <strong>HareBrain:</strong> Dedicated to every MTG player who loves filling the battlefield with hundreds of rabbits.</p>
   </div>
-
-  <footer>
-    “Why you getting mad at my 4 vampires — you're about to make like 30 rabbits?”<br>
-    — Cody Rich right before he saw 300 rabbits get created
-  </footer>
 </div>
 
 <!-- ══════════════════════════════════════════════ -->
 <!-- ⚙️ JAVASCRIPT LOGIC -->
 <!-- ══════════════════════════════════════════════ -->
   <!-- ⚙️ SCRIPTS -->
-  <script src="js/app.js?v=2.2"></script>
+  <script src="js/app.js?v=2.3"></script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </body>
 </html>
