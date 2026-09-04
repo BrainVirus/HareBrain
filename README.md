@@ -54,7 +54,7 @@ If you cast $C > 1$ Hares in a turn (e.g. 3 Hares) but only have mana to pay Off
 
 ## ✨ Features
 
-- 🐇 **Flexible Offspring & Partial Payment**: Toggle Offspring on/off, and when casting multiple Hares ($C > 1$), customize how many times you pay Offspring ($K \le C$, default 1). Intelligent mutual auto-switching between Offspring and Simultaneous entry ensures MTG rule accuracy.
+- 🐇 **Flexible Offspring & Partial Payment**: Toggle Offspring on/off, and when casting multiple Hares ($C > 1$), customize how many times you pay Offspring ($K \le C$, default 1) inside a cohesive dashed modifier card. Intelligent mutual auto-switching between Offspring and Simultaneous entry ensures MTG rule accuracy.
 - 🩸 **Optional ETB Burn & Life Gain Synergy**: Calculate direct burn damage to each opponent (*Purphoros*, *Impact Tremors*, *Witty Roastmaster*, *Mirkwood Bats*) and life gained (*Soul Warden*, *Essence Warden*). Neatly collapsed by default with dynamic live status badges to keep the interface clean.
 - 🔗 **Share Current Board State**: Deep linking via URL parameters and a 1-click **"🔗 Share Current Board State"** button with clear clipboard notifications to easily share your exact board state with your playgroup.
 - 💥 **"Hare-pocalypse" Milestones**: Dynamic milestone badges when crossing 10, 100, 1,000, 1,000,000, or cosmic-scale rabbit counts.

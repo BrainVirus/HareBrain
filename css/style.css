@@ -251,6 +251,19 @@ input[type="number"]:focus {
   box-shadow: 0 2px 6px rgba(47,128,237,0.35);
 }
 
+.offspring-count-group {
+  margin: 6px auto 14px;
+  gap: 12px;
+}
+
+.offspring-count-group input[type="range"] {
+  width: 140px;
+}
+
+.offspring-count-group input[type="number"] {
+  width: 60px;
+}
+
 /* 🪄 BUTTONS */
 .btn-group {
   display: flex;
@@ -601,6 +614,21 @@ body.dark-mode .signature-box strong {
   .explanation {
     font-size: 0.88em;
     padding: 16px 14px;
+  }
+  .offspring-count-group {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .offspring-count-group .mode-label {
+    width: 100%;
+    text-align: center;
+  }
+  .offspring-count-group input[type="range"] {
+    width: 60%;
+  }
+  .offspring-count-group input[type="number"] {
+    width: 60px;
   }
 }
 
