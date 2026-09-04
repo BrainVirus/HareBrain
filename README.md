@@ -1,4 +1,4 @@
-# 🪄 HareBrain 🐇
+# 🐇 HareBrain 🧠
 ### *The Complete Hare Apparent MTG Token & Trigger Calculator*
 
 > *“Why you getting mad at my 4 vampires — you're about to make like 30 rabbits?”*  
