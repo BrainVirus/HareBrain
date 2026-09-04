@@ -803,6 +803,7 @@ function loadUrlState() {
     } else {
       setEntryMode("sequential");
     }
+  }
   if (params.has("d") || params.has("l")) {
     const dVal = parseInt(params.get("d"), 10) || 0;
     const lVal = parseInt(params.get("l"), 10) || 0;
@@ -903,7 +904,7 @@ function toggleSynergySection(forceState) {
   const btn = document.getElementById("toggleSynergyBtn");
   if (!box || !btn) return;
 
-  const isCurrentlyOpen = box.style.display === "block";
+  const isCurrentlyOpen = box.style.display !== "none" && getComputedStyle(box).display !== "none";
   const shouldOpen = typeof forceState === "boolean" ? forceState : !isCurrentlyOpen;
 
   if (shouldOpen) {
