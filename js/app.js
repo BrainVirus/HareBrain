@@ -151,54 +151,70 @@ function setEntryMode(mode) {
   updateResult();
 }
 
+let lastMilestoneTier = null;
+
 // 💥 HARE-POCALYPSE MILESTONE DETECTOR
 function getMilestone(rabbits) {
-  if (rabbits < 100n) return null;
-  if (rabbits < 1000n) {
+  if (rabbits < 10n) return null;
+  if (rabbits < 25n) {
     return {
       tier: "tier-1",
-      title: "🐇 The Burrow Awakens!",
+      title: "🐇 The Burrow Stirs!",
+      subtitle: "“Wait, how many rabbits did you just say?”"
+    };
+  }
+  if (rabbits < 50n) {
+    return {
+      tier: "tier-2",
+      title: "🐰 Multiplying Like Rabbits!",
       subtitle: "The table begins to nervously count their blockers."
+    };
+  }
+  if (rabbits < 100n) {
+    return {
+      tier: "tier-3",
+      title: "🥕 A Warren Awakens!",
+      subtitle: "Opponents start frantically searching their hands for a board wipe."
+    };
+  }
+  if (rabbits < 1000n) {
+    return {
+      tier: "tier-4",
+      title: "⚠️ Critical Hare Mass!",
+      subtitle: "Judge call incoming: “Does anyone at this LGS have 100 dice?”"
     };
   }
   if (rabbits < 10000n) {
     return {
-      tier: "tier-2",
-      title: "⚠️ Critical Hare Mass!",
-      subtitle: "Judge call incoming: \"Does anyone at this LGS have 1,000 dice?\""
+      tier: "tier-5",
+      title: "🚨 Warren Breach!",
+      subtitle: "“Why you getting mad at my 4 vampires — you're about to make like 1,000 rabbits?”"
     };
   }
   if (rabbits < 100000n) {
     return {
-      tier: "tier-3",
-      title: "🚨 Warren Breach!",
-      subtitle: "“Why you getting mad at my 4 vampires — you're about to make like 30,000 rabbits?”"
-    };
-  }
-  if (rabbits < 1000000n) {
-    return {
-      tier: "tier-4",
+      tier: "tier-6",
       title: "🌪️ Exponential Lagomorpha!",
       subtitle: "This is no longer Magic: The Gathering. This is an advanced math lecture."
     };
   }
-  if (rabbits < 1000000000n) {
+  if (rabbits < 1000000n) {
     return {
-      tier: "tier-5",
+      tier: "tier-7",
       title: "💥 HARE-POCALYPSE UNLEASHED!",
       subtitle: "The Dragon Shield sleeves are melting from the sheer friction of entering tokens."
     };
   }
-  if (rabbits < 1000000000000000n) {
+  if (rabbits < 1000000000n) {
     return {
-      tier: "tier-6",
+      tier: "tier-8",
       title: "🪐 Planetary Rabbit Density!",
       subtitle: "The entire continent of Dominaria is submerged beneath 1/1 white Rabbits."
     };
   }
   if (rabbits < 10n ** 80n) {
     return {
-      tier: "tier-7",
+      tier: "tier-9",
       title: "🌌 Cosmic Hare Singularity!",
       subtitle: "Gravitational collapse imminent. Space-time bends around the sheer mass of rabbits."
     };
@@ -211,17 +227,14 @@ function getMilestone(rabbits) {
 }
 
 // 🐇 CONFETTI & RABBIT SHOWER
-function launchRabbitShower() {
-  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    return;
-  }
+function launchRabbitShower(customSymbols) {
   let container = document.getElementById("confetti-container");
   if (!container) {
     container = document.createElement("div");
     container.id = "confetti-container";
     document.body.appendChild(container);
   }
-  const symbols = ["🐇", "🐰", "✨", "🥕", "💥", "🧠", "🔥"];
+  const symbols = customSymbols || ["🐇", "🐰", "✨", "🥕", "💥", "🧠", "🔥"];
   const count = 35;
   const vw = window.innerWidth;
   for (let i = 0; i < count; i++) {
@@ -231,8 +244,8 @@ function launchRabbitShower() {
     const xStart = (Math.random() * vw).toFixed(0) + "px";
     const xEnd = (parseFloat(xStart) + (Math.random() * 200 - 100)).toFixed(0) + "px";
     const duration = (1.8 + Math.random() * 1.5).toFixed(2) + "s";
-    const delay = (Math.random() * 0.5).toFixed(2) + "s";
-    const size = (20 + Math.random() * 18).toFixed(0) + "px";
+    const delay = (Math.random() * 0.4).toFixed(2) + "s";
+    const size = (22 + Math.random() * 16).toFixed(0) + "px";
     const rot = (Math.random() * 720 - 360).toFixed(0) + "deg";
 
     p.style.setProperty("--x-start", xStart);
@@ -307,8 +320,16 @@ function updateResult() {
     if (m) {
       badge.style.display = "block";
       badge.innerHTML = `<span class="milestone-title">${m.title}</span><span class="milestone-subtitle">${m.subtitle}</span>`;
+      if (m.tier !== lastMilestoneTier) {
+        lastMilestoneTier = m.tier;
+        badge.classList.remove("pop-badge");
+        void badge.offsetWidth;
+        badge.classList.add("pop-badge");
+        launchRabbitShower(["🐇", "✨", "🎉"]);
+      }
     } else {
       badge.style.display = "none";
+      lastMilestoneTier = null;
     }
   }
 
@@ -338,8 +359,11 @@ function resolveStack() {
 
   updateResult();
 
-  if (grandRabbits >= 100n) {
-    launchRabbitShower();
+  if (grandRabbits > 0n || data.totalDamage > 0n) {
+    const symbols = data.totalDamage >= 40n
+      ? ["🔥", "💀", "🐇", "💥", "🌋", "✨"]
+      : ["🐇", "🐰", "✨", "🥕", "💥", "🧠"];
+    launchRabbitShower(symbols);
   }
 
   const perToken = data.perToken;
@@ -616,6 +640,13 @@ function addDmg(amt) {
   const cur = parseInt(input.value, 10) || 0;
   input.value = cur + amt;
   syncSliders('D');
+  if (amt === 1) {
+    showToast("🔥 Added Impact Tremors (+1 ETB Damage)!");
+  } else if (amt === 2) {
+    showToast("🌋 Added Purphoros (+2 ETB Damage)!");
+  } else {
+    showToast(`🔥 Added +${amt} ETB Damage!`);
+  }
 }
 
 function addLife(amt) {
@@ -624,10 +655,12 @@ function addLife(amt) {
   const cur = parseInt(input.value, 10) || 0;
   input.value = cur + amt;
   syncSliders('L');
+  showToast(`❤️ Added Soul Warden (+${amt} ETB Life Gain)!`);
 }
 
 function resetInputs() {
   setOffspring(false);
+  lastMilestoneTier = null;
   ['H', 'T', 'O', 'A', 'D', 'L'].forEach(id => {
     const slider = document.getElementById(id);
     const numInput = document.getElementById(id + 'num');

@@ -112,6 +112,26 @@ h1 {
   background: #fbe0e0;
 }
 
+.preset-chip.burn-chip {
+  background: #fff3e0;
+  border-color: #ff7043;
+  color: #bf360c;
+}
+
+.preset-chip.burn-chip:hover {
+  background: #ffe0b2;
+}
+
+.preset-chip.life-chip {
+  background: #e8f5e9;
+  border-color: #43a047;
+  color: #1b5e20;
+}
+
+.preset-chip.life-chip:hover {
+  background: #c8e6c9;
+}
+
 /* SECTION HEADINGS */
 .section-heading {
   text-align: center;
@@ -701,6 +721,16 @@ footer {
   100% { box-shadow: 0 0 18px rgba(241, 196, 15, 0.6); }
 }
 
+.pop-badge {
+  animation: popBadgeAnim 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, milestoneGlow 3s infinite alternate ease-in-out 0.4s !important;
+}
+
+@keyframes popBadgeAnim {
+  0% { transform: scale(0.9); opacity: 0; }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 /* 🍞 TOAST NOTIFICATION */
 .toast {
   position: fixed;
@@ -1257,4 +1287,32 @@ body.dark-mode .toast {
   color: #fff !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.75) !important;
 }
+
+/* 🌙 DARK MODE: PRESET CHIPS */
+html[data-theme="dark"] .preset-chip.burn-chip,
+body[data-theme="dark"] .preset-chip.burn-chip,
+body.dark-mode .preset-chip.burn-chip {
+  background: #381a14 !important;
+  border-color: #ff7043 !important;
+  color: #ffab91 !important;
+}
+html[data-theme="dark"] .preset-chip.burn-chip:hover,
+body[data-theme="dark"] .preset-chip.burn-chip:hover,
+body.dark-mode .preset-chip.burn-chip:hover {
+  background: #4e221a !important;
+}
+
+html[data-theme="dark"] .preset-chip.life-chip,
+body[data-theme="dark"] .preset-chip.life-chip,
+body.dark-mode .preset-chip.life-chip {
+  background: #102d18 !important;
+  border-color: #4caf50 !important;
+  color: #a5d6a7 !important;
+}
+html[data-theme="dark"] .preset-chip.life-chip:hover,
+body[data-theme="dark"] .preset-chip.life-chip:hover,
+body.dark-mode .preset-chip.life-chip:hover {
+  background: #184224 !important;
+}
+
 
