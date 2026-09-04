@@ -9,7 +9,7 @@
 <meta property="og:title" content="🐇 HareBrain 🧠">
 <meta property="og:description" content="Calculate how many Rabbit tokens you make from Hare Apparent — with doublers, triplers, Delney, Panharmonicon, Ripple cascades, and optional Offspring.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="./img/hare.jpg">
+<meta property="og:image" content="https://api.scryfall.com/cards/named?exact=Hare%20Apparent&format=image">
 
 <!-- ══════════════════════════════════════════════ -->
 <!-- 🎨 FONT IMPORTS & BASE STYLES -->
@@ -30,7 +30,7 @@
   })();
 </script>
 
-  <link rel="stylesheet" href="css/style.css?v=2.3">
+  <link rel="stylesheet" href="css/style.css?v=2.4">
 </head>
 
 <body>
@@ -42,7 +42,7 @@
     </button>
   </div>
   <h1>🐇 HareBrain 🧠</h1>
-  <p class="subtitle">A fast, flexible MTG calculator for <strong>Hare Apparent Decks</strong>.<br>Handles standard casts, Ripple chains, mass reanimation, and optional <em>Offspring</em>.</p>
+  <p class="subtitle">A fast, flexible Rabbit Token calculator for <strong>Hare Apparent Decks</strong>.<br>Handles standard casts, Ripple chains, mass reanimation, and optional <em>Offspring</em>.</p>
 
   <!-- ↺ RESET BUTTON -->
   <div class="presets-wrap">
@@ -138,20 +138,27 @@
   <!-- 🧙‍♂️ NARRATIVE STACK RESOLUTION -->
   <div id="narrative" class="narrative"></div>
 
+  <!-- 📐 COLLAPSIBLE MATHEMATICAL BREAKDOWN ("NERD MATH") -->
+  <div class="math-toggle-wrap">
+    <button type="button" id="toggleMathBtn" class="btn-secondary math-toggle-btn" onclick="toggleMathBreakdown()" aria-expanded="false" aria-controls="mathBox" title="Toggle mathematical formulas and rules breakdown">
+      📐 View Nerd Math
+    </button>
+  </div>
+
   <!-- 📘 MATHEMATICAL BREAKDOWN -->
-  <div class="explanation" id="mathBox">
+  <div class="explanation" id="mathBox" style="display: none;">
     <div class="explanation-title">📘 The Mathematical Breakdown</div>
     <p><em>Hare Apparent</em> card text: <em>“When Hare Apparent enters, create a 1/1 white Rabbit creature token for each <strong>other</strong> creature you control named Hare Apparent.”</em></p>
     <p><em>Offspring {2}:</em> <em>“You may pay an additional {2} as you cast this spell. If you do, when this creature enters, create a 1/1 token copy of it.”</em></p>
     
     <p><strong>H</strong> — Number of other <em>Hare Apparents</em> already on the battlefield before entering.</p>
     <p><strong>C</strong> — Number of <em>Hare Apparents</em> entering the battlefield this turn (default 1).</p>
-    <p><strong>T</strong> — Number of <em>token doublers</em> (Anointed Procession, Mondrak, Parallel Lives, Doubling Season).</p>
-    <p><strong>O</strong> — Number of <em>token triplers</em> (Ojer Taq, Deepest Foundation).</p>
-    <p><strong>A</strong> — Number of <em>additional trigger</em> effects (Delney Streetwise Lookout, Panharmonicon, Elesh Norn Mother of Machines, Roaming Throne).</p>
+    <p><strong>T</strong> — Number of <em>token doublers.</em></p>
+    <p><strong>O</strong> — Number of <em>token triplers.</em></p>
+    <p><strong>A</strong> — Number of <em>additional trigger</em> effects.</p>
     <p><strong>R</strong> — Number of <em>existing Rabbit tokens</em> already on your battlefield.</p>
-    <p><strong>D</strong> — Damage dealt to each opponent per entering creature/token (Impact Tremors, Purphoros, Witty Roastmaster, Mirkwood Bats).</p>
-    <p><strong>L</strong> — Life gained per entering creature/token (Soul Warden, Essence Warden, Soul's Attendant).</p>
+    <p><strong>D</strong> — Damage dealt to each opponent per entering creature/token.</p>
+    <p><strong>L</strong> — Life gained per entering creature/token.</p>
 
     <div class="math-formula-box">
       <strong>Case 1A: Single Hare Cast — Standard / No Offspring ($C = 1$)</strong>
@@ -201,7 +208,7 @@
 <!-- ⚙️ JAVASCRIPT LOGIC -->
 <!-- ══════════════════════════════════════════════ -->
   <!-- ⚙️ SCRIPTS -->
-  <script src="js/app.js?v=2.3"></script>
+  <script src="js/app.js?v=2.4"></script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </body>
 </html>

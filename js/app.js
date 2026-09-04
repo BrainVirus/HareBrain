@@ -735,6 +735,29 @@ function toggleTheme() {
   } catch (e) {}
 }
 
+// 📐 TOGGLE NERD MATH BREAKDOWN
+function toggleMathBreakdown() {
+  const box = document.getElementById("mathBox");
+  const btn = document.getElementById("toggleMathBtn");
+  if (!box || !btn) return;
+  const isHidden = box.style.display === "none" || getComputedStyle(box).display === "none";
+  if (isHidden) {
+    box.style.display = "block";
+    btn.textContent = "📐 Hide Nerd Math";
+    btn.setAttribute("aria-expanded", "true");
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      if (window.MathJax.typesetClear) {
+        try { window.MathJax.typesetClear([box]); } catch (e) {}
+      }
+      window.MathJax.typesetPromise([box]).catch(() => {});
+    }
+  } else {
+    box.style.display = "none";
+    btn.textContent = "📐 View Nerd Math";
+    btn.setAttribute("aria-expanded", "false");
+  }
+}
+
 function initTheme() {
   let saved = null;
   try {

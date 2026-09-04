@@ -306,6 +306,20 @@ button.resolving {
   box-shadow: 0 0 8px rgba(216,181,82,0.5);
 }
 
+/* 📐 NERD MATH TOGGLE */
+.math-toggle-wrap {
+  margin: 22px auto 6px;
+  display: flex;
+  justify-content: center;
+}
+
+.math-toggle-btn {
+  border-radius: 18px;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
 /* 📜 RESULT */
 #result {
   font-size: 1.7em;

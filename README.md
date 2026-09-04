@@ -9,7 +9,7 @@ You built a Commander deck with 30 copies of **[Hare Apparent](https://scryfall.
 
 Many Hare Apparent decks don't actually run or focus on paying for *Offspring* — prioritizing trigger multipliers and synergy pieces like *Delney*, *Elesh Norn*, *Panharmonicon*, and *Thrumming Stone*. Existing calculators often assumed every cast paid the {2} Offspring cost, making it tricky to calculate standard turns or Ripple cascades.
 
-Enter **HareBrain**: a fast, versatile MTG calculator for Hare Apparent decks that handles standard casts, Ripple sequences, and mass reanimation without assuming Offspring — while still giving you the option to toggle Offspring on when you do pay the {2}!
+Enter **HareBrain**: a fast, flexible Rabbit Token calculator for Hare Apparent decks that handles standard casts, Ripple sequences, and mass reanimation without assuming Offspring — while still giving you the option to toggle Offspring on when you do pay the {2}!
 
 ---
 
@@ -53,6 +53,7 @@ $$\text{Rabbits} = C \cdot (A + 1) \cdot (H + C - 1) \cdot (3^O \cdot 2^T)$$
 - 🔗 **Shareable Board States**: Deep linking via URL parameters and 1-click **"🔗 Share Link"** so you can text or post your exact board state to your playgroup.
 - 💥 **"Hare-pocalypse" Milestones**: Dynamic milestone badges when crossing 10, 100, 1,000, 1,000,000, or cosmic-scale rabbit counts.
 - 🧱 **Interactive Stack Resolution**: Click **Resolve Stack** for a step-by-step breakdown of how the stack resolves with arrows and trigger counts.
+- 📐 **Collapsible "Nerd Math"**: View comprehensive LaTeX formulas and rules breakdowns on demand without cluttering the screen.
 - 📋 **Copy Breakdown Button**: 1-click summary with clipboard toast notifications to paste directly into Discord.
 - 📱 **Tabletop Ready**: Clean, mobile-optimized, responsive layout designed for quick use during Friday Night Magic.
 - 🌓 **Dark & Light Modes**: Seamless 1-tap theme toggle, defaulting to dark mode with saved preference support.
