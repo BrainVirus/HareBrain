@@ -110,14 +110,44 @@
     <input id="Rnum" type="number" value="0" min="0" max="1000000000" oninput="updateResult()">
   </div>
 
+  <!-- 🩸 ETB TRIGGERS & SYNERGY (BURN / LIFE GAIN) -->
+  <div class="synergy-box">
+    <div class="synergy-title">🩸 ETB Damage &amp; Life Gain Synergy</div>
+    <span class="synergy-subtitle">Impact Tremors, Purphoros, Witty Roastmaster, Mirkwood Bats, Soul Warden</span>
+    
+    <div class="slider-group" style="margin: 8px auto 4px;">
+      <label for="D">🔥 Damage per ETB (D):</label>
+      <input id="D" type="range" min="0" max="10" value="0" oninput="syncInputs('D')">
+      <input id="Dnum" type="number" value="0" min="0" max="100" oninput="syncSliders('D')">
+    </div>
+    <div class="synergy-chips">
+      <span class="synergy-chip burn-chip" onclick="addDmg(1)" title="Add +1 damage (Impact Tremors, Witty Roastmaster, Mirkwood Bats, Warleader's Call)">+1 Dmg (Impact Tremors)</span>
+      <span class="synergy-chip burn-chip" onclick="addDmg(2)" title="Add +2 damage (Purphoros, God of the Forge / Terror of the Peaks)">+2 Dmg (Purphoros)</span>
+    </div>
+
+    <div class="slider-group" style="margin: 8px auto 4px;">
+      <label for="L">❤️ Life Gained per ETB (L):</label>
+      <input id="L" type="range" min="0" max="10" value="0" oninput="syncInputs('L')">
+      <input id="Lnum" type="number" value="0" min="0" max="100" oninput="syncSliders('L')">
+    </div>
+    <div class="synergy-chips">
+      <span class="synergy-chip life-chip" onclick="addLife(1)" title="Add +1 life gained (Soul Warden, Essence Warden, Soul's Attendant)">+1 Life (Soul Warden)</span>
+    </div>
+  </div>
+
   <!-- 📜 RESULT DISPLAY -->
   <div id="result">Rabbits created: 0</div>
+  <div id="milestoneBadge" class="milestone-badge" style="display: none;"></div>
 
   <!-- 🪄 ACTION BUTTONS -->
   <div class="btn-group">
     <button id="resolveBtn" onclick="resolveStack()">Resolve Stack</button>
+    <button class="btn-secondary" onclick="shareLink()" title="Copy shareable URL link">🔗 Share Link</button>
     <button class="btn-secondary" onclick="copyBreakdown()" title="Copy board state to clipboard">📋 Copy Summary</button>
   </div>
+
+  <!-- 🍞 TOAST NOTIFICATION -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <!-- 🧙‍♂️ NARRATIVE STACK RESOLUTION -->
   <div id="narrative" class="narrative"></div>
@@ -134,6 +164,8 @@
     <p><strong>O</strong> — Number of <em>token triplers</em> (Ojer Taq, Deepest Foundation).</p>
     <p><strong>A</strong> — Number of <em>additional trigger</em> effects (Delney Streetwise Lookout, Panharmonicon, Elesh Norn Mother of Machines, Roaming Throne).</p>
     <p><strong>R</strong> — Number of <em>existing Rabbit tokens</em> already on your battlefield.</p>
+    <p><strong>D</strong> — Damage dealt to each opponent per entering creature/token (Impact Tremors, Purphoros, Witty Roastmaster, Mirkwood Bats).</p>
+    <p><strong>L</strong> — Life gained per entering creature/token (Soul Warden, Essence Warden, Soul's Attendant).</p>
 
     <div class="math-formula-box">
       <strong>Case 1A: Single Hare Cast — Standard / No Offspring ($C = 1$)</strong>
@@ -157,6 +189,12 @@
       <strong>Case 3: Multiple Hares Entering Simultaneously (Mass Reanimation)</strong>
       <p style="margin: 4px 0 8px; font-size: 0.9em; color: #5a421b;">All $C$ Hares enter together (e.g. Patriarch's Bidding, Raise the Past). Each of the $C$ Hares has $A+1$ triggers, and every trigger sees all other $H + C - 1$ Hares:</p>
       $$X_{sim}(H, C, T, A, O) = C \cdot (A + 1) \cdot (H + C - 1) \cdot (3^O \cdot 2^T)$$
+    </div>
+
+    <div class="math-formula-box">
+      <strong>Case 4: ETB Burn &amp; Life Gain Synergy</strong>
+      <p style="margin: 4px 0 8px; font-size: 0.9em; color: #5a421b;">Total entering creatures $E = C + \text{Offspring Hares} + X$. Every entering creature triggers burn to each opponent and lifegain:</p>
+      $$\text{Damage to Each Opponent} = E \cdot D, \qquad \text{Life Gained} = E \cdot L$$
     </div>
 
     <div style="text-align: center; margin-top: 10px;">

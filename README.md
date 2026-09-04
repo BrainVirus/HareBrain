@@ -52,12 +52,15 @@ $$\text{Rabbits} = C \cdot (A + 1) \cdot (H + C - 1) \cdot (3^O \cdot 2^T)$$
 ## ✨ Features
 
 - 🐇 **Flexible Offspring Toggle**: Easily switch between standard casts and paying the {2} Offspring cost.
+- 🩸 **ETB Burn & Life Gain Tracker**: Calculate direct burn damage to each opponent (*Purphoros*, *Impact Tremors*, *Witty Roastmaster*, *Mirkwood Bats*) and life gained (*Soul Warden*, *Essence Warden*), complete with table wipe and lethal alerts (`💀`).
+- 🔗 **Shareable Board States**: Deep linking via URL parameters and 1-click **"🔗 Share Link"** so you can text or post your exact board state to your playgroup.
+- 💥 **"Hare-pocalypse" Milestones & Confetti**: Dynamic milestone badges and falling rabbit emoji showers when crossing 100, 1,000, 1,000,000, or cosmic-scale rabbit counts.
 - ⚡ **Commander Presets**: Quick tap buttons for *Delney* (+1 trigger), *Panharmonicon*, *Anointed Procession* (2×), *Ojer Taq* (3×), and more.
 - 🧱 **Interactive Stack Resolution**: Click **Resolve Stack** for an animated, step-by-step breakdown of how the stack resolves with arrows and trigger counts.
-- 📋 **Copy Breakdown Button**: 1-click summary to paste directly into Discord to prove to your friends you didn't cheat the math.
-- 📱 **Tabletop Ready**: Built with a fantasy parchment aesthetic that looks great on your phone during game night.
-- 🌓 **Dark & Light Modes**: 1-tap theme toggle with saved user preference and automatic system theme detection.
-- 🚀 **Zero Dependencies**: Pure HTML5, CSS3, and modern Vanilla JS. No build step, no Node server needed to host.
+- 📋 **Copy Breakdown Button**: 1-click summary with clipboard toast notifications to paste directly into Discord.
+- 📱 **Tabletop Ready**: Mobile-optimized, responsive layout designed for quick use during Friday Night Magic.
+- 🌓 **Dark & Light Modes**: Seamless 1-tap theme toggle, defaulting to dark mode with saved preference support.
+- 🚀 **Zero Dependencies**: Pure HTML5, CSS3, and modern Vanilla JS with arbitrary-precision `BigInt`. No build step or server required.
 
 ---
 

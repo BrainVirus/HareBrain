@@ -561,6 +561,218 @@ footer {
 }
 
 /* ══════════════════════════════════════════════ */
+/* 🩸 ETB SYNERGY & WIN CONDITIONS */
+/* ══════════════════════════════════════════════ */
+.synergy-box {
+  margin: 16px auto;
+  background: rgba(216, 181, 82, 0.12);
+  border: 1.5px dashed #d8b552;
+  border-radius: 14px;
+  padding: 14px 16px;
+  max-width: 540px;
+}
+
+.synergy-title {
+  font-family: "Uncial Antiqua", serif;
+  font-size: 1.05em;
+  color: #124e88;
+  margin-bottom: 2px;
+  display: block;
+}
+
+.synergy-subtitle {
+  font-size: 0.82em;
+  font-style: italic;
+  color: #725a2e;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.synergy-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 4px 0 10px;
+}
+
+.synergy-chip {
+  background: #fffdf8;
+  border: 1px solid #d8b552;
+  border-radius: 12px;
+  padding: 3px 10px;
+  font-size: 0.8em;
+  font-weight: 700;
+  color: #4a3617;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.synergy-chip:hover {
+  background: #f8e8b8;
+  border-color: #b58c29;
+  transform: translateY(-1px);
+}
+
+.synergy-chip.burn-chip:hover {
+  background: #fbe9e7;
+  border-color: #ff5722;
+  color: #bf360c;
+}
+
+.synergy-chip.life-chip:hover {
+  background: #e8f5e9;
+  border-color: #4caf50;
+  color: #1b5e20;
+}
+
+/* 🩸 RESULT PILLS (BURN & LIFE GAIN) */
+.result-burn-pill {
+  display: inline-block;
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  border: 1.5px solid #ff7043;
+  color: #bf360c;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.6em;
+  font-weight: 700;
+  margin: 4px 3px;
+  box-shadow: 0 2px 6px rgba(230, 81, 0, 0.15);
+}
+
+.result-burn-pill.lethal {
+  background: linear-gradient(135deg, #ffebee, #ffcdd2);
+  border-color: #e53935;
+  color: #b71c1c;
+  box-shadow: 0 0 10px rgba(229, 57, 53, 0.4);
+  animation: pulseLethal 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes pulseLethal {
+  0% { transform: scale(1); box-shadow: 0 0 8px rgba(229, 57, 53, 0.4); }
+  100% { transform: scale(1.03); box-shadow: 0 0 16px rgba(229, 57, 53, 0.7); }
+}
+
+.result-life-pill {
+  display: inline-block;
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  border: 1.5px solid #43a047;
+  color: #1b5e20;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.6em;
+  font-weight: 700;
+  margin: 4px 3px;
+  box-shadow: 0 2px 6px rgba(67, 160, 71, 0.15);
+}
+
+/* 💥 HARE-POCALYPSE MILESTONES */
+.milestone-badge {
+  margin: 14px auto 0;
+  padding: 10px 16px;
+  border-radius: 14px;
+  max-width: 520px;
+  background: linear-gradient(135deg, #fff9e6, #fff3cd);
+  border: 2px solid #f1c40f;
+  box-shadow: 0 4px 14px rgba(241, 196, 15, 0.25);
+  animation: milestoneGlow 3s infinite alternate ease-in-out;
+  text-align: center;
+}
+
+.milestone-title {
+  font-family: "Uncial Antiqua", serif;
+  font-size: 1.15em;
+  color: #8c6d00;
+  margin-bottom: 3px;
+  display: block;
+}
+
+.milestone-subtitle {
+  font-size: 0.88em;
+  font-style: italic;
+  color: #5c4700;
+  line-height: 1.35;
+  display: block;
+}
+
+@keyframes milestoneGlow {
+  0% { box-shadow: 0 0 8px rgba(241, 196, 15, 0.3); }
+  100% { box-shadow: 0 0 18px rgba(241, 196, 15, 0.6); }
+}
+
+/* 🍞 TOAST NOTIFICATION */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #14497e;
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 25px;
+  font-size: 0.92em;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* 🐇 CONFETTI / RABBIT SHOWER */
+#confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 10000;
+}
+
+.confetti-particle {
+  position: absolute;
+  user-select: none;
+  pointer-events: none;
+  animation: confettiFall var(--fall-duration, 2.5s) linear forwards;
+  font-size: var(--particle-size, 24px);
+  will-change: transform, opacity;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translate3d(var(--x-start, 0), -10vh, 0) rotate(0deg);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--x-end, 0), 105vh, 0) rotate(var(--rot-end, 360deg));
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #confetti-container {
+    display: none !important;
+  }
+  .milestone-badge {
+    animation: none !important;
+  }
+  .result-burn-pill.lethal {
+    animation: none !important;
+  }
+}
+
+/* ══════════════════════════════════════════════ */
 /* 🌓 THEME TOGGLE & HEADER BAR */
 /* ══════════════════════════════════════════════ */
 .header-top-bar {
@@ -935,3 +1147,114 @@ body[data-theme="dark"] footer,
 body.dark-mode footer {
   color: #b8a58a !important;
 }
+
+/* 🌙 DARK MODE: SYNERGY & WIN CONDITIONS */
+html[data-theme="dark"] .synergy-box,
+body[data-theme="dark"] .synergy-box,
+body.dark-mode .synergy-box {
+  background: rgba(22, 26, 40, 0.75) !important;
+  border-color: #a88432 !important;
+}
+
+html[data-theme="dark"] .synergy-title,
+body[data-theme="dark"] .synergy-title,
+body.dark-mode .synergy-title {
+  color: #79b8ff !important;
+}
+
+html[data-theme="dark"] .synergy-subtitle,
+body[data-theme="dark"] .synergy-subtitle,
+body.dark-mode .synergy-subtitle {
+  color: #d8c29d !important;
+}
+
+html[data-theme="dark"] .synergy-chip,
+body[data-theme="dark"] .synergy-chip,
+body.dark-mode .synergy-chip {
+  background: #191c2c !important;
+  border-color: #8d732c !important;
+  color: #e2dbcc !important;
+}
+
+html[data-theme="dark"] .synergy-chip:hover,
+body[data-theme="dark"] .synergy-chip:hover,
+body.dark-mode .synergy-chip:hover {
+  background: #28304c !important;
+  border-color: #c9a848 !important;
+}
+
+html[data-theme="dark"] .synergy-chip.burn-chip:hover,
+body[data-theme="dark"] .synergy-chip.burn-chip:hover,
+body.dark-mode .synergy-chip.burn-chip:hover {
+  background: #3b1912 !important;
+  border-color: #ff7043 !important;
+  color: #ffab91 !important;
+}
+
+html[data-theme="dark"] .synergy-chip.life-chip:hover,
+body[data-theme="dark"] .synergy-chip.life-chip:hover,
+body.dark-mode .synergy-chip.life-chip:hover {
+  background: #102d18 !important;
+  border-color: #66bb6a !important;
+  color: #a5d6a7 !important;
+}
+
+/* 🌙 DARK MODE: RESULT PILLS (BURN & LIFE GAIN) */
+html[data-theme="dark"] .result-burn-pill,
+body[data-theme="dark"] .result-burn-pill,
+body.dark-mode .result-burn-pill {
+  background: linear-gradient(135deg, #381a14, #26110d) !important;
+  border-color: #ff7043 !important;
+  color: #ffab91 !important;
+  box-shadow: 0 0 12px rgba(255, 112, 67, 0.3) !important;
+}
+
+html[data-theme="dark"] .result-burn-pill.lethal,
+body[data-theme="dark"] .result-burn-pill.lethal,
+body.dark-mode .result-burn-pill.lethal {
+  background: linear-gradient(135deg, #481115, #2b080b) !important;
+  border-color: #ef5350 !important;
+  color: #ff8a80 !important;
+  box-shadow: 0 0 16px rgba(239, 83, 80, 0.5) !important;
+}
+
+html[data-theme="dark"] .result-life-pill,
+body[data-theme="dark"] .result-life-pill,
+body.dark-mode .result-life-pill {
+  background: linear-gradient(135deg, #102d18, #0a1f11) !important;
+  border-color: #4caf50 !important;
+  color: #a5d6a7 !important;
+  box-shadow: 0 0 12px rgba(76, 175, 80, 0.3) !important;
+}
+
+/* 🌙 DARK MODE: HARE-POCALYPSE MILESTONES */
+html[data-theme="dark"] .milestone-badge,
+body[data-theme="dark"] .milestone-badge,
+body.dark-mode .milestone-badge {
+  background: linear-gradient(135deg, #262112, #18150a) !important;
+  border-color: #ffd54f !important;
+  box-shadow: 0 0 16px rgba(255, 213, 79, 0.3) !important;
+}
+
+html[data-theme="dark"] .milestone-title,
+body[data-theme="dark"] .milestone-title,
+body.dark-mode .milestone-title {
+  color: #ffe082 !important;
+  text-shadow: 0 0 8px rgba(255, 224, 130, 0.4) !important;
+}
+
+html[data-theme="dark"] .milestone-subtitle,
+body[data-theme="dark"] .milestone-subtitle,
+body.dark-mode .milestone-subtitle {
+  color: #e0d5ba !important;
+}
+
+/* 🌙 DARK MODE: TOAST */
+html[data-theme="dark"] .toast,
+body[data-theme="dark"] .toast,
+body.dark-mode .toast {
+  background: #2a68a5 !important;
+  color: #fff !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.75) !important;
+}
+

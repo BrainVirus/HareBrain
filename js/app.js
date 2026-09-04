@@ -18,12 +18,14 @@ function setOffspring(val) {
 }
 
 // 🧮 CALCULATION CORE WITH BIGINT (prevents integer overflow)
-function calcHareMath(H, C, T, A, O, mode, payOffspring) {
+function calcHareMath(H, C, T, A, O, mode, payOffspring, D = 0, L = 0) {
   H = BigInt(H);
   C = BigInt(C);
   T = BigInt(T);
   A = BigInt(A);
   O = BigInt(O);
+  const D_val = BigInt(D || 0);
+  const L_val = BigInt(L || 0);
 
   const perToken = (3n ** O) * (2n ** T);
   const trigsPerHare = A + 1n;
@@ -45,16 +47,6 @@ function calcHareMath(H, C, T, A, O, mode, payOffspring) {
       totalRabbits = trigsPerHare * perToken * sumHares;
     }
     finalHaresOnBoard = H + C;
-    return {
-      H, C, T, A, O, mode, payOffspring,
-      perToken,
-      trigsPerHare,
-      totalTriggers,
-      totalRabbits,
-      offspringHaresCreated: 0n,
-      nontokenHaresOnBoard: H + C,
-      finalHaresOnBoard
-    };
   } else {
     // WITH OFFSPRING PAID
     const offspringTokensPerCast = trigsPerHare * perToken;
@@ -87,30 +79,40 @@ function calcHareMath(H, C, T, A, O, mode, payOffspring) {
       const totalTriggers = totalHaresTriggering * trigsPerHare;
       totalRabbits = totalTriggers * otherHares * perToken;
     }
-
-    const totalTriggers = (C + offspringHaresCreated) * trigsPerHare;
-
-    return {
-      H, C, T, A, O, mode, payOffspring,
-      perToken,
-      trigsPerHare,
-      totalTriggers,
-      totalRabbits,
-      offspringHaresCreated,
-      nontokenHaresOnBoard: H + C,
-      finalHaresOnBoard
-    };
   }
+
+  const totalTriggers = (C + offspringHaresCreated) * trigsPerHare;
+  const enteringCreatures = C + offspringHaresCreated + totalRabbits;
+  const totalDamage = D_val * enteringCreatures;
+  const totalLife = L_val * enteringCreatures;
+
+  return {
+    H, C, T, A, O, mode, payOffspring,
+    perToken,
+    trigsPerHare,
+    totalTriggers,
+    totalRabbits,
+    offspringHaresCreated,
+    nontokenHaresOnBoard: H + C,
+    finalHaresOnBoard,
+    D: D_val,
+    L: L_val,
+    enteringCreatures,
+    totalDamage,
+    totalLife
+  };
 }
 
 function readInputs() {
-  const H = Math.max(0, parseInt(document.getElementById('Hnum').value, 10) || 0);
-  const C = Math.max(1, parseInt(document.getElementById('Cnum').value, 10) || 1);
-  const T = Math.max(0, parseInt(document.getElementById('Tnum').value, 10) || 0);
-  const A = Math.max(0, parseInt(document.getElementById('Anum').value, 10) || 0);
-  const O = Math.max(0, parseInt(document.getElementById('Onum').value, 10) || 0);
-  const R = Math.max(0, parseInt(document.getElementById('Rnum').value, 10) || 0);
-  return { H, C, T, A, O, R };
+  const H = Math.max(0, parseInt(document.getElementById('Hnum')?.value, 10) || 0);
+  const C = Math.max(1, parseInt(document.getElementById('Cnum')?.value, 10) || 1);
+  const T = Math.max(0, parseInt(document.getElementById('Tnum')?.value, 10) || 0);
+  const A = Math.max(0, parseInt(document.getElementById('Anum')?.value, 10) || 0);
+  const O = Math.max(0, parseInt(document.getElementById('Onum')?.value, 10) || 0);
+  const R = Math.max(0, parseInt(document.getElementById('Rnum')?.value, 10) || 0);
+  const D = Math.max(0, parseInt(document.getElementById('Dnum')?.value, 10) || 0);
+  const L = Math.max(0, parseInt(document.getElementById('Lnum')?.value, 10) || 0);
+  return { H, C, T, A, O, R, D, L };
 }
 
 function syncInputs(id) {
@@ -149,9 +151,107 @@ function setEntryMode(mode) {
   updateResult();
 }
 
+// 💥 HARE-POCALYPSE MILESTONE DETECTOR
+function getMilestone(rabbits) {
+  if (rabbits < 100n) return null;
+  if (rabbits < 1000n) {
+    return {
+      tier: "tier-1",
+      title: "🐇 The Burrow Awakens!",
+      subtitle: "The table begins to nervously count their blockers."
+    };
+  }
+  if (rabbits < 10000n) {
+    return {
+      tier: "tier-2",
+      title: "⚠️ Critical Hare Mass!",
+      subtitle: "Judge call incoming: \"Does anyone at this LGS have 1,000 dice?\""
+    };
+  }
+  if (rabbits < 100000n) {
+    return {
+      tier: "tier-3",
+      title: "🚨 Warren Breach!",
+      subtitle: "“Why you getting mad at my 4 vampires — you're about to make like 30,000 rabbits?”"
+    };
+  }
+  if (rabbits < 1000000n) {
+    return {
+      tier: "tier-4",
+      title: "🌪️ Exponential Lagomorpha!",
+      subtitle: "This is no longer Magic: The Gathering. This is an advanced math lecture."
+    };
+  }
+  if (rabbits < 1000000000n) {
+    return {
+      tier: "tier-5",
+      title: "💥 HARE-POCALYPSE UNLEASHED!",
+      subtitle: "The Dragon Shield sleeves are melting from the sheer friction of entering tokens."
+    };
+  }
+  if (rabbits < 1000000000000000n) {
+    return {
+      tier: "tier-6",
+      title: "🪐 Planetary Rabbit Density!",
+      subtitle: "The entire continent of Dominaria is submerged beneath 1/1 white Rabbits."
+    };
+  }
+  if (rabbits < 10n ** 80n) {
+    return {
+      tier: "tier-7",
+      title: "🌌 Cosmic Hare Singularity!",
+      subtitle: "Gravitational collapse imminent. Space-time bends around the sheer mass of rabbits."
+    };
+  }
+  return {
+    tier: "tier-cosmic",
+    title: "⚛️ Omniversal Warren!",
+    subtitle: "There are more Rabbits on your battlefield than fundamental particles in the observable universe (~10⁸⁰). Elesh Norn wept."
+  };
+}
+
+// 🐇 CONFETTI & RABBIT SHOWER
+function launchRabbitShower() {
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+  let container = document.getElementById("confetti-container");
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "confetti-container";
+    document.body.appendChild(container);
+  }
+  const symbols = ["🐇", "🐰", "✨", "🥕", "💥", "🧠", "🔥"];
+  const count = 35;
+  const vw = window.innerWidth;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement("span");
+    p.className = "confetti-particle";
+    p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    const xStart = (Math.random() * vw).toFixed(0) + "px";
+    const xEnd = (parseFloat(xStart) + (Math.random() * 200 - 100)).toFixed(0) + "px";
+    const duration = (1.8 + Math.random() * 1.5).toFixed(2) + "s";
+    const delay = (Math.random() * 0.5).toFixed(2) + "s";
+    const size = (20 + Math.random() * 18).toFixed(0) + "px";
+    const rot = (Math.random() * 720 - 360).toFixed(0) + "deg";
+
+    p.style.setProperty("--x-start", xStart);
+    p.style.setProperty("--x-end", xEnd);
+    p.style.setProperty("--fall-duration", duration);
+    p.style.setProperty("--particle-size", size);
+    p.style.setProperty("--rot-end", rot);
+    p.style.animationDelay = delay;
+
+    container.appendChild(p);
+    setTimeout(() => {
+      p.remove();
+    }, 3500);
+  }
+}
+
 function updateResult() {
-  const { H, C, T, A, O, R } = readInputs();
-  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring);
+  const { H, C, T, A, O, R, D, L } = readInputs();
+  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L);
   const grandRabbits = data.totalRabbits + BigInt(R);
   const finalHares = data.finalHaresOnBoard;
 
@@ -180,7 +280,39 @@ function updateResult() {
     </div>
   `;
 
+  if (data.D > 0n) {
+    const isLethal = data.totalDamage >= 40n;
+    const isWipe = data.totalDamage >= 120n;
+    html += `
+      <div class="result-burn-pill ${isLethal ? 'lethal' : ''}">
+        🔥 Deals <strong>${data.totalDamage.toLocaleString()}</strong> damage to each opponent!${isWipe ? ' 💀 Table Wipe!' : isLethal ? ' 💀 Lethal!' : ''}
+      </div>
+    `;
+  }
+
+  if (data.L > 0n) {
+    html += `
+      <div class="result-life-pill">
+        ❤️ You gain <strong>${data.totalLife.toLocaleString()}</strong> life!
+      </div>
+    `;
+  }
+
   resultBox.innerHTML = html;
+
+  // 💥 Milestone Badge
+  const badge = document.getElementById("milestoneBadge");
+  if (badge) {
+    const m = getMilestone(grandRabbits);
+    if (m) {
+      badge.style.display = "block";
+      badge.innerHTML = `<span class="milestone-title">${m.title}</span><span class="milestone-subtitle">${m.subtitle}</span>`;
+    } else {
+      badge.style.display = "none";
+    }
+  }
+
+  updateUrlState();
 }
 
 function buildStackDisplay(groups) {
@@ -200,11 +332,15 @@ function resolveStack() {
   btn.textContent = "Resolving...";
   btn.classList.add("resolving");
 
-  const { H, C, T, A, O, R } = readInputs();
-  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring);
+  const { H, C, T, A, O, R, D, L } = readInputs();
+  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L);
   const grandRabbits = data.totalRabbits + BigInt(R);
 
   updateResult();
+
+  if (grandRabbits >= 100n) {
+    launchRabbitShower();
+  }
 
   const perToken = data.perToken;
   const trigs = data.trigsPerHare;
@@ -217,6 +353,7 @@ function resolveStack() {
     <li>Each Hare Apparent Enter the Battlefield ability will trigger <strong>${trigs.toLocaleString()}</strong> time${trigs > 1n ? "s" : ""} (<em>1 base + ${A} additional trigger${A === 1 ? "" : "s"}</em>).</li>
     <li>You start with <strong>${H}</strong> <em>Hare Apparent${H === 1 ? "" : "s"}</em> and <strong>${R}</strong> Rabbit token${R === 1 ? "" : "s"} on the battlefield.</li>
     <li>Offspring ({2}): <strong>${payOffspring ? "PAID — creating 1/1 token copies of Hare Apparent" : "Not Paid (Standard)"}</strong>.</li>
+    ${D > 0 || L > 0 ? `<li>ETB Synergy: <strong>${D > 0 ? `${D} damage per creature` : ''}${D > 0 && L > 0 ? ' & ' : ''}${L > 0 ? `${L} life gained per creature` : ''}</strong>.</li>` : ''}
   </ul>`;
 
   // 📝 2. ENTERING & STACK PLACEMENT
@@ -340,7 +477,21 @@ function resolveStack() {
     }
   }
 
-  // 📝 3. FINAL BOARD STATE
+  // 📝 3. ETB DAMAGE & LIFE GAIN
+  if (D > 0 || L > 0) {
+    nar += `<p class="section-heading">🩸 ETB Damage &amp; Lifegain Triggers</p>
+    <ul>
+      <li>Total creatures entering the battlefield this turn: <strong>${data.enteringCreatures.toLocaleString()}</strong> (${C} cast${C > 1 ? 's' : ''}${offspringHares > 0n ? ` + ${offspringHares.toLocaleString()} Offspring token copy${offspringHares === 1n ? '' : 'ies'}` : ''} + ${totalCreated.toLocaleString()} Rabbit token${totalCreated === 1n ? '' : 's'}).</li>`;
+    if (D > 0) {
+      nar += `<li><strong>Damage to Each Opponent:</strong> With ${D} damage per entering creature (<em>Purphoros</em>, <em>Impact Tremors</em>, <em>Mirkwood Bats</em>), you deal <strong>${data.totalDamage.toLocaleString()}</strong> direct damage to each opponent!${data.totalDamage >= 120n ? ' 💀 <em>(Entire table wiped out!)</em>' : data.totalDamage >= 40n ? ' 💀 <em>(Lethal damage to a player!)</em>' : ''}</li>`;
+    }
+    if (L > 0) {
+      nar += `<li><strong>Life Gained:</strong> With ${L} life gained per entering creature (<em>Soul Warden</em>, <em>Essence Warden</em>), you gain <strong>${data.totalLife.toLocaleString()}</strong> life!</li>`;
+    }
+    nar += `</ul>`;
+  }
+
+  // 📝 4. FINAL BOARD STATE
   const finalHares = data.finalHaresOnBoard;
   const nontokenHares = data.nontokenHaresOnBoard;
   const offspringHares = data.offspringHaresCreated;
@@ -359,6 +510,16 @@ function resolveStack() {
       </ul>
     </li>
   </ul>`;
+
+  const m = getMilestone(grandRabbits);
+  if (m) {
+    nar += `
+      <div class="milestone-badge" style="margin-top: 14px;">
+        <span class="milestone-title">${m.title}</span>
+        <span class="milestone-subtitle">${m.subtitle}</span>
+      </div>
+    `;
+  }
 
   const narrativeBox = document.getElementById("narrative");
   narrativeBox.innerHTML = nar;
@@ -396,6 +557,10 @@ function applyPreset(name) {
     document.getElementById('Onum').value = 0;
     document.getElementById('A').value = 0;
     document.getElementById('Anum').value = 0;
+    document.getElementById('D').value = 0;
+    document.getElementById('Dnum').value = 0;
+    document.getElementById('L').value = 0;
+    document.getElementById('Lnum').value = 0;
   } else if (name === 'offspring') {
     setOffspring(true);
     document.getElementById('H').value = 3;
@@ -408,6 +573,10 @@ function applyPreset(name) {
     document.getElementById('Onum').value = 0;
     document.getElementById('A').value = 0;
     document.getElementById('Anum').value = 0;
+    document.getElementById('D').value = 0;
+    document.getElementById('Dnum').value = 0;
+    document.getElementById('L').value = 0;
+    document.getElementById('Lnum').value = 0;
   }
   checkModeToggle();
   updateResult();
@@ -441,11 +610,29 @@ function addEnteringHare() {
   syncSliders('C');
 }
 
+function addDmg(amt) {
+  const input = document.getElementById('Dnum');
+  if (!input) return;
+  const cur = parseInt(input.value, 10) || 0;
+  input.value = cur + amt;
+  syncSliders('D');
+}
+
+function addLife(amt) {
+  const input = document.getElementById('Lnum');
+  if (!input) return;
+  const cur = parseInt(input.value, 10) || 0;
+  input.value = cur + amt;
+  syncSliders('L');
+}
+
 function resetInputs() {
   setOffspring(false);
-  ['H', 'T', 'O', 'A'].forEach(id => {
-    document.getElementById(id).value = 0;
-    document.getElementById(id + 'num').value = 0;
+  ['H', 'T', 'O', 'A', 'D', 'L'].forEach(id => {
+    const slider = document.getElementById(id);
+    const numInput = document.getElementById(id + 'num');
+    if (slider) slider.value = 0;
+    if (numInput) numInput.value = 0;
   });
   document.getElementById('C').value = 1;
   document.getElementById('Cnum').value = 1;
@@ -458,31 +645,152 @@ function resetInputs() {
   const narrativeBox = document.getElementById("narrative");
   narrativeBox.classList.remove("show-scroll");
   narrativeBox.style.display = "none";
+  const badge = document.getElementById("milestoneBadge");
+  if (badge) badge.style.display = "none";
+}
+
+// 🍞 TOAST NOTIFICATION
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add("show");
+  if (window._toastTimeout) clearTimeout(window._toastTimeout);
+  window._toastTimeout = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2500);
+}
+
+// 🔗 URL STATE MANAGEMENT (DEEP LINKING)
+function updateUrlState() {
+  const { H, C, T, A, O, R, D, L } = readInputs();
+  const params = new URLSearchParams();
+  if (H > 0) params.set("h", H);
+  if (C > 1) params.set("c", C);
+  if (T > 0) params.set("t", T);
+  if (O > 0) params.set("o", O);
+  if (A > 0) params.set("a", A);
+  if (R > 0) params.set("r", R);
+  if (D > 0) params.set("d", D);
+  if (L > 0) params.set("l", L);
+  if (payOffspring) params.set("offspring", "1");
+  if (C > 1 && entryMode === "simultaneous") params.set("mode", "sim");
+
+  const qs = params.toString();
+  const newUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+  window.history.replaceState(null, "", newUrl);
+}
+
+function loadUrlState() {
+  let params = new URLSearchParams(window.location.search);
+  if (!params.toString() && window.location.hash) {
+    params = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+  }
+  if (!params.toString()) return;
+
+  if (params.has("h")) {
+    const v = Math.max(0, parseInt(params.get("h"), 10) || 0);
+    const el = document.getElementById("Hnum");
+    if (el) el.value = v;
+    syncSliders("H");
+  }
+  if (params.has("c")) {
+    const v = Math.max(1, parseInt(params.get("c"), 10) || 1);
+    const el = document.getElementById("Cnum");
+    if (el) el.value = v;
+    syncSliders("C");
+  }
+  if (params.has("t")) {
+    const v = Math.max(0, parseInt(params.get("t"), 10) || 0);
+    const el = document.getElementById("Tnum");
+    if (el) el.value = v;
+    syncSliders("T");
+  }
+  if (params.has("o")) {
+    const v = Math.max(0, parseInt(params.get("o"), 10) || 0);
+    const el = document.getElementById("Onum");
+    if (el) el.value = v;
+    syncSliders("O");
+  }
+  if (params.has("a")) {
+    const v = Math.max(0, parseInt(params.get("a"), 10) || 0);
+    const el = document.getElementById("Anum");
+    if (el) el.value = v;
+    syncSliders("A");
+  }
+  if (params.has("r")) {
+    const v = Math.max(0, parseInt(params.get("r"), 10) || 0);
+    const el = document.getElementById("Rnum");
+    if (el) el.value = v;
+  }
+  if (params.has("d")) {
+    const v = Math.max(0, parseInt(params.get("d"), 10) || 0);
+    const el = document.getElementById("Dnum");
+    if (el) el.value = v;
+    syncSliders("D");
+  }
+  if (params.has("l")) {
+    const v = Math.max(0, parseInt(params.get("l"), 10) || 0);
+    const el = document.getElementById("Lnum");
+    if (el) el.value = v;
+    syncSliders("L");
+  }
+  if (params.has("offspring")) {
+    const v = params.get("offspring");
+    setOffspring(v === "1" || v === "true");
+  }
+  if (params.has("mode")) {
+    const m = params.get("mode");
+    if (m === "sim" || m === "simultaneous") {
+      setEntryMode("simultaneous");
+    } else {
+      setEntryMode("sequential");
+    }
+  }
+}
+
+function shareLink() {
+  updateUrlState();
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(() => {
+    showToast("🔗 Share link copied to clipboard!");
+  }).catch(() => {
+    prompt("Copy this share link:", url);
+  });
 }
 
 function copyBreakdown() {
-  const { H, C, T, A, O, R } = readInputs();
-  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring);
+  const { H, C, T, A, O, R, D, L } = readInputs();
+  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L);
   const grandRabbits = data.totalRabbits + BigInt(R);
   const finalHares = data.finalHaresOnBoard;
   const totalPower = data.nontokenHaresOnBoard * 2n + data.offspringHaresCreated + grandRabbits;
 
-  const text = `🐇 HareBrain 🧠 — Hare Apparent Calculation
+  let text = `🐇 HareBrain 🧠 — Hare Apparent Calculation
 • Offspring Paid: ${payOffspring ? 'Yes ({2})' : 'No (Standard)'}
 • Existing Hares on board: ${H}
 • Hares Entering: ${C} (${C > 1 ? entryMode : 'single cast'})
 • Token Multiplier: ${data.perToken}x (Doublers: ${T}, Triplers: ${O})
 • Additional Triggers: ${A} (Total triggers per Hare: ${data.trigsPerHare})
-• Existing Rabbits: ${R}
-────────────────────────────────────────
+• Existing Rabbits: ${R}`;
+
+  if (D > 0) text += `\n• Damage per ETB: ${D} (Total burn: ${data.totalDamage.toLocaleString()} to each opponent${data.totalDamage >= 40n ? ' - LETHAL' : ''})`;
+  if (L > 0) text += `\n• Life gained per ETB: ${L} (Total life gained: ${data.totalLife.toLocaleString()})`;
+
+  text += `\n────────────────────────────────────────
 🐇 Rabbits Created: ${data.totalRabbits.toLocaleString()}
 🐰 Total Rabbits on Board: ${grandRabbits.toLocaleString()}
 🐇 Total Hare Apparents: ${finalHares.toLocaleString()}${data.offspringHaresCreated > 0n ? ` (${data.offspringHaresCreated.toLocaleString()} from Offspring)` : ''}
-⚔️ Total Board Power/Toughness: ${totalPower.toLocaleString()}/${totalPower.toLocaleString()}
-💡 Original concept by solveforhare.com | Built with AI`;
+⚔️ Total Board Power/Toughness: ${totalPower.toLocaleString()}/${totalPower.toLocaleString()}`;
+
+  const m = getMilestone(grandRabbits);
+  if (m) text += `\n🏆 Milestone: ${m.title} — ${m.subtitle}`;
+
+  text += `\n🔗 View Board: ${window.location.href}`;
+  text += `\n💡 Original concept by solveforhare.com | Built with AI`;
 
   navigator.clipboard.writeText(text).then(() => {
-    alert("Board breakdown copied to clipboard!");
+    showToast("📋 Summary copied to clipboard!");
   }).catch(() => {
     prompt("Copy breakdown:", text);
   });
@@ -531,6 +839,8 @@ function initTheme() {
 // 🧩 INPUT FOCUS / CLEAR LOGIC
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  loadUrlState();
+
   document.querySelectorAll('input[type="number"]').forEach(input => {
     input.addEventListener("focus", () => {
       if (input.value === "0") input.value = "";
