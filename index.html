@@ -30,7 +30,7 @@
   })();
 </script>
 
-  <link rel="stylesheet" href="css/style.css?v=2.4">
+  <link rel="stylesheet" href="css/style.css?v=2.5">
 </head>
 
 <body>
@@ -51,7 +51,7 @@
 
   <!-- 🧮 INPUTS -->
   <div class="slider-group">
-    <label for="H">🐇 Existing Hares on Board (H):</label>
+    <label for="H">🐇 Existing Hare Apparents on Board (H):</label>
     <input id="H" type="range" min="0" max="40" value="0" oninput="syncInputs('H')">
     <input id="Hnum" type="number" value="0" min="0" max="200" oninput="syncSliders('H')">
   </div>
@@ -60,6 +60,15 @@
     <label for="C">🪄 Hare Apparents Entering (C):</label>
     <input id="C" type="range" min="1" max="40" value="1" oninput="syncInputs('C')">
     <input id="Cnum" type="number" value="1" min="1" max="200" oninput="syncSliders('C')">
+  </div>
+
+  <!-- 💥 Entry Mode Selector (Visible when C > 1) -->
+  <div id="modeToggleWrap" class="mode-toggle-group" style="display: none;">
+    <span class="mode-label">Entry Mode for C &gt; 1:</span>
+    <div class="mode-pills">
+      <div id="modeSequential" class="mode-pill active" onclick="setEntryMode('sequential')" title="Cast one by one or ripple through Thrumming Stone">⚡ Sequential (Ripple / Casts)</div>
+      <div id="modeSimultaneous" class="mode-pill" onclick="setEntryMode('simultaneous')" title="Enter all at once via Patriarch's Bidding, Raise the Past, Return to the Ranks">💥 Simultaneous (Mass Reanimate)</div>
+    </div>
   </div>
 
   <!-- 🐣 Offspring Toggle -->
@@ -71,13 +80,11 @@
     </div>
   </div>
 
-  <!-- 💥 Entry Mode Selector (Visible when C > 1) -->
-  <div id="modeToggleWrap" class="mode-toggle-group" style="display: none;">
-    <span class="mode-label">Entry Mode for C &gt; 1:</span>
-    <div class="mode-pills">
-      <div id="modeSequential" class="mode-pill active" onclick="setEntryMode('sequential')" title="Cast one by one or ripple through Thrumming Stone">⚡ Sequential (Ripple / Casts)</div>
-      <div id="modeSimultaneous" class="mode-pill" onclick="setEntryMode('simultaneous')" title="Enter all at once via Patriarch's Bidding, Raise the Past, Return to the Ranks">💥 Simultaneous (Mass Reanimate)</div>
-    </div>
+  <!-- 🐣 Offspring Count Selector (Visible when payOffspring is true and C > 1) -->
+  <div id="offspringCountWrap" class="slider-group" style="display: none;">
+    <label for="K">🐣 Times Paying Offspring (K):</label>
+    <input id="K" type="range" min="1" max="2" value="1" oninput="syncInputs('K')">
+    <input id="Knum" type="number" value="1" min="1" max="2" oninput="syncSliders('K')">
   </div>
 
   <div class="slider-group">
@@ -202,13 +209,18 @@
     <p>🤖 <strong>Created with AI:</strong> Designed, adapted, and engineered with the help of Antigravity AI.</p>
     <p>🐇 <strong>HareBrain:</strong> Dedicated to every MTG player who loves filling the battlefield with hundreds of rabbits.</p>
   </div>
+
+  <!-- ✒️ AUTHOR SIGNATURE -->
+  <div class="signature-box">
+    Brought to you by <strong>BrainVirus</strong>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════════ -->
 <!-- ⚙️ JAVASCRIPT LOGIC -->
 <!-- ══════════════════════════════════════════════ -->
   <!-- ⚙️ SCRIPTS -->
-  <script src="js/app.js?v=2.4"></script>
+  <script src="js/app.js?v=2.5"></script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </body>
 </html>

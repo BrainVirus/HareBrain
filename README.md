@@ -42,13 +42,19 @@ You cast *Patriarch's Bidding* or *Raise the Past* and dumped $C$ Hares onto the
 
 $$\text{Rabbits} = C \cdot (A + 1) \cdot (H + C - 1) \cdot (3^O \cdot 2^T)$$
 
+#### 5. Partial Offspring Support ($K$ of $C$ Casts)
+If you cast $C > 1$ Hares in a turn (e.g. 3 Hares) but only have mana to pay Offspring for a subset ($K \le C$, e.g. 2 of them), HareBrain dynamically steps through:
+1. Resolving the $K$ Offspring casts sequentially (multiplying Hare counts with token copies and ETBs).
+2. Resolving the remaining $(C - K)$ standard casts with the newly expanded warren.
+3. Enforces MTG rules via auto-switching: selecting Offspring automatically switches entry mode to Sequential, while selecting Simultaneous entry automatically resets Offspring to No.
+
 *(Arbitrary-precision `BigInt` is used under the hood so your browser won't crash when you casually generate $10^{18}$ rabbits).*
 
 ---
 
 ## ✨ Features
 
-- 🐇 **Flexible Offspring Toggle**: Easily switch between standard casts and paying the {2} Offspring cost.
+- 🐇 **Flexible Offspring & Partial Payment**: Toggle Offspring on/off, and when casting multiple Hares ($C > 1$), customize how many times you pay Offspring ($K \le C$, default 1). Intelligent mutual auto-switching between Offspring and Simultaneous entry ensures MTG rule accuracy.
 - 🩸 **ETB Burn & Life Gain Tracker**: Calculate direct burn damage to each opponent (*Purphoros*, *Impact Tremors*, *Witty Roastmaster*, *Mirkwood Bats*) and life gained (*Soul Warden*, *Essence Warden*), complete with table wipe and lethal alerts (`💀`).
 - 🔗 **Shareable Board States**: Deep linking via URL parameters and 1-click **"🔗 Share Link"** so you can text or post your exact board state to your playgroup.
 - 💥 **"Hare-pocalypse" Milestones**: Dynamic milestone badges when crossing 10, 100, 1,000, 1,000,000, or cosmic-scale rabbit counts.
@@ -64,5 +70,6 @@ $$\text{Rabbits} = C \cdot (A + 1) \cdot (H + C - 1) \cdot (3^O \cdot 2^T)$$
 ## 🙏 Credits & Acknowledgments
 
 - 💡 **Original Concept & Inspiration**: Immense credit to [solveforhare.com](https://solveforhare.com/) for the brilliant concept and idea that sparked this project!
+- 👤 **Brought to you by**: **BrainVirus**
 - 🤖 **Created with AI**: Developed, calculated, and refined with the help of **Antigravity AI**.
 - 🃏 **Magic: The Gathering**: All card names and mechanics are copyright Wizards of the Coast LLC.

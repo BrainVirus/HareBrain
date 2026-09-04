@@ -11,14 +11,33 @@ let entryMode = "sequential"; // "sequential" or "simultaneous"
 let payOffspring = false;     // false = standard, true = paid {2} offspring
 
 function setOffspring(val) {
+  const wasOffspring = payOffspring;
   payOffspring = Boolean(val);
   document.getElementById('offspringNo').classList.toggle('active', !payOffspring);
   document.getElementById('offspringYes').classList.toggle('active', payOffspring);
+
+  if (payOffspring) {
+    // If user selects Offspring Yes, must choose sequential
+    if (entryMode === 'simultaneous') {
+      entryMode = 'sequential';
+      document.getElementById('modeSequential').classList.add('active');
+      document.getElementById('modeSimultaneous').classList.remove('active');
+    }
+    // Default K to 1 when turning on Offspring
+    if (!wasOffspring) {
+      const kSlider = document.getElementById('K');
+      const kNum = document.getElementById('Knum');
+      if (kSlider) kSlider.value = 1;
+      if (kNum) kNum.value = 1;
+    }
+  }
+
+  checkModeToggle();
   updateResult();
 }
 
 // 🧮 CALCULATION CORE WITH BIGINT (prevents integer overflow)
-function calcHareMath(H, C, T, A, O, mode, payOffspring, D = 0, L = 0) {
+function calcHareMath(H, C, T, A, O, mode, payOffspring, D = 0, L = 0, K = 1) {
   H = BigInt(H);
   C = BigInt(C);
   T = BigInt(T);
@@ -33,52 +52,57 @@ function calcHareMath(H, C, T, A, O, mode, payOffspring, D = 0, L = 0) {
   let totalRabbits = 0n;
   let offspringHaresCreated = 0n;
   let finalHaresOnBoard = H;
+  let K_val = 0n;
 
-  if (!payOffspring) {
-    const totalTriggers = C * trigsPerHare;
+  // If mode is simultaneous, Offspring cannot be paid
+  const effectiveOffspring = payOffspring && mode !== "simultaneous";
+
+  if (!effectiveOffspring) {
     if (C === 1n) {
       totalRabbits = trigsPerHare * H * perToken;
     } else if (mode === "simultaneous") {
       const otherHares = (H + C - 1n) > 0n ? (H + C - 1n) : 0n;
       totalRabbits = C * trigsPerHare * otherHares * perToken;
     } else {
-      // Sequential
+      // Sequential without offspring
       const sumHares = C * H + (C * (C - 1n)) / 2n;
       totalRabbits = trigsPerHare * perToken * sumHares;
     }
     finalHaresOnBoard = H + C;
   } else {
-    // WITH OFFSPRING PAID
+    // WITH OFFSPRING PAID (Sequential)
+    K_val = C === 1n ? 1n : BigInt(Math.min(Number(C), Math.max(1, Number(K || 1))));
     const offspringTokensPerCast = trigsPerHare * perToken;
+    let currentHares = H;
 
-    if (C === 1n || mode === "sequential") {
-      let currentHares = H;
-      for (let k = 0n; k < C; k++) {
-        // Step 1: Each Offspring trigger creates perToken 1/1 Hare Apparent token copies
-        for (let n = 1n; n <= trigsPerHare; n++) {
-          const otherHaresSeen = currentHares + n * perToken;
-          const rabFromTrigger = (perToken ** 2n) * trigsPerHare * otherHaresSeen;
-          totalRabbits += rabFromTrigger;
-        }
-
-        // Step 2: Original Hare's Make Rabbits triggers resolve last
-        const otherHaresSeenByOriginal = currentHares + offspringTokensPerCast;
-        const rabFromOriginal = trigsPerHare * otherHaresSeenByOriginal * perToken;
-        totalRabbits += rabFromOriginal;
-
-        currentHares += 1n + offspringTokensPerCast;
-        offspringHaresCreated += offspringTokensPerCast;
+    // Step 1: K_val Hares enter paying Offspring {2}
+    for (let k = 0n; k < K_val; k++) {
+      // Offspring triggers resolve first, creating perToken 1/1 token copies of Hare Apparent
+      for (let n = 1n; n <= trigsPerHare; n++) {
+        const otherHaresSeen = currentHares + n * perToken;
+        const rabFromTrigger = (perToken ** 2n) * trigsPerHare * otherHaresSeen;
+        totalRabbits += rabFromTrigger;
       }
-      finalHaresOnBoard = currentHares;
-    } else {
-      // Simultaneous entry with Offspring
-      offspringHaresCreated = C * offspringTokensPerCast;
-      finalHaresOnBoard = H + C + offspringHaresCreated;
-      const otherHares = finalHaresOnBoard > 1n ? finalHaresOnBoard - 1n : 0n;
-      const totalHaresTriggering = C + offspringHaresCreated;
-      const totalTriggers = totalHaresTriggering * trigsPerHare;
-      totalRabbits = totalTriggers * otherHares * perToken;
+
+      // Original Hare's Make Rabbits triggers resolve
+      const otherHaresSeenByOriginal = currentHares + offspringTokensPerCast;
+      const rabFromOriginal = trigsPerHare * otherHaresSeenByOriginal * perToken;
+      totalRabbits += rabFromOriginal;
+
+      currentHares += 1n + offspringTokensPerCast;
+      offspringHaresCreated += offspringTokensPerCast;
     }
+
+    // Step 2: (C - K_val) Standard Hares enter without Offspring
+    const standardHares = C - K_val;
+    for (let s = 0n; s < standardHares; s++) {
+      const otherHaresSeen = currentHares;
+      const rabFromStandard = trigsPerHare * otherHaresSeen * perToken;
+      totalRabbits += rabFromStandard;
+      currentHares += 1n;
+    }
+
+    finalHaresOnBoard = currentHares;
   }
 
   const totalTriggers = (C + offspringHaresCreated) * trigsPerHare;
@@ -87,7 +111,7 @@ function calcHareMath(H, C, T, A, O, mode, payOffspring, D = 0, L = 0) {
   const totalLife = L_val * enteringCreatures;
 
   return {
-    H, C, T, A, O, mode, payOffspring,
+    H, C, T, A, O, mode, payOffspring: effectiveOffspring, K: K_val,
     perToken,
     trigsPerHare,
     totalTriggers,
@@ -112,7 +136,17 @@ function readInputs() {
   const R = Math.max(0, parseInt(document.getElementById('Rnum')?.value, 10) || 0);
   const D = Math.max(0, parseInt(document.getElementById('Dnum')?.value, 10) || 0);
   const L = Math.max(0, parseInt(document.getElementById('Lnum')?.value, 10) || 0);
-  return { H, C, T, A, O, R, D, L };
+  let K = 1;
+  if (payOffspring) {
+    if (C > 1) {
+      K = Math.min(C, Math.max(1, parseInt(document.getElementById('Knum')?.value, 10) || 1));
+    } else {
+      K = 1;
+    }
+  } else {
+    K = 0;
+  }
+  return { H, C, T, A, O, R, D, L, K };
 }
 
 function syncInputs(id) {
@@ -135,12 +169,30 @@ function syncSliders(id) {
 }
 
 function checkModeToggle() {
-  const C = parseInt(document.getElementById('Cnum').value, 10) || 1;
-  const wrap = document.getElementById('modeToggleWrap');
-  if (C > 1) {
-    wrap.style.display = 'flex';
-  } else {
-    wrap.style.display = 'none';
+  const C = parseInt(document.getElementById('Cnum')?.value, 10) || 1;
+  const modeWrap = document.getElementById('modeToggleWrap');
+  if (modeWrap) {
+    modeWrap.style.display = C > 1 ? 'flex' : 'none';
+  }
+
+  const kWrap = document.getElementById('offspringCountWrap');
+  if (kWrap) {
+    if (payOffspring && C > 1 && entryMode !== 'simultaneous') {
+      kWrap.style.display = 'flex';
+      const kSlider = document.getElementById('K');
+      const kNum = document.getElementById('Knum');
+      if (kSlider && kNum) {
+        kSlider.max = C;
+        kNum.max = C;
+        let curK = parseInt(kNum.value, 10);
+        if (isNaN(curK) || curK < 1) curK = 1;
+        if (curK > C) curK = C;
+        kSlider.value = curK;
+        kNum.value = curK;
+      }
+    } else {
+      kWrap.style.display = 'none';
+    }
   }
 }
 
@@ -148,6 +200,15 @@ function setEntryMode(mode) {
   entryMode = mode;
   document.getElementById('modeSequential').classList.toggle('active', mode === 'sequential');
   document.getElementById('modeSimultaneous').classList.toggle('active', mode === 'simultaneous');
+
+  // If user chooses simultaneous, Offspring must be No (Standard)
+  if (mode === 'simultaneous' && payOffspring) {
+    payOffspring = false;
+    document.getElementById('offspringNo').classList.add('active');
+    document.getElementById('offspringYes').classList.remove('active');
+  }
+
+  checkModeToggle();
   updateResult();
 }
 
@@ -225,8 +286,8 @@ function getMilestone(rabbits) {
 }
 
 function updateResult() {
-  const { H, C, T, A, O, R, D, L } = readInputs();
-  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L);
+  const { H, C, T, A, O, R, D, L, K } = readInputs();
+  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L, K);
   const grandRabbits = data.totalRabbits + BigInt(R);
   const finalHares = data.finalHaresOnBoard;
 
@@ -307,8 +368,8 @@ function resolveStack() {
   btn.textContent = "Resolving...";
   btn.classList.add("resolving");
 
-  const { H, C, T, A, O, R, D, L } = readInputs();
-  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L);
+  const { H, C, T, A, O, R, D, L, K } = readInputs();
+  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L, K);
   const grandRabbits = data.totalRabbits + BigInt(R);
 
   updateResult();
@@ -329,7 +390,15 @@ function resolveStack() {
     <li>${perToken === 1n ? "Each token-creating effect creates its normal number of tokens (no doublers or triplers)." : `Each token you create will be multiplied by <strong>${perToken.toLocaleString()}×</strong> (<em>3<sup>${O}</sup> × 2<sup>${T}</sup></em>).`}</li>
     <li>Each Hare Apparent Enter the Battlefield ability will trigger <strong>${trigs.toLocaleString()}</strong> time${trigs > 1n ? "s" : ""} (<em>1 base + ${A} additional trigger${A === 1 ? "" : "s"}</em>).</li>
     <li>You start with <strong>${H}</strong> <em>Hare Apparent${H === 1 ? "" : "s"}</em> and <strong>${R}</strong> Rabbit token${R === 1 ? "" : "s"} on the battlefield.</li>
-    <li>Offspring ({2}): <strong>${payOffspring ? "PAID — creating 1/1 token copies of Hare Apparent" : "Not Paid (Standard)"}</strong>.</li>
+    <li>Offspring ({2}): <strong>${
+      !payOffspring
+        ? "Not Paid (Standard)"
+        : C > 1 && data.K < BigInt(C)
+          ? `PAID on ${data.K} of ${C} entering Hares ({${Number(data.K) * 2}} mana total) — creating 1/1 token copies`
+          : C > 1
+            ? `PAID on all ${C} entering Hares ({${C * 2}} mana total) — creating 1/1 token copies`
+            : "PAID — creating 1/1 token copies of Hare Apparent"
+    }</strong>.</li>
     ${D > 0 || L > 0 ? `<li>ETB Synergy: <strong>${D > 0 ? `${D} damage per creature` : ''}${D > 0 && L > 0 ? ' & ' : ''}${L > 0 ? `${L} life gained per creature` : ''}</strong>.</li>` : ''}
   </ul>`;
 
@@ -445,21 +514,61 @@ function resolveStack() {
         <li>It sees all starting Hares plus all Offspring token copies: <strong>${otherHaresSeenByOriginal.toLocaleString()}</strong> other Hares!</li>
         <li>Each trigger makes ${(otherHaresSeenByOriginal * perToken).toLocaleString()} Rabbit tokens, creating <strong>${rabFromOriginal.toLocaleString()}</strong> Rabbit tokens!</li>
       </ul>`;
-    } else if (entryMode === "simultaneous") {
-      nar += `<p class="section-heading"><strong>${C}</strong> Hare Apparents enter simultaneously with Offspring paid!</p>
-      <ul>
-        <li>All <strong>${C}</strong> original Hares enter together, each placing <strong>${trigs.toLocaleString()}</strong> Offspring triggers and <strong>${trigs.toLocaleString()}</strong> Make Rabbits triggers on the stack.</li>
-        <li>Offspring triggers resolve first, creating <strong>${offspringHares.toLocaleString()}</strong> 1/1 token copies of Hare Apparent.</li>
-        <li>Each of the <strong>${(BigInt(C) + offspringHares).toLocaleString()}</strong> entering Hares resolves its triggers seeing all other Hares in play.</li>
-        <li>Resolving all <strong>${data.totalTriggers.toLocaleString()}</strong> total triggers creates <strong>${totalCreated.toLocaleString()}</strong> Rabbit tokens!</li>
-      </ul>`;
     } else {
-      nar += `<p class="section-heading"><strong>${C}</strong> Hare Apparents enter sequentially with Offspring paid</p>
+      // C > 1 WITH OFFSPRING (Sequential)
+      const K_num = Number(data.K);
+      const isPartial = K_num < C;
+      const offspringTokensPerCast = trigs * perToken;
+
+      nar += `<p class="section-heading"><strong>${C}</strong> Hare Apparents enter sequentially (${K_num} with Offspring {2} paid${isPartial ? `, ${C - K_num} standard` : ''})</p>
       <ul>
-        <li>Each Hare cast creates 1 original 2/2 Hare plus <strong>${(trigs * perToken).toLocaleString()}</strong> 1/1 token copies from Offspring.</li>
+        <li>You cast and resolve your Hares one at a time.</li>
+        <li>For each of the <strong>${K_num}</strong> Hare(s) with Offspring paid, you create 1 original 2/2 Hare plus <strong>${offspringTokensPerCast.toLocaleString()}</strong> 1/1 token copy${offspringTokensPerCast === 1n ? '' : 'ies'} from Offspring.</li>
+        ${isPartial ? `<li>For each of the remaining <strong>${C - K_num}</strong> standard Hare(s), you don't pay Offspring, creating 1 original 2/2 Hare.</li>` : ''}
         <li>Each entering token copy and original Hare triggers its ETB ability, continuously multiplying the number of Hares in play.</li>
-        <li>Across all ${C} sequential casts, this creates <strong>${offspringHares.toLocaleString()}</strong> Offspring token copies and <strong>${totalCreated.toLocaleString()}</strong> Rabbit tokens!</li>
+        <li>Across all ${C} casts, this creates <strong>${offspringHares.toLocaleString()}</strong> Offspring token copies and <strong>${totalCreated.toLocaleString()}</strong> Rabbit tokens!</li>
       </ul>`;
+
+      let currentHares = BigInt(H);
+      const maxDetailed = 4;
+      const isCondensed = C > maxDetailed;
+
+      for (let k = 1; k <= C; k++) {
+        const hasOffspring = k <= K_num;
+        let rabbitsFromThisCast = 0n;
+
+        if (hasOffspring) {
+          for (let n = 1n; n <= trigs; n++) {
+            const totalOtherSeen = currentHares + n * perToken;
+            rabbitsFromThisCast += (perToken ** 2n) * trigs * totalOtherSeen;
+          }
+          const otherSeenByOrig = currentHares + offspringTokensPerCast;
+          rabbitsFromThisCast += trigs * otherSeenByOrig * perToken;
+          currentHares += 1n + offspringTokensPerCast;
+        } else {
+          const otherSeen = currentHares;
+          rabbitsFromThisCast = trigs * otherSeen * perToken;
+          currentHares += 1n;
+        }
+
+        if (!isCondensed || k <= 2 || k === C) {
+          if (hasOffspring) {
+            nar += `<p class="section-heading" style="font-size:0.95em;">Hare #${k} Enters (Paid Offspring {2} — Current Board: ${currentHares.toLocaleString()} Hares)</p>
+            <ul>
+              <li>Resolves Offspring first, creating <strong>${offspringTokensPerCast.toLocaleString()}</strong> 1/1 token copy${offspringTokensPerCast === 1n ? "" : "ies"} of Hare Apparent.</li>
+              <li>Then original and token ETBs resolve, generating <strong>${rabbitsFromThisCast.toLocaleString()}</strong> Rabbit tokens!</li>
+            </ul>`;
+          } else {
+            nar += `<p class="section-heading" style="font-size:0.95em;">Hare #${k} Enters (Standard / No Offspring — Current Board: ${currentHares.toLocaleString()} Hares)</p>
+            <ul>
+              <li>Enters seeing <strong>${(currentHares - 1n).toLocaleString()}</strong> other Hares.</li>
+              <li>ETBs resolve, generating <strong>${rabbitsFromThisCast.toLocaleString()}</strong> Rabbit tokens!</li>
+            </ul>`;
+          }
+        } else if (k === 3) {
+          nar += `<p class="section-heading" style="font-size:0.9em; font-style:italic; color:#725a2e;">... Hares #3 through #${C - 1} enter sequentially and each sees an increasing number of Hares ...</p>`;
+        }
+      }
     }
   }
 
@@ -544,6 +653,10 @@ function resetInputs() {
   document.getElementById('C').value = 1;
   document.getElementById('Cnum').value = 1;
   document.getElementById('Rnum').value = 0;
+  const kSlider = document.getElementById('K');
+  const kNum = document.getElementById('Knum');
+  if (kSlider) { kSlider.value = 1; kSlider.max = 1; }
+  if (kNum) { kNum.value = 1; kNum.max = 1; }
   entryMode = 'sequential';
   document.getElementById('modeSequential').classList.add('active');
   document.getElementById('modeSimultaneous').classList.remove('active');
@@ -573,7 +686,7 @@ function showToast(msg) {
 
 // 🔗 URL STATE MANAGEMENT (DEEP LINKING)
 function updateUrlState() {
-  const { H, C, T, A, O, R, D, L } = readInputs();
+  const { H, C, T, A, O, R, D, L, K } = readInputs();
   const params = new URLSearchParams();
   if (H > 0) params.set("h", H);
   if (C > 1) params.set("c", C);
@@ -583,7 +696,10 @@ function updateUrlState() {
   if (R > 0) params.set("r", R);
   if (D > 0) params.set("d", D);
   if (L > 0) params.set("l", L);
-  if (payOffspring) params.set("offspring", "1");
+  if (payOffspring) {
+    params.set("offspring", "1");
+    if (C > 1 && K) params.set("k", K);
+  }
   if (C > 1 && entryMode === "simultaneous") params.set("mode", "sim");
 
   const qs = params.toString();
@@ -649,6 +765,12 @@ function loadUrlState() {
     const v = params.get("offspring");
     setOffspring(v === "1" || v === "true");
   }
+  if (params.has("k")) {
+    const kVal = Math.max(1, parseInt(params.get("k"), 10) || 1);
+    const kEl = document.getElementById("Knum");
+    if (kEl) kEl.value = kVal;
+    syncSliders("K");
+  }
   if (params.has("mode")) {
     const m = params.get("mode");
     if (m === "sim" || m === "simultaneous") {
@@ -670,14 +792,23 @@ function shareLink() {
 }
 
 function copyBreakdown() {
-  const { H, C, T, A, O, R, D, L } = readInputs();
-  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L);
+  const { H, C, T, A, O, R, D, L, K } = readInputs();
+  const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L, K);
   const grandRabbits = data.totalRabbits + BigInt(R);
   const finalHares = data.finalHaresOnBoard;
   const totalPower = data.nontokenHaresOnBoard * 2n + data.offspringHaresCreated + grandRabbits;
 
+  let offspringStr = "No (Standard)";
+  if (payOffspring) {
+    if (C > 1) {
+      offspringStr = `Yes ({2} paid on ${data.K} of ${C} Hares)`;
+    } else {
+      offspringStr = "Yes ({2})";
+    }
+  }
+
   let text = `🐇 HareBrain 🧠 — Hare Apparent Calculation
-• Offspring Paid: ${payOffspring ? 'Yes ({2})' : 'No (Standard)'}
+• Offspring Paid: ${offspringStr}
 • Existing Hares on board: ${H}
 • Hares Entering: ${C} (${C > 1 ? entryMode : 'single cast'})
 • Token Multiplier: ${data.perToken}x (Doublers: ${T}, Triplers: ${O})
@@ -780,7 +911,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     input.addEventListener("blur", () => {
       if (input.value.trim() === "") {
-        input.value = input.id === "Cnum" ? "1" : "0";
+        input.value = (input.id === "Cnum" || input.id === "Knum") ? "1" : "0";
         const sliderId = input.id.replace("num", "");
         if (document.getElementById(sliderId)) {
           syncSliders(sliderId);

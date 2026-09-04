@@ -502,16 +502,35 @@ ul li { margin-bottom: 6px; }
   color: #2f80ed;
 }
 
-footer {
-  margin-top: 24px;
-  font-size: 0.9em;
-  color: #5b4321;
-  font-style: italic;
+/* ✒️ AUTHOR SIGNATURE */
+.signature-box {
+  margin-top: 18px;
+  font-family: "Cardo", Georgia, serif;
+  font-size: 0.95em;
+  letter-spacing: 0.5px;
+  color: #725a2e;
   text-align: center;
-  max-width: 95%;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.5;
+  font-style: italic;
+}
+
+.signature-box strong {
+  font-style: normal;
+  font-weight: 700;
+  color: #124e88;
+  letter-spacing: 0.5px;
+}
+
+html[data-theme="dark"] .signature-box,
+body[data-theme="dark"] .signature-box,
+body.dark-mode .signature-box {
+  color: #c4b9a3 !important;
+}
+
+html[data-theme="dark"] .signature-box strong,
+body[data-theme="dark"] .signature-box strong,
+body.dark-mode .signature-box strong {
+  color: #79b8ff !important;
+  text-shadow: 0 0 8px rgba(121, 184, 255, 0.3);
 }
 
 /* 📱 Mobile optimizations */
