@@ -151,8 +151,6 @@ function setEntryMode(mode) {
   updateResult();
 }
 
-let lastMilestoneTier = null;
-
 // 💥 HARE-POCALYPSE MILESTONE DETECTOR
 function getMilestone(rabbits) {
   if (rabbits < 10n) return null;
@@ -320,16 +318,8 @@ function updateResult() {
     if (m) {
       badge.style.display = "block";
       badge.innerHTML = `<span class="milestone-title">${m.title}</span><span class="milestone-subtitle">${m.subtitle}</span>`;
-      if (m.tier !== lastMilestoneTier) {
-        lastMilestoneTier = m.tier;
-        badge.classList.remove("pop-badge");
-        void badge.offsetWidth;
-        badge.classList.add("pop-badge");
-        launchRabbitShower(["🐇", "✨", "🎉"]);
-      }
     } else {
       badge.style.display = "none";
-      lastMilestoneTier = null;
     }
   }
 
@@ -660,7 +650,6 @@ function addLife(amt) {
 
 function resetInputs() {
   setOffspring(false);
-  lastMilestoneTier = null;
   ['H', 'T', 'O', 'A', 'D', 'L'].forEach(id => {
     const slider = document.getElementById(id);
     const numInput = document.getElementById(id + 'num');
