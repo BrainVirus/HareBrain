@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HareBrain 🪄 | Hare Apparent Rabbit Calculator (No Offspring)</title>
+<meta name="description" content="Calculate exactly how many Rabbit tokens you make when you cast Hare Apparent without paying any Offspring cost — with token doublers, triplers, Delney, Panharmonicon, and Thrumming Stone Ripple, plus a full MTG stack breakdown.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐇</text></svg>">
+<meta property="og:title" content="HareBrain 🪄 | Hare Apparent Rabbit Calculator (No Offspring)">
+<meta property="og:description" content="Calculate how many Rabbit tokens you make from Hare Apparent without Offspring — with doublers, triplers, Delney, and Panharmonicon stack breakdowns.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="./img/hare.jpg">
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 🎨 FONT IMPORTS & BASE STYLES -->
+<!-- ══════════════════════════════════════════════ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════ */
+/* ✨ BASE PAGE STYLING */
+/* ══════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Cardo", Georgia, serif;
+  background: radial-gradient(circle at 40% 20%, #eaf5ff 0%, #b7d8f2 35%, #fbe49c 90%);
+  color: #1b1d25;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 12px;
+}
+
+mjx-container {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  text-align: center !important;
+  font-size: 0.9em !important;
+  white-space: normal !important;
+  margin: 12px auto !important;
+  display: block !important;
+  padding: 4px 0;
+}
+
+.card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(247,245,236,0.98));
+  border: 4px solid #d8b552;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(27,102,170,0.45), inset 0 0 12px rgba(255,255,255,0.4);
+  width: 100%;
+  max-width: 720px;
+  padding: 30px 24px 40px;
+  text-align: center;
+}
+
+/* 🔖 HEADERS */
+h1 {
+  font-family: "Uncial Antiqua", serif;
+  color: #124e88;
+  text-shadow: 0 0 8px rgba(28,105,175,0.5);
+  margin: 8px 0 6px;
+  font-size: 2.3em;
+  letter-spacing: 0.5px;
+}
+
+.subtitle {
+  font-style: italic;
+  font-size: 1.05em;
+  color: #725a2e;
+  margin-bottom: 18px;
+  line-height: 1.4;
+}
+
+.tag-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #2a68a5, #14497e);
+  color: #fff;
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(18, 78, 136, 0.3);
+}
+
+/* ⚡ PRESETS BAR */
+.presets-wrap {
+  margin: 14px auto 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.preset-chip {
+  background: #fbf6e8;
+  border: 1.5px solid #d8b552;
+  border-radius: 16px;
+  padding: 4px 10px;
+  font-size: 0.82em;
+  color: #4a3617;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.preset-chip:hover {
+  background: #f8e8b8;
+  border-color: #b58c29;
+  transform: translateY(-1px);
+}
+
+.preset-chip.danger {
+  background: #fdf0f0;
+  border-color: #d88282;
+  color: #8c2525;
+}
+
+.preset-chip.danger:hover {
+  background: #fbe0e0;
+}
+
+/* SECTION HEADINGS */
+.section-heading {
+  text-align: center;
+  font-weight: 700;
+  color: #124e88;
+  position: relative;
+  display: inline-block;
+  margin: 18px auto 8px;
+  font-size: 1.05em;
+}
+
+.section-heading::after {
+  content: "";
+  display: block;
+  height: 2px;
+  width: 0%;
+  background-color: #d8b552;
+  margin: 6px auto 0;
+  transition: width 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  opacity: 0;
+}
+
+.section-heading:hover::after {
+  width: 80%;
+  opacity: 1;
+}
+
+/* 🎚️ INPUT CONTROLS */
+.slider-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 12px auto;
+}
+
+label {
+  width: 250px;
+  text-align: right;
+  font-weight: 700;
+  color: #2a1e13;
+  font-size: 0.98em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+input[type="range"] {
+  width: 170px;
+  accent-color: #2f80ed;
+  cursor: pointer;
+}
+
+input[type="number"] {
+  width: 70px;
+  padding: 5px 4px;
+  font-size: 1em;
+  border-radius: 6px;
+  border: 2px solid #d8b552;
+  text-align: center;
+  background: #fffdf8;
+  color: #1b1d25;
+  font-family: inherit;
+  font-weight: 600;
+}
+
+input[type="number"]:focus {
+  outline: none;
+  border-color: #4596e6;
+  box-shadow: 0 0 8px rgba(69,150,230,0.6);
+}
+
+/* 💥 ENTRY MODE SELECTOR */
+.mode-toggle-group {
+  margin: 4px auto 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9em;
+  background: rgba(216, 181, 82, 0.15);
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px dashed #d8b552;
+  max-width: 490px;
+}
+
+.mode-label {
+  font-weight: 700;
+  color: #4a3617;
+}
+
+.mode-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.mode-pill {
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid #d8b552;
+  background: #fffdf8;
+  color: #4a3617;
+  font-weight: 700;
+  font-size: 0.85em;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.mode-pill.active {
+  background: #2f80ed;
+  color: #fff;
+  border-color: #1a5bb0;
+  box-shadow: 0 2px 6px rgba(47,128,237,0.35);
+}
+
+/* 🪄 BUTTONS */
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+button {
+  background: linear-gradient(180deg, #f5e2a5, #e7c75e);
+  border: 3px solid #d8b552;
+  border-radius: 10px;
+  padding: 10px 26px;
+  font-family: "Uncial Antiqua", serif;
+  font-size: 1.1em;
+  color: #124e88;
+  text-shadow: 0 0 5px rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+button:hover {
+  background: linear-gradient(180deg, #ffeaa7, #f5d36e);
+  box-shadow: 0 0 12px rgba(255,215,150,0.7);
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button.resolving {
+  background: linear-gradient(180deg, #bcd8ff, #78a8f0);
+  color: #fff;
+  box-shadow: 0 0 18px rgba(60,120,255,0.8);
+  pointer-events: none;
+}
+
+.btn-secondary {
+  font-family: "Cardo", serif;
+  font-weight: 700;
+  font-size: 0.95em;
+  padding: 10px 18px;
+  background: #fffdf8;
+  color: #725a2e;
+  border: 2px solid #d8b552;
+}
+
+.btn-secondary:hover {
+  background: #fdf7e3;
+  box-shadow: 0 0 8px rgba(216,181,82,0.5);
+}
+
+/* 📜 RESULT */
+#result {
+  font-size: 1.7em;
+  margin-top: 24px;
+  font-weight: bold;
+  color: #0f4174;
+  text-shadow: 0 0 6px rgba(67,132,185,0.4);
+  transition: opacity 0.3s ease-in-out;
+  line-height: 1.35;
+}
+
+.result-sub {
+  font-size: 0.65em;
+  color: #725a2e;
+  display: block;
+  margin-top: 4px;
+  font-weight: normal;
+}
+
+.result-stat-pill {
+  display: inline-block;
+  background: rgba(216,181,82,0.2);
+  border: 1px solid #d8b552;
+  border-radius: 8px;
+  padding: 2px 8px;
+  margin: 3px 2px;
+  font-size: 0.58em;
+  font-weight: 700;
+  color: #3b2c17;
+}
+
+/* 🧙‍♂️ NARRATIVE */
+.narrative {
+  opacity: 0;
+  display: none;
+  transform: translateY(-15px);
+  transition: all 0.8s ease;
+  background: rgba(255,255,255,0.85);
+  border: 3px solid #d8b552;
+  border-radius: 14px;
+  box-shadow: 0 0 16px rgba(27,102,170,0.25);
+  padding: 18px 22px;
+  margin-top: 24px;
+  text-align: left;
+}
+
+.show-scroll {
+  display: block !important;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  animation: scrollFadeIn 0.8s ease-out forwards;
+}
+
+@keyframes scrollFadeIn {
+  0% { opacity: 0; transform: translateY(-16px) scaleY(0.98); }
+  70% { opacity: 1; transform: translateY(0) scaleY(1.01); }
+  100% { opacity: 1; transform: translateY(0) scaleY(1); }
+}
+
+/* 🟨 STACK UPDATE NOTE & BULLETS */
+.stack-update {
+  text-align: center;
+  font-size: 0.9em;
+  font-style: italic;
+  color: #124e88;
+  margin-top: 8px;
+  margin-bottom: 2px;
+  font-weight: 600;
+}
+
+ul {
+  margin: 6px 0 12px 30px;
+  padding: 0;
+  list-style-type: disc;
+  color: #1b1d25;
+}
+
+ul li { margin-bottom: 6px; }
+
+/* 🧱 STACK VISUALIZATION */
+.stack-line {
+  background: rgba(255,255,255,0.88);
+  border: 2px solid #d8b552;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 10px 0 14px;
+  box-shadow: 0 0 8px rgba(27,102,170,0.2);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-direction: row;
+  font-family: "Cardo", serif;
+  font-size: 0.95em;
+}
+
+.stack-box {
+  background: linear-gradient(180deg, #fffdf8, #fdf3c8);
+  border: 1.5px solid #c9a848;
+  border-radius: 6px;
+  padding: 5px 10px;
+  box-shadow: 0 0 6px rgba(27,102,170,0.18);
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.stack-arrow { 
+  color: #c79838; 
+  font-weight: bold; 
+  font-size: 1.1em;
+}
+
+/* 📘 EXPLANATION BOX */
+.explanation {
+  font-size: 0.95em;
+  color: #2a1e13;
+  margin-top: 30px;
+  line-height: 1.6em;
+  text-align: left;
+  background: linear-gradient(180deg, #fffdf8, #fdf6e8);
+  border: 3px solid #d8b552;
+  border-radius: 16px;
+  padding: 22px 24px;
+  box-shadow: 0 0 15px rgba(27,102,170,0.18), inset 0 0 10px rgba(0,0,0,0.04);
+}
+
+.explanation-title {
+  text-align: center;
+  font-family: "Uncial Antiqua", serif;
+  font-size: 1.3em;
+  color: #c79838;
+  text-shadow: 0 0 6px rgba(200,150,56,0.5);
+  margin-bottom: 14px;
+}
+
+.math-formula-box {
+  background: #ffffff;
+  border: 1.5px solid #d8b552;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 12px 0;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.03);
+}
+
+/* 🎨 ART & GALLERY */
+.art-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.art-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.art-card img {
+  width: 100%;
+  max-width: 320px;
+  border-radius: 12px;
+  border: 2px solid #d8b552;
+  box-shadow: 0 0 14px rgba(28,105,175,0.35);
+  transition: all 0.25s ease;
+  background: #fdf3c8;
+}
+
+.art-card img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(255,221,130,0.8);
+}
+
+.art-caption {
+  font-size: 0.82em;
+  font-style: italic;
+  color: #6a4f22;
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* 📜 CREDITS & ACKNOWLEDGMENTS BOX */
+.credits-box {
+  margin-top: 30px;
+  background: linear-gradient(180deg, #fffdf8, #fbf4e2);
+  border: 2px solid #d8b552;
+  border-radius: 14px;
+  padding: 16px 20px;
+  text-align: center;
+  font-size: 0.9em;
+  color: #4a3617;
+  box-shadow: 0 0 12px rgba(216,181,82,0.25);
+  line-height: 1.55;
+}
+
+.credits-heading {
+  font-family: "Uncial Antiqua", serif;
+  color: #124e88;
+  font-size: 1.15em;
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.credits-box p {
+  margin: 6px 0;
+}
+
+.credits-box a {
+  color: #124e88;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.credits-box a:hover {
+  color: #2f80ed;
+}
+
+footer {
+  margin-top: 24px;
+  font-size: 0.9em;
+  color: #5b4321;
+  font-style: italic;
+  text-align: center;
+  max-width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+/* 📱 Mobile optimizations */
+@media (max-width: 650px) {
+  body {
+    padding: 16px 8px;
+  }
+  .card {
+    padding: 24px 14px 30px;
+    border-radius: 16px;
+  }
+  h1 {
+    font-size: 1.75em;
+    line-height: 1.2;
+  }
+  .slider-group {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px auto;
+  }
+  label {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    font-size: 0.92em;
+  }
+  input[type="range"] {
+    width: 60%;
+  }
+  input[type="number"] {
+    width: 60px;
+  }
+  .explanation {
+    font-size: 0.88em;
+    padding: 16px 14px;
+  }
+  .art-row {
+    flex-direction: row;
+    gap: 8px;
+  }
+  .art-card img {
+    max-width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="card">
+  <div>
+    <span class="tag-badge">No Offspring Version</span>
+  </div>
+  <h1>HareBrain 🪄</h1>
+  <p class="subtitle">The <strong>Hare Apparent</strong> Rabbit Calculator for decks that skip <em>Offspring</em>.<br>Find out exactly how many Rabbits you just made!</p>
+
+  <!-- ⚡ QUICK COMMANDER / TABLE PRESETS -->
+  <div class="presets-wrap">
+    <div class="preset-chip" onclick="applyPreset('standard')">🐰 Standard 1 Cast</div>
+    <div class="preset-chip" onclick="addTrigger('delney')">⚡ +Delney (+1 Trigger)</div>
+    <div class="preset-chip" onclick="addTrigger('pan')">🔔 +Panharmonicon (+1 Trigger)</div>
+    <div class="preset-chip" onclick="addDoubler()">✨ +1 Doubler (2×)</div>
+    <div class="preset-chip" onclick="addTripler()">⚜️ +1 Tripler (3×)</div>
+    <div class="preset-chip" onclick="addEnteringHare()">🐇 +1 Hare Entering</div>
+    <div class="preset-chip danger" onclick="resetInputs()">↺ Reset to 0</div>
+  </div>
+
+  <!-- 🧮 INPUTS -->
+  <div class="slider-group">
+    <label for="H">🐇 Existing Hares on Board (H):</label>
+    <input id="H" type="range" min="0" max="40" value="0" oninput="syncInputs('H')">
+    <input id="Hnum" type="number" value="0" min="0" max="200" oninput="syncSliders('H')">
+  </div>
+
+  <div class="slider-group">
+    <label for="C">🪄 Hare Apparents Entering (C):</label>
+    <input id="C" type="range" min="1" max="40" value="1" oninput="syncInputs('C')">
+    <input id="Cnum" type="number" value="1" min="1" max="200" oninput="syncSliders('C')">
+  </div>
+
+  <!-- 💥 Entry Mode Selector (Visible when C > 1) -->
+  <div id="modeToggleWrap" class="mode-toggle-group" style="display: none;">
+    <span class="mode-label">Entry Mode for C &gt; 1:</span>
+    <div class="mode-pills">
+      <div id="modeSequential" class="mode-pill active" onclick="setEntryMode('sequential')" title="Cast one by one or ripple through Thrumming Stone">⚡ Sequential (Ripple / Casts)</div>
+      <div id="modeSimultaneous" class="mode-pill" onclick="setEntryMode('simultaneous')" title="Enter all at once via Patriarch's Bidding, Raise the Past, Return to the Ranks">💥 Simultaneous (Mass Reanimate)</div>
+    </div>
+  </div>
+
+  <div class="slider-group">
+    <label for="T">✨ Token Doublers (T):</label>
+    <input id="T" type="range" min="0" max="20" value="0" oninput="syncInputs('T')">
+    <input id="Tnum" type="number" value="0" min="0" max="40" oninput="syncSliders('T')">
+  </div>
+
+  <div class="slider-group">
+    <label for="O">⚜️ Token Triplers (O):</label>
+    <input id="O" type="range" min="0" max="5" value="0" oninput="syncInputs('O')">
+    <input id="Onum" type="number" value="0" min="0" max="20" oninput="syncSliders('O')">
+  </div>
+
+  <div class="slider-group">
+    <label for="A">🔁 Additional Triggers (A):</label>
+    <input id="A" type="range" min="0" max="20" value="0" oninput="syncInputs('A')">
+    <input id="Anum" type="number" value="0" min="0" max="40" oninput="syncSliders('A')">
+  </div>
+
+  <div class="slider-group">
+    <label for="Rnum">🐰 Existing Rabbit Tokens (R):</label>
+    <input id="Rnum" type="number" value="0" min="0" max="1000000000" oninput="updateResult()">
+  </div>
+
+  <!-- 📜 RESULT DISPLAY -->
+  <div id="result">Rabbits created: 0</div>
+
+  <!-- 🪄 ACTION BUTTONS -->
+  <div class="btn-group">
+    <button id="resolveBtn" onclick="resolveStack()">Resolve Stack</button>
+    <button class="btn-secondary" onclick="copyBreakdown()" title="Copy board state to clipboard">📋 Copy Summary</button>
+  </div>
+
+  <!-- 🧙‍♂️ NARRATIVE STACK RESOLUTION -->
+  <div id="narrative" class="narrative"></div>
+
+  <!-- 📘 MATHEMATICAL BREAKDOWN -->
+  <div class="explanation" id="mathBox">
+    <div class="explanation-title">📘 The Mathematical Breakdown (No Offspring)</div>
+    <p><em>Hare Apparent</em> card text: <em>“When Hare Apparent enters, create a 1/1 white Rabbit creature token for each <strong>other</strong> creature you control named Hare Apparent.”</em></p>
+    <p>Without Offspring, no token copies of Hare Apparent enter the battlefield — only 1/1 white Rabbit creature tokens are created.</p>
+    
+    <p><strong>H</strong> — Number of other <em>Hare Apparents</em> already on the battlefield before entering.</p>
+    <p><strong>C</strong> — Number of <em>Hare Apparents</em> entering the battlefield this turn (default 1).</p>
+    <p><strong>T</strong> — Number of <em>token doublers</em> (Anointed Procession, Mondrak, Parallel Lives, Doubling Season).</p>
+    <p><strong>O</strong> — Number of <em>token triplers</em> (Ojer Taq, Deepest Foundation).</p>
+    <p><strong>A</strong> — Number of <em>additional trigger</em> effects (Delney Streetwise Lookout, Panharmonicon, Elesh Norn Mother of Machines, Roaming Throne).</p>
+    <p><strong>R</strong> — Number of <em>existing Rabbit tokens</em> already on your battlefield.</p>
+
+    <div class="math-formula-box">
+      <strong>Case 1: Single Hare Apparent Entering ($C = 1$)</strong>
+      <p style="margin: 4px 0 8px; font-size: 0.9em; color: #5a421b;">The entering Hare triggers $A+1$ times. Each trigger sees $H$ other Hares and creates $H \times (3^O \cdot 2^T)$ Rabbit tokens:</p>
+      $$X(H, T, A, O) = (A + 1) \cdot H \cdot (3^O \cdot 2^T)$$
+    </div>
+
+    <div class="math-formula-box">
+      <strong>Case 2: Multiple Hares Entering Sequentially (Cast / Ripple via Thrumming Stone)</strong>
+      <p style="margin: 4px 0 8px; font-size: 0.9em; color: #5a421b;">Each $k$-th entering Hare sees $H + k - 1$ existing Hares when its triggers resolve:</p>
+      $$X_{seq}(H, C, T, A, O) = (A + 1) \cdot (3^O \cdot 2^T) \cdot \sum_{k=1}^{C} (H + k - 1) = (A + 1) \cdot (3^O \cdot 2^T) \cdot \left[ C \cdot H + \frac{C(C - 1)}{2} \right]$$
+    </div>
+
+    <div class="math-formula-box">
+      <strong>Case 3: Multiple Hares Entering Simultaneously (Mass Reanimation)</strong>
+      <p style="margin: 4px 0 8px; font-size: 0.9em; color: #5a421b;">All $C$ Hares enter together (e.g. Patriarch's Bidding, Raise the Past). Each of the $C$ Hares has $A+1$ triggers, and every trigger sees all other $H + C - 1$ Hares:</p>
+      $$X_{sim}(H, C, T, A, O) = C \cdot (A + 1) \cdot (H + C - 1) \cdot (3^O \cdot 2^T)$$
+    </div>
+
+    <div style="text-align: center; margin-top: 10px;">
+      $$\text{Total Rabbits on Battlefield} = X + R$$
+    </div>
+  </div>
+
+  <!-- ════════════ 🎨 ART & GALLERY ════════════ -->
+  <p class="section-heading">Key Cards &amp; Synergy Pieces</p>
+
+  <div class="art-row">
+    <div class="art-card">
+      <img src="./img/delney.jpg" alt="Delney, Streetwise Lookout" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Delney,%20Streetwise%20Lookout&format=image'">
+      <div class="art-caption">Delney, Streetwise Lookout<br>(Triggers power &le; 2 abilities again!)</div>
+    </div>
+    <div class="art-card">
+      <img src="./img/hare.jpg" alt="Hare Apparent" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Hare%20Apparent&format=image'">
+      <div class="art-caption">Hare Apparent<br>(The star of the burrow)</div>
+    </div>
+  </div>
+
+  <div class="art-row">
+    <div class="art-card">
+      <img src="./img/rabbit.jpg" alt="Rabbit Token" loading="lazy">
+      <div class="art-caption">1/1 White Rabbit Token<br>(Multiply without limits)</div>
+    </div>
+    <div class="art-card">
+      <img src="./img/pan.jpg" alt="Panharmonicon" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Panharmonicon&format=image'">
+      <div class="art-caption">Panharmonicon<br>(Additional ETB Triggers)</div>
+    </div>
+  </div>
+
+  <div class="art-row">
+    <div class="art-card">
+      <img src="./img/proc.jpg" alt="Anointed Procession" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Anointed%20Procession&format=image'">
+      <div class="art-caption">Anointed Procession<br>(Token Doubler)</div>
+    </div>
+    <div class="art-card">
+      <img src="./img/ojer.jpg" alt="Ojer Taq, Deepest Foundation" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Ojer%20Taq,%20Deepest%20Foundation&format=image'">
+      <div class="art-caption">Ojer Taq, Deepest Foundation<br>(Token Tripler)</div>
+    </div>
+  </div>
+
+  <div class="art-row">
+    <div class="art-card">
+      <img src="./img/thrumming.jpg" alt="Thrumming Stone" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Thrumming%20Stone&format=image'">
+      <div class="art-caption">Thrumming Stone<br>(Ripple 4 through your library)</div>
+    </div>
+    <div class="art-card">
+      <img src="./img/elesh.jpg" alt="Elesh Norn, Mother of Machines" loading="lazy" onerror="this.src='https://api.scryfall.com/cards/named?exact=Elesh%20Norn,%20Mother%20of%20Machines&format=image'">
+      <div class="art-caption">Elesh Norn, Mother of Machines<br>(Double all creature ETBs)</div>
+    </div>
+  </div>
+
+  <!-- 📜 CREDITS & ACKNOWLEDGMENTS -->
+  <div class="credits-box">
+    <div class="credits-heading">✨ Credits &amp; Acknowledgments ✨</div>
+    <p>💡 <strong>Original Concept &amp; Inspiration:</strong> A huge shoutout and heartfelt credit to <a href="https://solveforhare.com/" target="_blank" rel="noopener">solveforhare.com</a> for the wonderful original idea!</p>
+    <p>🤖 <strong>Created with AI:</strong> Designed, adapted, and engineered with the help of Antigravity AI.</p>
+    <p>🐇 <strong>HareBrain:</strong> Dedicated to every MTG player who loves filling the battlefield with hundreds of rabbits without paying extra for offspring.</p>
+  </div>
+
+  <footer>
+    “Why you getting mad at my 4 vampires — you're about to make like 30 rabbits?”<br>
+    — Cody Rich right before he saw 300 rabbits get created
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- ⚙️ JAVASCRIPT LOGIC -->
+<!-- ══════════════════════════════════════════════ -->
+<script>
+let entryMode = "sequential"; // "sequential" or "simultaneous"
+
+// 🧮 CALCULATION CORE WITH BIGINT (prevents integer overflow)
+function calcHareMath(H, C, T, A, O, mode) {
+  H = BigInt(H);
+  C = BigInt(C);
+  T = BigInt(T);
+  A = BigInt(A);
+  O = BigInt(O);
+
+  const perToken = (3n ** O) * (2n ** T);
+  const trigsPerHare = A + 1n;
+  const totalTriggers = C * trigsPerHare;
+
+  let totalRabbits = 0n;
+
+  if (C === 1n) {
+    totalRabbits = trigsPerHare * H * perToken;
+  } else if (mode === "simultaneous") {
+    // All C enter at once. Total hares on board = H + C.
+    // Each of the C hares sees (H + C - 1) other hares.
+    const otherHares = (H + C - 1n) > 0n ? (H + C - 1n) : 0n;
+    totalRabbits = C * trigsPerHare * otherHares * perToken;
+  } else {
+    // Sequential entry (1 by 1)
+    // Hare k sees H + k - 1 other hares
+    // sum_{k=1}^C (H + k - 1) = C*H + C*(C-1)/2
+    const sumHares = C * H + (C * (C - 1n)) / 2n;
+    totalRabbits = trigsPerHare * perToken * sumHares;
+  }
+
+  const finalHaresOnBoard = H + C;
+
+  return {
+    H, C, T, A, O,
+    perToken,
+    trigsPerHare,
+    totalTriggers,
+    totalRabbits,
+    finalHaresOnBoard
+  };
+}
+
+function readInputs() {
+  const H = Math.max(0, parseInt(document.getElementById('Hnum').value, 10) || 0);
+  const C = Math.max(1, parseInt(document.getElementById('Cnum').value, 10) || 1);
+  const T = Math.max(0, parseInt(document.getElementById('Tnum').value, 10) || 0);
+  const A = Math.max(0, parseInt(document.getElementById('Anum').value, 10) || 0);
+  const O = Math.max(0, parseInt(document.getElementById('Onum').value, 10) || 0);
+  const R = Math.max(0, parseInt(document.getElementById('Rnum').value, 10) || 0);
+  return { H, C, T, A, O, R };
+}
+
+function syncInputs(id) {
+  document.getElementById(id + "num").value = document.getElementById(id).value;
+  checkModeToggle();
+  updateResult();
+}
+
+function syncSliders(id) {
+  const slider = document.getElementById(id);
+  const numInput = document.getElementById(id + "num");
+  const val = parseInt(numInput.value, 10);
+  if (Number.isNaN(val)) return;
+
+  const min = parseInt(slider.min, 10);
+  const max = parseInt(slider.max, 10);
+  slider.value = Math.min(Math.max(val, min), max);
+  checkModeToggle();
+  updateResult();
+}
+
+function checkModeToggle() {
+  const C = parseInt(document.getElementById('Cnum').value, 10) || 1;
+  const wrap = document.getElementById('modeToggleWrap');
+  if (C > 1) {
+    wrap.style.display = 'flex';
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+function setEntryMode(mode) {
+  entryMode = mode;
+  document.getElementById('modeSequential').classList.toggle('active', mode === 'sequential');
+  document.getElementById('modeSimultaneous').classList.toggle('active', mode === 'simultaneous');
+  updateResult();
+}
+
+function updateResult() {
+  const { H, C, T, A, O, R } = readInputs();
+  const data = calcHareMath(H, C, T, A, O, entryMode);
+  const grandRabbits = data.totalRabbits + BigInt(R);
+  const finalHares = data.finalHaresOnBoard;
+
+  // Total board power calculation:
+  // Each Hare Apparent is a 2/2 creature.
+  // Each Rabbit token is a 1/1 creature.
+  const harePower = finalHares * 2n;
+  const rabbitPower = grandRabbits;
+  const totalPower = harePower + rabbitPower;
+
+  const resultBox = document.getElementById("result");
+  let html = `Rabbits created: ${data.totalRabbits.toLocaleString()}`;
+  
+  if (R > 0 || grandRabbits > data.totalRabbits) {
+    html += `<span class="result-sub">🐰 Total Rabbits now: <strong>${grandRabbits.toLocaleString()}</strong></span>`;
+  }
+  
+  html += `
+    <div style="margin-top: 8px;">
+      <span class="result-stat-pill">🐇 Total Hares: ${finalHares.toLocaleString()}</span>
+      <span class="result-stat-pill">⚔️ Total Board Power: ${totalPower.toLocaleString()}</span>
+      <span class="result-stat-pill">🛡️ Total Toughness: ${totalPower.toLocaleString()}</span>
+    </div>
+  `;
+
+  resultBox.innerHTML = html;
+}
+
+function buildStackDisplay(groups) {
+  const keys = Object.keys(groups).filter(k => groups[k] > 0n || groups[k] > 0);
+  if (!keys.length) return "";
+  let html = '<div class="stack-line">';
+  for (let i = 0; i < keys.length; i++) {
+    html += `<div class="stack-box"><strong>${groups[keys[i]].toLocaleString()}</strong>× ${keys[i]}</div>`;
+    if (i < keys.length - 1) html += '<div class="stack-arrow">←</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function resolveStack() {
+  const btn = document.getElementById("resolveBtn");
+  btn.textContent = "Resolving...";
+  btn.classList.add("resolving");
+
+  const { H, C, T, A, O, R } = readInputs();
+  const data = calcHareMath(H, C, T, A, O, entryMode);
+  const grandRabbits = data.totalRabbits + BigInt(R);
+
+  updateResult();
+
+  const perToken = data.perToken;
+  const trigs = data.trigsPerHare;
+  const totalCreated = data.totalRabbits;
+
+  // 📝 1. STARTING CONDITIONS
+  let nar = `<p class="section-heading">Starting Conditions:</p>
+  <ul>
+    <li>${perToken === 1n ? "Each token-creating effect creates its normal number of tokens (no doublers or triplers)." : `Each token you create will be multiplied by <strong>${perToken.toLocaleString()}×</strong> (<em>3<sup>${O}</sup> × 2<sup>${T}</sup></em>).`}</li>
+    <li>Each Hare Apparent Enter the Battlefield ability will trigger <strong>${trigs.toLocaleString()}</strong> time${trigs > 1n ? "s" : ""} (<em>1 base + ${A} additional trigger${A === 1 ? "" : "s"}</em>).</li>
+    <li>You start with <strong>${H}</strong> <em>Hare Apparent${H === 1 ? "" : "s"}</em> and <strong>${R}</strong> Rabbit token${R === 1 ? "" : "s"} on the battlefield.</li>
+  </ul>`;
+
+  // 📝 2. ENTERING & STACK PLACEMENT
+  if (C === 1) {
+    nar += `<p class="section-heading">You cast a Hare Apparent (No Offspring) and it resolves.</p>
+    <ul>
+      <li>It enters the battlefield as a regular 2/2 Rabbit creature.</li>
+      <li>It triggers its ETB ability <strong>${trigs.toLocaleString()}</strong> time${trigs > 1n ? "s" : ""}, placing the triggers onto the stack.</li>
+    </ul>`;
+
+    let stack = { "Make Rabbits ETB Trigger": trigs };
+    nar += buildStackDisplay(stack);
+
+    nar += `<p class="section-heading">Resolving the Stack</p>
+    <ul>
+      <li>The entering Hare Apparent checks how many <strong>other</strong> creatures you control named <em>Hare Apparent</em>.</li>
+      <li>It sees <strong>${H}</strong> other <em>Hare Apparent${H === 1 ? "" : "s"}</em> on the battlefield.</li>
+      <li>Each trigger makes <strong>${H}</strong> base Rabbits × <strong>${perToken.toLocaleString()}</strong> token multiplier = <strong>${(BigInt(H) * perToken).toLocaleString()}</strong> Rabbit token${(BigInt(H) * perToken) === 1n ? "" : "s"} per trigger.</li>
+      <li>All <strong>${trigs.toLocaleString()}</strong> trigger${trigs > 1n ? "s" : ""} resolve sequentially, creating a total of <strong>${totalCreated.toLocaleString()}</strong> 1/1 white Rabbit creature token${totalCreated === 1n ? "" : "s"}!</li>
+    </ul>`;
+
+    if (H === 0) {
+      nar += `<div class="stack-update">💡 Note: Hare Apparent only counts <em>other</em> creatures named Hare Apparent. Since this was your very first one, it saw 0 other Hares and made 0 Rabbits — but the next one you cast will see this Hare and start multiplying!</div>`;
+    }
+
+  } else if (entryMode === "simultaneous") {
+    nar += `<p class="section-heading"><strong>${C}</strong> Hare Apparents enter the battlefield simultaneously!</p>
+    <ul>
+      <li>E.g., via mass reanimation or blink (<em>Patriarch's Bidding</em>, <em>Raise the Past</em>, <em>Return to the Ranks</em>).</li>
+      <li>All <strong>${C}</strong> Hares enter together, bringing total Hares on the battlefield to <strong>${data.finalHaresOnBoard.toLocaleString()}</strong>.</li>
+      <li>Each entering Hare triggers <strong>${trigs.toLocaleString()}</strong> time${trigs > 1n ? "s" : ""}, putting a total of <strong>${data.totalTriggers.toLocaleString()}</strong> Make Rabbits triggers on the stack!</li>
+    </ul>`;
+
+    let stack = { "Make Rabbits ETB Trigger": data.totalTriggers };
+    nar += buildStackDisplay(stack);
+
+    const otherHares = data.finalHaresOnBoard - 1n;
+    const rabbitsPerTrigger = otherHares * perToken;
+
+    nar += `<p class="section-heading">Simultaneous Triggers Resolution</p>
+    <ul>
+      <li>When each trigger resolves, it checks how many <strong>other</strong> creatures you control named <em>Hare Apparent</em>.</li>
+      <li>Since all ${C} Hares are already on the battlefield, each entering Hare sees all existing Hares plus the other entering Hares: <strong>${otherHares.toLocaleString()}</strong> other Hares!</li>
+      <li>Each trigger creates <strong>${otherHares.toLocaleString()}</strong> × <strong>${perToken.toLocaleString()}</strong> = <strong>${rabbitsPerTrigger.toLocaleString()}</strong> Rabbit tokens.</li>
+      <li>Across all <strong>${data.totalTriggers.toLocaleString()}</strong> triggers, this creates <strong>${totalCreated.toLocaleString()}</strong> total Rabbit tokens!</li>
+    </ul>`;
+
+  } else {
+    // Sequential
+    nar += `<p class="section-heading"><strong>${C}</strong> Hare Apparents enter sequentially (one-by-one / Ripple)</p>
+    <ul>
+      <li>E.g., cast one after another or cascading with <em>Thrumming Stone</em> (Ripple 4).</li>
+      <li>Each Hare enters, resolves all of its triggers, and increases the Hare count on the battlefield before the next one enters!</li>
+    </ul>`;
+
+    let currentHares = BigInt(H);
+    const maxDetailed = 5;
+    const isCondensed = C > maxDetailed;
+
+    for (let k = 1; k <= C; k++) {
+      const otherSeen = currentHares;
+      const rabForThisHare = trigs * otherSeen * perToken;
+      currentHares += 1n;
+
+      if (!isCondensed || k <= 3 || k === C) {
+        nar += `<p class="section-heading" style="font-size:0.95em;">Hare #${k} Enters (Current Board: ${currentHares.toLocaleString()} Hares)</p>
+        <ul>
+          <li>Enters and sees <strong>${otherSeen.toLocaleString()}</strong> other <em>Hare Apparent${otherSeen === 1n ? "" : "s"}</em>.</li>
+          <li>Places <strong>${trigs.toLocaleString()}</strong> Make Rabbits trigger${trigs > 1n ? "s" : ""} on the stack.</li>
+          <li>Each trigger makes ${(otherSeen * perToken).toLocaleString()} Rabbit token${(otherSeen * perToken) === 1n ? "" : "s"}, yielding <strong>${rabForThisHare.toLocaleString()}</strong> Rabbit tokens from this Hare.</li>
+        </ul>`;
+      } else if (k === 4) {
+        nar += `<p class="section-heading" style="font-size:0.9em; font-style:italic; color:#725a2e;">... Hares #4 through #${C - 1} enter sequentially and each sees an increasing number of Hares ...</p>`;
+      }
+    }
+  }
+
+  // 📝 3. FINAL BOARD STATE
+  const finalHares = data.finalHaresOnBoard;
+  const harePower = finalHares * 2n;
+  const rabbitPower = grandRabbits;
+  const totalPower = harePower + rabbitPower;
+
+  nar += `<p class="section-heading">Final Board State</p>
+  <ul>
+    <li>When all spells and abilities finish resolving, you control:
+      <ul>
+        <li><strong>${finalHares.toLocaleString()}</strong> regular 2/2 <em>Hare Apparent${finalHares === 1n ? "" : "s"}</em></li>
+        <li><strong>${grandRabbits.toLocaleString()}</strong> 1/1 white Rabbit creature token${grandRabbits === 1n ? "" : "s"}${R > 0 ? ` (<strong>${totalCreated.toLocaleString()}</strong> newly made + <strong>${R}</strong> preexisting)` : ""}</li>
+        <li><strong>${(finalHares + grandRabbits).toLocaleString()}</strong> total creatures representing <strong>${totalPower.toLocaleString()}</strong> power and <strong>${totalPower.toLocaleString()}</strong> toughness on the board!</li>
+      </ul>
+    </li>
+  </ul>`;
+
+  const narrativeBox = document.getElementById("narrative");
+  narrativeBox.innerHTML = nar;
+
+  // Smooth scroll and unroll animation
+  narrativeBox.classList.remove("show-scroll");
+  void narrativeBox.offsetWidth; // trigger reflow
+  narrativeBox.classList.add("show-scroll");
+
+  // MathJax re-render if available
+  if (window.MathJax && window.MathJax.typesetPromise) {
+    window.MathJax.typesetPromise([narrativeBox]).catch(() => {}).finally(() => {
+      btn.textContent = "Resolve Stack";
+      btn.classList.remove("resolving");
+    });
+  } else {
+    setTimeout(() => {
+      btn.textContent = "Resolve Stack";
+      btn.classList.remove("resolving");
+    }, 400);
+  }
+}
+
+// ⚡ PRESETS HANDLER
+function applyPreset(name) {
+  if (name === 'standard') {
+    document.getElementById('H').value = 3;
+    document.getElementById('Hnum').value = 3;
+    document.getElementById('C').value = 1;
+    document.getElementById('Cnum').value = 1;
+    document.getElementById('T').value = 0;
+    document.getElementById('Tnum').value = 0;
+    document.getElementById('O').value = 0;
+    document.getElementById('Onum').value = 0;
+    document.getElementById('A').value = 0;
+    document.getElementById('Anum').value = 0;
+  }
+  checkModeToggle();
+  updateResult();
+}
+
+function addTrigger(card) {
+  const aInput = document.getElementById('Anum');
+  const cur = parseInt(aInput.value, 10) || 0;
+  aInput.value = cur + 1;
+  syncSliders('A');
+}
+
+function addDoubler() {
+  const tInput = document.getElementById('Tnum');
+  const cur = parseInt(tInput.value, 10) || 0;
+  tInput.value = cur + 1;
+  syncSliders('T');
+}
+
+function addTripler() {
+  const oInput = document.getElementById('Onum');
+  const cur = parseInt(oInput.value, 10) || 0;
+  oInput.value = cur + 1;
+  syncSliders('O');
+}
+
+function addEnteringHare() {
+  const cInput = document.getElementById('Cnum');
+  const cur = parseInt(cInput.value, 10) || 1;
+  cInput.value = cur + 1;
+  syncSliders('C');
+}
+
+function resetInputs() {
+  ['H', 'T', 'O', 'A'].forEach(id => {
+    document.getElementById(id).value = 0;
+    document.getElementById(id + 'num').value = 0;
+  });
+  document.getElementById('C').value = 1;
+  document.getElementById('Cnum').value = 1;
+  document.getElementById('Rnum').value = 0;
+  entryMode = 'sequential';
+  document.getElementById('modeSequential').classList.add('active');
+  document.getElementById('modeSimultaneous').classList.remove('active');
+  checkModeToggle();
+  updateResult();
+  const narrativeBox = document.getElementById("narrative");
+  narrativeBox.classList.remove("show-scroll");
+  narrativeBox.style.display = "none";
+}
+
+function copyBreakdown() {
+  const { H, C, T, A, O, R } = readInputs();
+  const data = calcHareMath(H, C, T, A, O, entryMode);
+  const grandRabbits = data.totalRabbits + BigInt(R);
+  const finalHares = data.finalHaresOnBoard;
+  const totalPower = finalHares * 2n + grandRabbits;
+
+  const text = `🪄 HareBrain — Hare Apparent Calculation (No Offspring)
+• Existing Hares on board: ${H}
+• Hares Entering: ${C} (${C > 1 ? entryMode : 'single cast'})
+• Token Multiplier: ${data.perToken}x (Doublers: ${T}, Triplers: ${O})
+• Additional Triggers: ${A} (Total triggers per Hare: ${data.trigsPerHare})
+• Existing Rabbits: ${R}
+────────────────────────────────────────
+🐇 Rabbits Created: ${data.totalRabbits.toLocaleString()}
+🐰 Total Rabbits on Board: ${grandRabbits.toLocaleString()}
+🐇 Total Hare Apparents: ${finalHares.toLocaleString()}
+⚔️ Total Board Power/Toughness: ${totalPower.toLocaleString()}/${totalPower.toLocaleString()}
+💡 Original concept by solveforhare.com | Built with AI`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    alert("Board breakdown copied to clipboard!");
+  }).catch(() => {
+    prompt("Copy breakdown:", text);
+  });
+}
+
+// 🧩 INPUT FOCUS / CLEAR LOGIC
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('input[type="number"]').forEach(input => {
+    input.addEventListener("focus", () => {
+      if (input.value === "0") input.value = "";
+    });
+    input.addEventListener("blur", () => {
+      if (input.value.trim() === "") {
+        input.value = input.id === "Cnum" ? "1" : "0";
+        const sliderId = input.id.replace("num", "");
+        if (document.getElementById(sliderId)) {
+          syncSliders(sliderId);
+        }
+        updateResult();
+      }
+    });
+  });
+
+  checkModeToggle();
+  updateResult();
+});
+</script>
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$']]
+  },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</body>
+</html>
