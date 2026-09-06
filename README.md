@@ -72,6 +72,7 @@ Total entering creatures $E = C + \text{Offspring Hares} + X$. Every entering cr
 - 🧱 **Interactive Stack Resolution**: Click **Resolve Stack** (*Step-by-step walkthrough of token creation*) for a comprehensive, illustrated breakdown of how spells and abilities resolve.
 - 📐 **Collapsible "Nerd Math"**: View comprehensive LaTeX formulas and rules breakdowns on demand without cluttering the screen.
 - 📋 **Formatted Discord Summary**: A dedicated **Copy Text Summary** button situated conveniently at the bottom of the narrative walkthrough, perfect for pasting into Discord or SpellTable chat.
+- 💬 **Secure Feedback & Bug Reporting**: Integrated feedback dialog with Cloudflare Turnstile human verification and automatic board state attachment, backed by a serverless Cloudflare Worker proxy that keeps your email address 100% private and dispatches instant alerts directly to Discord.
 - 📱 **Tabletop Ready**: Clean, mobile-optimized, responsive layout with auto-highlighting number boxes for rapid, friction-free typing during Friday Night Magic.
 - 🌓 **Dark & Light Modes**: Seamless 1-tap theme toggle, defaulting to dark mode with saved preference support.
 - 🚀 **Zero Dependencies**: Pure HTML5, CSS3, and modern Vanilla JS with arbitrary-precision `BigInt`. No build step or server required.

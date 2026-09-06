@@ -63,7 +63,9 @@
   })();
 </script>
 
-  <link rel="stylesheet" href="css/style.css?v=3.7">
+  <link rel="stylesheet" href="css/style.css?v=3.8">
+  <!-- 🛡️ CLOUDFLARE TURNSTILE BOT PROTECTION -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body>
@@ -269,9 +271,67 @@
     <p>🐇 <strong>HareBrain:</strong> Dedicated to every MTG player who loves filling the battlefield with hundreds of rabbits.</p>
   </div>
 
+  <!-- 💬 FEEDBACK & BUG REPORT TRIGGER -->
+  <div class="feedback-trigger-wrap">
+    <button type="button" class="feedback-trigger-btn" onclick="openFeedbackModal()" title="Report a bug, suggest a feature, or send feedback">
+      💬 Feedback &amp; Bug Reports
+    </button>
+  </div>
+
   <!-- ✒️ AUTHOR SIGNATURE -->
   <div class="signature-box">
     Brought to you by <strong>BrainVirus</strong>
+  </div>
+</div>
+
+<!-- 💬 FEEDBACK & BUG REPORT MODAL -->
+<div id="feedbackModal" class="modal-overlay" style="display: none;" onclick="handleModalBackdrop(event)" role="dialog" aria-modal="true" aria-labelledby="feedbackModalTitle">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 id="feedbackModalTitle" class="modal-title">💬 Feedback &amp; Bug Report</h2>
+      <button type="button" class="modal-close-btn" onclick="closeFeedbackModal()" aria-label="Close dialog">✕</button>
+    </div>
+
+    <form id="feedbackForm" onsubmit="submitFeedback(event)">
+      <div class="modal-field">
+        <label for="feedbackType">Category:</label>
+        <select id="feedbackType" class="modal-select">
+          <option value="Bug Report">🐞 Bug Report</option>
+          <option value="Feature Request">💡 Feature Request</option>
+          <option value="Math / Rule Clarification">🧮 Math or Rule Clarification</option>
+          <option value="General Feedback">💬 General Feedback</option>
+        </select>
+      </div>
+
+      <div class="modal-field">
+        <label for="feedbackMessage">Message:</label>
+        <textarea id="feedbackMessage" class="modal-textarea" rows="4" required placeholder="Describe what happened, what felt off, or what you'd like added..."></textarea>
+      </div>
+
+      <div class="modal-field">
+        <label for="feedbackContact">Your Handle or Email (Optional):</label>
+        <input type="text" id="feedbackContact" class="modal-input" placeholder="e.g. Discord username or email (if you'd like a reply)">
+      </div>
+
+      <div class="modal-checkbox-row">
+        <label class="checkbox-label" for="includeBoardState">
+          <input type="checkbox" id="includeBoardState" checked>
+          <span>📎 Attach current board state link <small class="checkbox-subtext">(Helps instantly reproduce your exact hare numbers &amp; triggers)</small></span>
+        </label>
+      </div>
+
+      <!-- Cloudflare Turnstile Widget -->
+      <div class="turnstile-container">
+        <div id="turnstileWidget" class="cf-turnstile" data-sitekey="0x4AAAAAAEqcCWhHVl9FYTwk" data-action="feedback" data-theme="auto"></div>
+      </div>
+
+      <div id="feedbackStatus" class="feedback-status" style="display: none;"></div>
+
+      <div class="modal-actions">
+        <button type="button" class="preset-chip" onclick="closeFeedbackModal()">Cancel</button>
+        <button type="submit" id="submitFeedbackBtn" class="preset-chip primary">Send Feedback</button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -279,7 +339,7 @@
 <!-- ⚙️ JAVASCRIPT LOGIC -->
 <!-- ══════════════════════════════════════════════ -->
   <!-- ⚙️ SCRIPTS -->
-  <script src="js/app.js?v=3.7"></script>
+  <script src="js/app.js?v=3.9"></script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </body>
 </html>

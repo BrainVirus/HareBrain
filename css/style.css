@@ -1662,4 +1662,284 @@ body.dark-mode .preset-chip.life-chip:hover {
   background: #184224 !important;
 }
 
+/* ══════════════════════════════════════════════ */
+/* 💬 FEEDBACK & BUG REPORT MODAL */
+/* ══════════════════════════════════════════════ */
+.feedback-trigger-wrap {
+  margin: 14px auto 8px;
+  text-align: center;
+}
+
+.feedback-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(42, 104, 165, 0.08);
+  border: 1.5px solid #d8b552;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-family: "Cardo", Georgia, serif;
+  font-size: 0.88em;
+  font-weight: 700;
+  color: #5a421b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.feedback-trigger-btn:hover {
+  background: rgba(42, 104, 165, 0.16);
+  border-color: #2a68a5;
+  color: #124e88;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(42, 104, 165, 0.15);
+}
+
+html[data-theme="dark"] .feedback-trigger-btn,
+body[data-theme="dark"] .feedback-trigger-btn,
+body.dark-mode .feedback-trigger-btn {
+  background: rgba(37, 99, 235, 0.12) !important;
+  border-color: #d4af37 !important;
+  color: #ffd54f !important;
+}
+
+html[data-theme="dark"] .feedback-trigger-btn:hover,
+body[data-theme="dark"] .feedback-trigger-btn:hover,
+body.dark-mode .feedback-trigger-btn:hover {
+  background: rgba(37, 99, 235, 0.22) !important;
+  border-color: #ffd54f !important;
+  box-shadow: 0 0 12px rgba(255, 213, 79, 0.25) !important;
+}
+
+/* Modal Overlay & Backdrop */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: fadeInModal 0.2s ease-out;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-card {
+  background: #fbf6e8;
+  border: 2px solid #d8b552;
+  border-radius: 18px;
+  max-width: 480px;
+  width: 100%;
+  padding: 22px 24px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  font-family: "Cardo", Georgia, serif;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  position: relative;
+}
+
+html[data-theme="dark"] .modal-card,
+body[data-theme="dark"] .modal-card,
+body.dark-mode .modal-card {
+  background: #141724 !important;
+  border-color: #d4af37 !important;
+  color: #ded7c8 !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.15) !important;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(216, 181, 82, 0.3);
+  padding-bottom: 10px;
+}
+
+.modal-title {
+  font-size: 1.25em;
+  margin: 0;
+  color: #5a421b;
+  font-weight: 700;
+}
+
+html[data-theme="dark"] .modal-title,
+body[data-theme="dark"] .modal-title,
+body.dark-mode .modal-title {
+  color: #ffd54f !important;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.3em;
+  cursor: pointer;
+  color: #888;
+  padding: 2px 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.1);
+}
+
+.modal-field {
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.modal-field label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.9em;
+  color: #5a421b;
+  margin-bottom: 4px;
+  text-align: left;
+  justify-content: flex-start;
+}
+
+html[data-theme="dark"] .modal-field label,
+body[data-theme="dark"] .modal-field label,
+body.dark-mode .modal-field label {
+  color: #ffd54f !important;
+}
+
+.modal-select,
+.modal-input,
+.modal-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 0.92em;
+  border: 1.5px solid #d8b552;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #2c2c2c;
+  transition: border-color 0.2s ease;
+}
+
+.modal-select:focus,
+.modal-input:focus,
+.modal-textarea:focus {
+  outline: none;
+  border-color: #2a68a5;
+  box-shadow: 0 0 6px rgba(42, 104, 165, 0.3);
+}
+
+html[data-theme="dark"] .modal-select,
+html[data-theme="dark"] .modal-input,
+html[data-theme="dark"] .modal-textarea,
+body[data-theme="dark"] .modal-select,
+body[data-theme="dark"] .modal-input,
+body[data-theme="dark"] .modal-textarea,
+body.dark-mode .modal-select,
+body.dark-mode .modal-input,
+body.dark-mode .modal-textarea {
+  background: #1d2133 !important;
+  border-color: #a3822e !important;
+  color: #f1ebd9 !important;
+}
+
+.modal-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-checkbox-row {
+  margin: 10px 0 12px;
+  text-align: left;
+}
+
+.modal-checkbox-row .checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.88em;
+  cursor: pointer;
+  user-select: none;
+  color: #5a421b;
+}
+
+html[data-theme="dark"] .modal-checkbox-row .checkbox-label,
+body[data-theme="dark"] .modal-checkbox-row .checkbox-label,
+body.dark-mode .modal-checkbox-row .checkbox-label {
+  color: #ded7c8 !important;
+}
+
+.modal-checkbox-row input[type="checkbox"] {
+  margin-top: 3px;
+  cursor: pointer;
+  accent-color: #2a68a5;
+}
+
+.checkbox-subtext {
+  display: block;
+  font-size: 0.82em;
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+.turnstile-container {
+  display: flex;
+  justify-content: center;
+  margin: 14px 0 12px;
+  min-height: 65px;
+}
+
+.feedback-status {
+  margin: 10px 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.9em;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.feedback-status.success {
+  background: rgba(39, 174, 96, 0.15);
+  border: 1px solid #27ae60;
+  color: #1e824c;
+}
+
+.feedback-status.error {
+  background: rgba(231, 76, 60, 0.15);
+  border: 1px solid #e74c3c;
+  color: #c0392b;
+}
+
+html[data-theme="dark"] .feedback-status.success,
+body[data-theme="dark"] .feedback-status.success,
+body.dark-mode .feedback-status.success {
+  background: rgba(39, 174, 96, 0.2) !important;
+  border-color: #2ecc71 !important;
+  color: #2ecc71 !important;
+}
+
+html[data-theme="dark"] .feedback-status.error,
+body[data-theme="dark"] .feedback-status.error,
+body.dark-mode .feedback-status.error {
+  background: rgba(231, 76, 60, 0.25) !important;
+  border-color: #e74c3c !important;
+  color: #ff6b6b !important;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+
 

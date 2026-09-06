@@ -1177,3 +1177,148 @@ document.addEventListener("DOMContentLoaded", () => {
   checkModeToggle();
   updateResult();
 });
+
+// ══════════════════════════════════════════════
+// 💬 FEEDBACK & BUG REPORT MODAL (TURNSTILE PROTECTED)
+// ══════════════════════════════════════════════
+// Custom Domain endpoint for feedback worker
+let FEEDBACK_API_ENDPOINT = "https://feedback.harebrain.win";
+
+function openFeedbackModal() {
+  const modal = document.getElementById("feedbackModal");
+  if (modal) {
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+    const status = document.getElementById("feedbackStatus");
+    if (status) {
+      status.style.display = "none";
+      status.className = "feedback-status";
+    }
+    const msg = document.getElementById("feedbackMessage");
+    if (msg) setTimeout(() => msg.focus(), 150);
+  }
+}
+
+function closeFeedbackModal() {
+  const modal = document.getElementById("feedbackModal");
+  if (modal) {
+    modal.style.display = "none";
+    document.body.style.overflow = "";
+    const status = document.getElementById("feedbackStatus");
+    if (status) {
+      status.style.display = "none";
+      status.className = "feedback-status";
+    }
+  }
+}
+
+function handleModalBackdrop(event) {
+  if (event.target && event.target.id === "feedbackModal") {
+    closeFeedbackModal();
+  }
+}
+
+// Close on Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const modal = document.getElementById("feedbackModal");
+    if (modal && modal.style.display === "flex") {
+      closeFeedbackModal();
+    }
+  }
+});
+
+async function submitFeedback(event) {
+  event.preventDefault();
+  const btn = document.getElementById("submitFeedbackBtn");
+  const status = document.getElementById("feedbackStatus");
+
+  // Retrieve Turnstile token from cf-turnstile-response input
+  const turnstileToken = document.querySelector('[name="cf-turnstile-response"]')?.value;
+  if (!turnstileToken) {
+    if (status) {
+      status.textContent = "⚠️ Please complete the verification check above.";
+      status.className = "feedback-status error";
+      status.style.display = "block";
+    }
+    return;
+  }
+
+  const type = document.getElementById("feedbackType")?.value || "Feedback";
+  const message = document.getElementById("feedbackMessage")?.value.trim();
+  const contact = document.getElementById("feedbackContact")?.value.trim();
+  const includeBoard = document.getElementById("includeBoardState")?.checked;
+  const boardUrl = includeBoard ? window.location.href : null;
+
+  if (!message) {
+    if (status) {
+      status.textContent = "⚠️ Please enter a message.";
+      status.className = "feedback-status error";
+      status.style.display = "block";
+    }
+    return;
+  }
+
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Sending...";
+  }
+  if (status) {
+    status.textContent = "⏳ Sending feedback...";
+    status.className = "feedback-status";
+    status.style.display = "block";
+  }
+
+  try {
+    const response = await fetch(FEEDBACK_API_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type,
+        message,
+        contact,
+        boardUrl,
+        turnstileToken
+      })
+    });
+
+    const result = await response.json();
+
+    if (response.ok && result.success) {
+      if (status) {
+        status.textContent = "✅ Thank you! Your feedback has been sent.";
+        status.className = "feedback-status success";
+        status.style.display = "block";
+      }
+      const form = document.getElementById("feedbackForm");
+      if (form) form.reset();
+
+      // Reset Turnstile widget so future submissions generate a fresh token
+      if (window.turnstile) {
+        try { window.turnstile.reset(); } catch(e) {}
+      }
+
+      setTimeout(() => {
+        closeFeedbackModal();
+      }, 2200);
+    } else {
+      throw new Error(result.error || `Server responded with ${response.status}`);
+    }
+  } catch (err) {
+    if (status) {
+      status.textContent = `❌ Unable to send: ${err.message || "Please check connection or retry."}`;
+      status.className = "feedback-status error";
+      status.style.display = "block";
+    }
+    // Reset Turnstile token on failure so user can re-verify and retry
+    if (window.turnstile) {
+      try { window.turnstile.reset(); } catch(e) {}
+    }
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "Send Feedback";
+    }
+  }
+}
+
