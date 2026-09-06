@@ -1,2 +1,3 @@
-cloudflare-worker/DEPLOYMENT_GUIDE.md
-cloudflare-worker/worker.js
+# OS metadata
+.DS_Store
+Thumbs.db
