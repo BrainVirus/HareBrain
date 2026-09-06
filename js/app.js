@@ -10,6 +10,7 @@ window.MathJax = {
 let entryMode = "sequential"; // "sequential" or "simultaneous"
 let payOffspring = false;     // false = standard, true = paid {2} offspring
 let uiMode = "simple";        // "simple" or "advanced"
+let isInitialized = false;    // Prevents overwriting URL state during initial page boot
 
 function setOffspring(val) {
   const wasOffspring = payOffspring;
@@ -792,6 +793,7 @@ function showToast(msg) {
 
 // 🔗 URL STATE MANAGEMENT (DEEP LINKING)
 function updateUrlState() {
+  if (!isInitialized) return;
   const { H, C, T, A, O, R, D, B, L, K } = readInputs();
   const params = new URLSearchParams();
   if (H > 0) params.set("h", H);
@@ -1139,6 +1141,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initUiMode();
   loadUrlState();
+  isInitialized = true;
 
   document.querySelectorAll('input[type="number"]').forEach(input => {
     input.addEventListener("focus", function() {
