@@ -1185,7 +1185,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // 💬 FEEDBACK & BUG REPORT MODAL (TURNSTILE PROTECTED)
 // ══════════════════════════════════════════════
 // Custom Domain endpoint for feedback worker
-let FEEDBACK_API_ENDPOINT = "https://feedback.harebrain.win";
+const FEEDBACK_API_ENDPOINT = "https://feedback.harebrain.win";
 
 function openFeedbackModal() {
   const modal = document.getElementById("feedbackModal");

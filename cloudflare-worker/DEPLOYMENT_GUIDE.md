@@ -56,3 +56,27 @@ This guide walks you through setting up the free Cloudflare Worker to receive fe
 4. Commit and push to GitHub!
 
 Now, whenever a user submits feedback or reports a bug on `harebrain.win`, you'll receive an instant, formatted Discord notification with full calculation details and a 1-click link to reproduce their board state!
+
+---
+
+### Step 5: (Optional) Set up Free Cloudflare WAF Rate Limiting
+
+Cloudflare includes 1 free Rate Limiting rule per zone for defense-in-depth:
+1. In Cloudflare Dashboard, select your domain (`harebrain.win`).
+2. Go to **Security** ➔ **WAF** ➔ **Rate limiting rules**.
+3. Click **Create rule**.
+4. Configure rule:
+   - **Rule name**: `Rate limit feedback endpoint`
+   - **When incoming requests match**: `Hostname equals feedback.harebrain.win`
+   - **Rate**: `5` requests per `1 minute`
+   - **Action**: `Block` (for 1 minute)
+5. Click **Deploy**.
+
+---
+
+### 🔄 Updating the Worker Code in the Future
+
+Whenever `cloudflare-worker/worker.js` is updated:
+1. Go to Cloudflare Dashboard ➔ **Workers & Pages** ➔ `harebrain-feedback`.
+2. Click **Edit code**.
+3. Paste the updated `worker.js` code and click **Deploy**.

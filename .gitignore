@@ -1,0 +1,25 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment & secrets safety net
+.env
+.env.*
+wrangler.toml
+*.pem
+*.key
+
+# Node / Build artifacts
+node_modules/
+npm-debug.log*
+
+# Scratch & temporary logs
+scratch/
+*.log
