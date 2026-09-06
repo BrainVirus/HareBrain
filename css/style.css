@@ -630,6 +630,18 @@ body.dark-mode .signature-box strong {
   .offspring-count-group input[type="number"] {
     width: 60px;
   }
+  .simple-mode-hint,
+  .mode-simple .simple-mode-hint {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+    padding: 12px 14px;
+    line-height: 1.35;
+  }
+  .simple-hint-action {
+    display: inline-block;
+    margin-top: 2px;
+  }
 }
 
 @media (max-width: 420px) {
