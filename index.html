@@ -6,7 +6,7 @@
 <title>HareBrain — MTG Hare Apparent Rabbit Token Calculator</title>
 <meta name="description" content="Calculate exactly how many Rabbit tokens you make from Hare Apparent in Magic: The Gathering — with token doublers, triplers, and abilities from cards like Delney, Zinnia, Panharmonicon, Thrumming Stone, and others!">
 <meta name="keywords" content="Hare Apparent, MTG calculator, rabbit token calculator, Hare Apparent tokens, Magic the Gathering, EDH, Commander, Thrumming Stone, Delney, Offspring">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect x=%2210%22 y=%226%22 width=%2280%22 height=%2288%22 rx=%2216%22 fill=%22%231e293b%22 stroke=%22%2364748b%22 stroke-width=%224%22/><rect x=%2220%22 y=%2216%22 width=%2260%22 height=%2220%22 rx=%224%22 fill=%22%2386efac%22 stroke=%22%2322c55e%22 stroke-width=%222%22/><text x=%2274%22 y=%2232%22 font-family=%22monospace,sans-serif%22 font-weight=%22bold%22 font-size=%2215%22 text-anchor=%22end%22 fill=%22%2314532d%22>42</text><rect x=%2220%22 y=%2243%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23ef4444%22/><rect x=%2242%22 y=%2243%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%2394a3b8%22/><rect x=%2264%22 y=%2243%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23f59e0b%22/><rect x=%2220%22 y=%2259%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23f8fafc%22/><rect x=%2242%22 y=%2259%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23f8fafc%22/><rect x=%2264%22 y=%2259%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23f59e0b%22/><rect x=%2220%22 y=%2275%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23f8fafc%22/><rect x=%2242%22 y=%2275%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23f8fafc%22/><rect x=%2264%22 y=%2275%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%233b82f6%22/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect x=%2210%22 y=%226%22 width=%2280%22 height=%2288%22 rx=%2216%22 fill=%22%231e293b%22 stroke=%22%2364748b%22 stroke-width=%224%22/><rect x=%2220%22 y=%2216%22 width=%2260%22 height=%2220%22 rx=%224%22 fill=%22%2386efac%22 stroke=%22%2322c55e%22 stroke-width=%222%22/><text x=%2274%22 y=%2232%22 font-family=%22monospace,sans-serif%22 font-weight=%22bold%22 font-size=%2215%22 text-anchor=%22end%22 fill=%22%2314532d%22>42</text><rect x=%2220%22 y=%2243%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23ef4444%22/><rect x=%2242%22 y=%2243%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%2394a3b8%22/><rect x=%226422 y=%2243%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23f59e0b%22/><rect x=%2220%22 y=%2259%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23f8fafc%22/><rect x=%2242%22 y=%2259%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23f8fafc%22/><rect x=%2264%22 y=%2259%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23f59e0b%22/><rect x=%2220%22 y=%2275%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23f8fafc%22/><rect x=%2242%22 y=%2275%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%23f8fafc%22/><rect x=%2264%22 y=%2275%22 width=%2216%22 height=%2212%22 rx=%223%22 fill=%22%233b82f6%22/></svg>">
 <meta property="og:title" content="HareBrain — MTG Hare Apparent Rabbit Token Calculator">
 <meta property="og:description" content="Calculate exactly how many Rabbit tokens you make from Hare Apparent — with doublers, triplers, Delney, Panharmonicon, Ripple cascades, and Offspring.">
 <meta property="og:type" content="website">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://api.scryfall.com/cards/named?exact=Hare%20Apparent&format=image">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="HareBrain — MTG Hare Apparent Rabbit Token Calculator">
-<meta name="twitter:description" content="Fast, flexible MTG calculator for Hare Apparent decks. Handles standard casts, Ripple chains, mass reanimation, and Offspring.">
+<meta name="twitter:description" content="Fast, flexible MTG calculator for Hare Apparent decks. Handles standard casts, Ripple chains, Flicker/Mass Reanimate, and Offspring.">
 <meta name="twitter:image" content="https://api.scryfall.com/cards/named?exact=Hare%20Apparent&format=image">
 
 <!-- 🔍 STRUCTURED DATA (JSON-LD) -->
@@ -55,23 +55,31 @@
         saved = "dark";
       }
       document.documentElement.setAttribute("data-theme", saved);
+      var savedMode = localStorage.getItem("harebrain_ui_mode");
+      if (savedMode === "simple" || !savedMode) {
+        document.documentElement.classList.add("mode-simple");
+      }
     } catch(e) {}
   })();
 </script>
 
-  <link rel="stylesheet" href="css/style.css?v=3.1">
+  <link rel="stylesheet" href="css/style.css?v=3.6">
 </head>
 
 <body>
 <div class="card">
   <div class="header-top-bar">
-    <span class="tag-badge">MTG Hare Apparent Token Calculator</span>
+    <div class="view-mode-toggle" role="group" aria-label="Calculator Mode">
+      <button type="button" id="modeSimpleBtn" class="mode-toggle-btn active" onclick="setUiMode('simple')" title="Simple Mode — streamlined for quick tabletop games">⚡ Simple</button>
+      <button type="button" id="modeAdvancedBtn" class="mode-toggle-btn" onclick="setUiMode('advanced')" title="Advanced Mode — full warren with Ripple, Delney, Triplers, and ETB Synergy">🔬 Advanced</button>
+    </div>
     <button id="themeToggleBtn" class="theme-btn" onclick="toggleTheme()" title="Currently on Dark Theme (click to switch to Light Theme)" aria-label="Switch Theme">
       <span id="themeIcon">🌙</span> <span id="themeText">Dark Theme</span>
     </button>
   </div>
+  <span class="tag-badge">MTG Hare Apparent Token Calculator</span>
   <h1>🐇 HareBrain 🧠</h1>
-  <p class="subtitle">A fast, flexible Rabbit Token calculator for <strong>Hare Apparent Decks</strong>.<br>Handles standard casts, Ripple chains, mass reanimation, and optional <em>Offspring</em>.</p>
+  <p class="subtitle">A fast, flexible Rabbit Token calculator for <strong>Hare Apparent Decks</strong>.<br>Handles standard casts, Ripple chains, Flicker/Mass Reanimate, and optional <em>Offspring</em>.</p>
 
   <!-- ↺ RESET BUTTON -->
   <div class="presets-wrap">
@@ -92,11 +100,11 @@
   </div>
 
   <!-- 💥 Entry Mode Selector (Visible when C > 1) -->
-  <div id="modeToggleWrap" class="mode-toggle-group" style="display: none;">
+  <div id="modeToggleWrap" class="mode-toggle-group advanced-only" style="display: none;">
     <span class="mode-label">Entry Mode for C &gt; 1:</span>
     <div class="mode-pills">
       <div id="modeSequential" class="mode-pill active" onclick="setEntryMode('sequential')" title="Cast one by one or ripple through Thrumming Stone">⚡ Sequential (Ripple / Casts)</div>
-      <div id="modeSimultaneous" class="mode-pill" onclick="setEntryMode('simultaneous')" title="Enter all at once via Patriarch's Bidding, Raise the Past, Return to the Ranks">💥 Simultaneous (Mass Reanimate)</div>
+      <div id="modeSimultaneous" class="mode-pill" onclick="setEntryMode('simultaneous')" title="Enter all at once via Ghostway, Eerie Interlude, Patriarch's Bidding, Raise the Past, Return to the Ranks">💥 Simultaneous (Flicker/Mass Reanimate)</div>
     </div>
   </div>
 
@@ -116,37 +124,37 @@
     <input id="Knum" type="number" value="1" min="1" max="2" oninput="syncSliders('K')">
   </div>
 
-  <div class="slider-group">
+  <div class="slider-group advanced-only">
     <label for="T">✨ Token Doublers (T):</label>
     <input id="T" type="range" min="0" max="20" value="0" oninput="syncInputs('T')">
     <input id="Tnum" type="number" value="0" min="0" max="40" oninput="syncSliders('T')">
   </div>
 
-  <div class="slider-group">
+  <div class="slider-group advanced-only">
     <label for="O">⚜️ Token Triplers (O):</label>
     <input id="O" type="range" min="0" max="5" value="0" oninput="syncInputs('O')">
     <input id="Onum" type="number" value="0" min="0" max="20" oninput="syncSliders('O')">
   </div>
 
-  <div class="slider-group">
+  <div class="slider-group advanced-only">
     <label for="A">🔁 Additional Triggers (A):</label>
     <input id="A" type="range" min="0" max="20" value="0" oninput="syncInputs('A')">
     <input id="Anum" type="number" value="0" min="0" max="40" oninput="syncSliders('A')">
   </div>
 
-  <div class="slider-group">
+  <div class="slider-group advanced-only">
     <label for="Rnum">🐰 Existing Rabbit Tokens (R):</label>
     <input id="Rnum" type="number" value="0" min="0" max="1000000000" oninput="updateResult()">
   </div>
 
   <!-- 🩸 ETB TRIGGERS & SYNERGY (BURN / LIFE GAIN / LIFE LOSS) - OPTIONAL COLLAPSIBLE -->
-  <div class="synergy-toggle-wrap">
+  <div class="synergy-toggle-wrap advanced-only">
     <button type="button" id="toggleSynergyBtn" class="btn-secondary synergy-toggle-btn" onclick="toggleSynergySection()" aria-expanded="false" aria-controls="synergyBox" title="Toggle optional ETB Damage & Life Gain/Loss synergy inputs">
       🩸 ETB Damage &amp; Life Gain/Loss (Optional) ▾
     </button>
   </div>
 
-  <div id="synergyBox" class="synergy-box" style="display: none;">
+  <div id="synergyBox" class="synergy-box advanced-only" style="display: none;">
     <div class="synergy-title">🩸 ETB Damage &amp; Life Gain/Loss Synergy</div>
     <span class="synergy-subtitle">Damage dealt to opponents, life lost by you, and life gained by you per entering creature or token</span>
     
@@ -169,6 +177,12 @@
     </div>
   </div>
 
+  <!-- 🔬 SWITCH TO ADVANCED MODE HINT (Visible in Simple Mode) -->
+  <div id="simpleModeHint" class="simple-mode-hint" onclick="setUiMode('advanced')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setUiMode('advanced');}" role="button" tabindex="0" title="Switch to Advanced Mode for Token Doublers, Triplers, Ripple cascades, Delney, and ETB Burn">
+    <span>🔬 Need <strong>Token 2x/3x</strong>, <strong>Flicker/Mass Reanimate</strong>, <strong>Additional Triggers</strong>, or <strong>ETB Burn/Life Gain</strong>?</span>
+    <span class="simple-hint-action">Switch to Advanced Mode ➔</span>
+  </div>
+
   <!-- 📜 RESULT DISPLAY -->
   <div id="result">Rabbit Tokens Created: 0</div>
   <div id="milestoneBadge" class="milestone-badge" style="display: none;"></div>
@@ -189,14 +203,14 @@
   <div id="narrative" class="narrative"></div>
 
   <!-- 📐 COLLAPSIBLE MATHEMATICAL BREAKDOWN ("NERD MATH") -->
-  <div class="math-toggle-wrap">
+  <div class="math-toggle-wrap advanced-only">
     <button type="button" id="toggleMathBtn" class="btn-secondary math-toggle-btn" onclick="toggleMathBreakdown()" aria-expanded="false" aria-controls="mathBox" title="Toggle mathematical formulas and rules breakdown">
       📐 View Nerd Math
     </button>
   </div>
 
   <!-- 📘 MATHEMATICAL BREAKDOWN -->
-  <div class="explanation" id="mathBox" style="display: none;">
+  <div class="explanation advanced-only" id="mathBox" style="display: none;">
     <div class="explanation-title">📘 The Mathematical Breakdown</div>
     <p><em>Hare Apparent</em> card text: <em>“When Hare Apparent enters, create a 1/1 white Rabbit creature token for each <strong>other</strong> creature you control named Hare Apparent.”</em></p>
     <p><em>Offspring {2}:</em> <em>“You may pay an additional {2} as you cast this spell. If you do, when this creature enters, create a 1/1 token copy of it.”</em></p>
@@ -230,8 +244,8 @@
     </div>
 
     <div class="math-formula-box">
-      <strong>Case 3: Multiple Hares Entering Simultaneously (Mass Reanimation)</strong>
-      <p style="margin: 4px 0 8px; font-size: 0.9em; color: #5a421b;">All $C$ Hares enter together (e.g. Patriarch's Bidding, Raise the Past). Each of the $C$ Hares has $A+1$ triggers, and every trigger sees all other $H + C - 1$ Hares:</p>
+      <strong>Case 3: Multiple Hares Entering Simultaneously (Flicker/Mass Reanimate)</strong>
+      <p style="margin: 4px 0 8px; font-size: 0.9em; color: #5a421b;">All $C$ Hares enter together (e.g. Ghostway, Patriarch's Bidding, Raise the Past). Each of the $C$ Hares has $A+1$ triggers, and every trigger sees all other $H + C - 1$ Hares:</p>
       $$X_{sim}(H, C, T, A, O) = C \cdot (A + 1) \cdot (H + C - 1) \cdot (3^O \cdot 2^T)$$
     </div>
 
@@ -265,7 +279,7 @@
 <!-- ⚙️ JAVASCRIPT LOGIC -->
 <!-- ══════════════════════════════════════════════ -->
   <!-- ⚙️ SCRIPTS -->
-  <script src="js/app.js?v=3.1"></script>
+  <script src="js/app.js?v=3.6"></script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </body>
 </html>

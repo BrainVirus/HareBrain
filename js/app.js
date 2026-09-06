@@ -9,6 +9,7 @@ window.MathJax = {
 
 let entryMode = "sequential"; // "sequential" or "simultaneous"
 let payOffspring = false;     // false = standard, true = paid {2} offspring
+let uiMode = "simple";        // "simple" or "advanced"
 
 function setOffspring(val) {
   const wasOffspring = payOffspring;
@@ -25,10 +26,11 @@ function setOffspring(val) {
     }
     // Default K to 1 when turning on Offspring
     if (!wasOffspring) {
+      const C = parseInt(document.getElementById('Cnum')?.value, 10) || 1;
       const kSlider = document.getElementById('K');
       const kNum = document.getElementById('Knum');
-      if (kSlider) kSlider.value = 1;
-      if (kNum) kNum.value = 1;
+      if (kSlider) { kSlider.max = C; kSlider.value = 1; }
+      if (kNum) { kNum.max = C; kNum.value = 1; }
     }
   }
 
@@ -165,8 +167,20 @@ function syncInputs(id) {
 function syncSliders(id) {
   const slider = document.getElementById(id);
   const numInput = document.getElementById(id + "num");
-  const val = parseInt(numInput.value, 10);
+  let val = parseInt(numInput.value, 10);
   if (Number.isNaN(val)) return;
+
+  if (id === 'K') {
+    const C = parseInt(document.getElementById('Cnum')?.value, 10) || 1;
+    if (val > C) {
+      val = C;
+      numInput.value = C;
+    }
+    if (val < 1) {
+      val = 1;
+      numInput.value = 1;
+    }
+  }
 
   const min = parseInt(slider.min, 10);
   const max = parseInt(slider.max, 10);
@@ -177,26 +191,32 @@ function syncSliders(id) {
 
 function checkModeToggle() {
   const C = parseInt(document.getElementById('Cnum')?.value, 10) || 1;
+  const isAdvanced = (uiMode === 'advanced');
+
+  // Sequential vs Simultaneous entry toggle (only visible in Advanced mode when C > 1)
   const modeWrap = document.getElementById('modeToggleWrap');
   if (modeWrap) {
-    modeWrap.style.display = C > 1 ? 'flex' : 'none';
+    modeWrap.style.display = (isAdvanced && C > 1) ? 'flex' : 'none';
   }
 
+  // Always enforce K bounds: 1 <= K <= C
+  const kSlider = document.getElementById('K');
+  const kNum = document.getElementById('Knum');
+  if (kSlider && kNum) {
+    kSlider.max = C;
+    kNum.max = C;
+    let curK = parseInt(kNum.value, 10);
+    if (isNaN(curK) || curK < 1) curK = 1;
+    if (curK > C) curK = C;
+    kSlider.value = curK;
+    kNum.value = curK;
+  }
+
+  // Times Paying Offspring (K) wrap: visible when payOffspring is true, C > 1, and sequential
   const kWrap = document.getElementById('offspringCountWrap');
   if (kWrap) {
     if (payOffspring && C > 1 && entryMode !== 'simultaneous') {
       kWrap.style.display = 'flex';
-      const kSlider = document.getElementById('K');
-      const kNum = document.getElementById('Knum');
-      if (kSlider && kNum) {
-        kSlider.max = C;
-        kNum.max = C;
-        let curK = parseInt(kNum.value, 10);
-        if (isNaN(curK) || curK < 1) curK = 1;
-        if (curK > C) curK = C;
-        kSlider.value = curK;
-        kNum.value = curK;
-      }
     } else {
       kWrap.style.display = 'none';
     }
@@ -485,7 +505,7 @@ function resolveStack() {
     } else if (entryMode === "simultaneous") {
       nar += `<p class="section-heading"><strong>${C}</strong> Hare Apparents enter the battlefield simultaneously!</p>
       <ul>
-        <li>E.g., via mass reanimation or blink (<em>Patriarch's Bidding</em>, <em>Raise the Past</em>, <em>Return to the Ranks</em>).</li>
+        <li>E.g., via Flicker/Mass Reanimate (<em>Ghostway</em>, <em>Eerie Interlude</em>, <em>Patriarch's Bidding</em>, <em>Raise the Past</em>, <em>Return to the Ranks</em>).</li>
         <li>All <strong>${C}</strong> Hares enter together, bringing total Hares on the battlefield to <strong>${finalHares.toLocaleString()}</strong>.</li>
         <li>Each entering Hare triggers <strong>${trigs.toLocaleString()}</strong> time${trigs > 1n ? "s" : ""}, putting a total of <strong>${data.totalTriggers.toLocaleString()}</strong> Make Rabbits triggers on the stack!</li>
       </ul>`;
@@ -880,6 +900,26 @@ function loadUrlState() {
       toggleSynergySection(true);
     }
   }
+
+  // 🔬 Smart auto-detect: promote to Advanced Mode if URL contains active advanced parameters
+  const hasAdvancedParams =
+    (params.has("t") && (parseInt(params.get("t"), 10) || 0) > 0) ||
+    (params.has("a") && (parseInt(params.get("a"), 10) || 0) > 0) ||
+    (params.has("o") && (parseInt(params.get("o"), 10) || 0) > 0) ||
+    (params.has("r") && (parseInt(params.get("r"), 10) || 0) > 0) ||
+    (params.has("d") && (parseInt(params.get("d"), 10) || 0) > 0) ||
+    (params.has("b") && (parseInt(params.get("b"), 10) || 0) > 0) ||
+    (params.has("l") && (parseInt(params.get("l"), 10) || 0) > 0) ||
+    (params.has("mode") && (params.get("mode") === "sim" || params.get("mode") === "simultaneous"));
+
+  if (hasAdvancedParams) {
+    setUiMode("advanced", false);
+  } else if (params.has("ui")) {
+    const requestedUi = params.get("ui");
+    if (requestedUi === "advanced" || requestedUi === "simple") {
+      setUiMode(requestedUi, false);
+    }
+  }
 }
 
 function shareLink() {
@@ -911,7 +951,7 @@ function copyBreakdown() {
   let text = `🐇 HareBrain 🧠 — Hare Apparent Calculation
 • Offspring Paid: ${offspringStr}
 • Existing Hares on board: ${H}
-• Hares Entering: ${C} (${C > 1 ? entryMode : 'single cast'})
+• Hares Entering: ${C} (${C > 1 ? (entryMode === 'simultaneous' ? 'Flicker/Mass Reanimate' : 'sequential') : 'single cast'})
 • Token Multiplier: ${data.perToken}x (Doublers: ${T}, Triplers: ${O})
 • Additional Triggers: ${A} (Total triggers per Hare: ${data.trigsPerHare})
 • Existing Rabbits: ${R}`;
@@ -1055,9 +1095,49 @@ function initTheme() {
   applyTheme(saved);
 }
 
+// ⚡ UI VIEW MODE (SIMPLE VS. ADVANCED)
+function setUiMode(mode, savePreference = true) {
+  uiMode = (mode === "advanced") ? "advanced" : "simple";
+  const isSimple = uiMode === "simple";
+
+  document.documentElement.classList.toggle("mode-simple", isSimple);
+  if (document.body) {
+    document.body.classList.toggle("mode-simple", isSimple);
+  }
+  const card = document.querySelector(".card");
+  if (card) {
+    card.classList.toggle("mode-simple", isSimple);
+  }
+
+  const simpleBtn = document.getElementById("modeSimpleBtn");
+  const advBtn = document.getElementById("modeAdvancedBtn");
+  if (simpleBtn) simpleBtn.classList.toggle("active", isSimple);
+  if (advBtn) advBtn.classList.toggle("active", !isSimple);
+
+  if (savePreference) {
+    try {
+      localStorage.setItem("harebrain_ui_mode", uiMode);
+    } catch (e) {}
+  }
+  checkModeToggle();
+  updateResult();
+}
+
+function initUiMode() {
+  let savedMode = "simple";
+  try {
+    const stored = localStorage.getItem("harebrain_ui_mode");
+    if (stored === "advanced" || stored === "simple") {
+      savedMode = stored;
+    }
+  } catch (e) {}
+  setUiMode(savedMode, false);
+}
+
 // 🧩 INPUT FOCUS & AUTO-HIGHLIGHT LOGIC
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  initUiMode();
   loadUrlState();
 
   document.querySelectorAll('input[type="number"]').forEach(input => {
@@ -1079,6 +1159,16 @@ document.addEventListener("DOMContentLoaded", () => {
         if (document.getElementById(sliderId)) {
           syncSliders(sliderId);
         }
+        updateResult();
+      }
+      if (input.id === "Knum") {
+        const C = parseInt(document.getElementById('Cnum')?.value, 10) || 1;
+        let kVal = parseInt(input.value, 10);
+        if (isNaN(kVal) || kVal < 1) kVal = 1;
+        if (kVal > C) kVal = C;
+        input.value = kVal;
+        const kSlider = document.getElementById('K');
+        if (kSlider) kSlider.value = kVal;
         updateResult();
       }
     });

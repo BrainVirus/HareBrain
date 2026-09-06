@@ -9,7 +9,7 @@ You built a Commander deck with 30 copies of **[Hare Apparent](https://scryfall.
 
 Many Hare Apparent decks don't actually run or focus on paying for *Offspring* — prioritizing trigger multipliers and synergy pieces like *Delney*, *Elesh Norn*, *Panharmonicon*, and *Thrumming Stone*. Existing calculators often assumed every cast paid the {2} Offspring cost, making it tricky to calculate standard turns or Ripple cascades.
 
-Enter **HareBrain**: a fast, flexible Rabbit Token calculator for Hare Apparent decks that handles standard casts, Ripple sequences, and mass reanimation without assuming Offspring — while still giving you the option to toggle Offspring on when you do pay the {2}!
+Enter **HareBrain**: a fast, flexible Rabbit Token calculator for Hare Apparent decks that handles standard casts, Ripple sequences, and Flicker/Mass Reanimate without assuming Offspring — while still giving you the option to toggle Offspring on when you do pay the {2}!
 
 ---
 
@@ -37,8 +37,8 @@ You rippled through your deck and chained $C$ Hares one after another. Each Hare
 
 $$\text{Rabbits} = (A + 1) \cdot (3^O \cdot 2^T) \cdot \left[ C \cdot H + \frac{C(C - 1)}{2} \right]$$
 
-#### 4. The "Graveyard Bunny Apocalypse" (Simultaneous Entry)
-You cast *Patriarch's Bidding* or *Raise the Past* and dumped $C$ Hares onto the board at the exact same millisecond. Since all $C$ Hares are already in play when their triggers resolve, every single entering Hare sees all the other $(H + C - 1)$ Hares:
+#### 4. The "Graveyard & Blink Bunny Apocalypse" (Simultaneous Entry)
+You cast *Ghostway*, *Eerie Interlude*, *Patriarch's Bidding*, or *Raise the Past* and dumped $C$ Hares onto the board at the exact same millisecond. Since all $C$ Hares are already in play when their triggers resolve, every single entering Hare sees all the other $(H + C - 1)$ Hares:
 
 $$\text{Rabbits} = C \cdot (A + 1) \cdot (H + C - 1) \cdot (3^O \cdot 2^T)$$
 
@@ -61,6 +61,10 @@ Total entering creatures $E = C + \text{Offspring Hares} + X$. Every entering cr
 
 ## ✨ Features
 
+- ⚡ **Simple vs. Advanced View Modes**:
+  - **⚡ Simple Mode (Default)**: Streamlined for quick tabletop Commander games. Displays only essential controls: *Hares on Board ($H$)*, *Hares Entering ($C$)*, *Pay Offspring Yes/No*, *Times Paying Offspring ($K \le C$, dynamic when $C > 1$)*, *Resolve Stack* (with illustrated walkthrough), *↺ Reset All*, *Result Box*, and *🔗 Share Current Board State*, complete with a subtle shortcut prompt if your board suddenly demands deeper tools.
+  - **🔬 Advanced Mode**: Unlocks the full warren view revealing *Entry Mode (Sequential Ripple vs. Simultaneous Flicker/Mass Reanimate)*, *Token Doublers ($T$)*, *Token Triplers ($O$)*, *Additional Triggers ($A$ / Delney)*, *Existing Rabbits ($R$)*, *ETB Damage & Life Gain/Loss ($D, B, L$)*, and collapsible *Nerd Math*.
+  - **Seamless & Non-Destructive**: Switch modes instantly with zero data loss. Shared URL links with active advanced parameters (including Token Doublers $T > 0$) automatically open in Advanced Mode so no triggers or numbers are ever hidden.
 - 🐇 **Flexible Offspring & Partial Payment**: Toggle Offspring on/off, and when casting multiple Hares ($C > 1$), customize how many times you pay Offspring ($K \le C$, default 1) inside a cohesive dashed modifier card. Intelligent mutual auto-switching between Offspring and Simultaneous entry ensures MTG rule accuracy.
 - 🩸 **Optional ETB Damage & Life Gain/Loss Synergy**: Calculate direct burn damage dealt to each opponent (*Purphoros*, *Impact Tremors*, *Witty Roastmaster*), life lost by you per entering creature (*Carnival of Souls*, *Trespasser's Curse*, *Suture Priest*), and life gained by you (*Soul Warden*, *Essence Warden*). Computes the live **Net Life Change** between life lost and gained with dynamic positive, negative, and self-lethal danger indicators. Neatly collapsed by default with live status badges to keep the interface clean.
 - 🔗 **Share Current Board State**: Deep linking via URL parameters and a 1-click **"🔗 Share Current Board State"** button with clear clipboard notifications to easily share your exact board state with your playgroup.
