@@ -8,7 +8,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Cardo", Georgia, serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: radial-gradient(circle at 40% 20%, #eaf5ff 0%, #b7d8f2 35%, #fbe49c 90%);
   color: #1b1d25;
   min-height: 100vh;
@@ -44,20 +44,21 @@ mjx-container {
 
 /* 🔖 HEADERS */
 h1 {
-  font-family: "Uncial Antiqua", serif;
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 800;
+  letter-spacing: 1.5px;
   color: #124e88;
   text-shadow: 0 0 8px rgba(28,105,175,0.5);
   margin: 8px 0 6px;
-  font-size: 2.3em;
-  letter-spacing: 0.5px;
+  font-size: 2.2em;
 }
 
 .subtitle {
   font-style: italic;
-  font-size: 1.05em;
+  font-size: 0.95em;
   color: #725a2e;
   margin-bottom: 18px;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .tag-badge {
@@ -279,8 +280,8 @@ button {
   border: 3px solid #d8b552;
   border-radius: 10px;
   padding: 10px 26px;
-  font-family: "Uncial Antiqua", serif;
-  font-size: 1.1em;
+  font-family: inherit;
+  font-size: 1em;
   color: #124e88;
   text-shadow: 0 0 5px rgba(255,255,255,0.6);
   cursor: pointer;
@@ -315,19 +316,21 @@ button.resolving {
 }
 
 .btn-resolve-main {
-  font-family: "Uncial Antiqua", serif;
-  font-size: 1.1em;
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 700;
+  font-size: 1.15em;
+  letter-spacing: 1px;
   color: #124e88;
   text-shadow: 0 0 5px rgba(255,255,255,0.6);
 }
 
 .btn-resolve-sub {
-  font-family: "Cardo", Georgia, serif;
-  font-size: 0.73em;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.76em;
   font-style: italic;
-  font-weight: 600;
+  font-weight: 500;
   color: #5c431d;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   margin-top: 2px;
 }
 
@@ -375,9 +378,9 @@ body.dark-mode button.btn-resolve.active .btn-resolve-sub {
 }
 
 .btn-secondary {
-  font-family: "Cardo", serif;
-  font-weight: 700;
-  font-size: 0.95em;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
   padding: 10px 18px;
   background: #fffdf8;
   color: #725a2e;
@@ -405,13 +408,15 @@ body.dark-mode button.btn-resolve.active .btn-resolve-sub {
 
 /* 📜 RESULT */
 #result {
-  font-size: 1.7em;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.65em;
   margin-top: 24px;
-  font-weight: bold;
+  font-weight: 800;
   color: #0f4174;
   text-shadow: 0 0 6px rgba(67,132,185,0.4);
   transition: opacity 0.3s ease-in-out;
   line-height: 1.35;
+  letter-spacing: -0.3px;
 }
 
 .result-sub {
@@ -427,11 +432,13 @@ body.dark-mode button.btn-resolve.active .btn-resolve-sub {
   background: rgba(216,181,82,0.2);
   border: 1px solid #d8b552;
   border-radius: 8px;
-  padding: 2px 8px;
+  padding: 3px 10px;
   margin: 3px 2px;
-  font-size: 0.58em;
-  font-weight: 700;
+  font-size: 0.6em;
+  font-weight: 600;
   color: #3b2c17;
+  letter-spacing: 0.2px;
+  font-variant-numeric: tabular-nums;
 }
 
 /* 🧙‍♂️ NARRATIVE */
@@ -496,7 +503,7 @@ ul li { margin-bottom: 6px; }
   align-items: center;
   gap: 8px;
   flex-direction: row;
-  font-family: "Cardo", serif;
+  font-family: inherit;
   font-size: 0.95em;
 }
 
@@ -532,7 +539,9 @@ ul li { margin-bottom: 6px; }
 
 .explanation-title {
   text-align: center;
-  font-family: "Uncial Antiqua", serif;
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: 1px;
   font-size: 1.3em;
   color: #c79838;
   text-shadow: 0 0 6px rgba(200,150,56,0.5);
@@ -564,11 +573,12 @@ ul li { margin-bottom: 6px; }
 }
 
 .credits-heading {
-  font-family: "Uncial Antiqua", serif;
+  font-family: "Cinzel", Georgia, serif;
   color: #124e88;
   font-size: 1.15em;
   margin: 0 0 8px;
   font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .credits-box p {
@@ -588,7 +598,7 @@ ul li { margin-bottom: 6px; }
 /* ✒️ AUTHOR SIGNATURE */
 .signature-box {
   margin-top: 18px;
-  font-family: "Cardo", Georgia, serif;
+  font-family: inherit;
   font-size: 0.95em;
   letter-spacing: 0.5px;
   color: #725a2e;
@@ -728,7 +738,9 @@ body.dark-mode .signature-box strong {
 }
 
 .synergy-title {
-  font-family: "Uncial Antiqua", serif;
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   font-size: 1.05em;
   color: #124e88;
   margin-bottom: 2px;
@@ -898,7 +910,9 @@ body.dark-mode .signature-box strong {
 }
 
 .milestone-title {
-  font-family: "Uncial Antiqua", serif;
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   font-size: 1.15em;
   color: #8c6d00;
   margin-bottom: 3px;
@@ -969,7 +983,7 @@ body.dark-mode .signature-box strong {
   border: 2px solid #d8b552;
   border-radius: 20px;
   padding: 5px 14px;
-  font-family: "Cardo", Georgia, serif;
+  font-family: inherit;
   font-size: 0.88em;
   font-weight: 700;
   color: #4a3617;
@@ -1004,7 +1018,7 @@ body.dark-mode .signature-box strong {
   border: none;
   border-radius: 16px;
   padding: 4px 12px;
-  font-family: "Cardo", Georgia, serif;
+  font-family: inherit;
   font-size: 0.85em;
   font-weight: 700;
   color: #5a421b;
@@ -1713,7 +1727,7 @@ body.dark-mode .preset-chip.life-chip:hover {
   border: 1.5px solid #d8b552;
   border-radius: 20px;
   padding: 6px 16px;
-  font-family: "Cardo", Georgia, serif;
+  font-family: inherit;
   font-size: 0.88em;
   font-weight: 700;
   color: #5a421b;
@@ -1774,7 +1788,7 @@ body.dark-mode .feedback-trigger-btn:hover {
   width: 100%;
   padding: 22px 24px;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
-  font-family: "Cardo", Georgia, serif;
+  font-family: inherit;
   max-height: 90vh;
   overflow-y: auto;
   box-sizing: border-box;
@@ -1800,6 +1814,8 @@ body.dark-mode .modal-card {
 }
 
 .modal-title {
+  font-family: "Cinzel", Georgia, serif;
+  letter-spacing: 0.5px;
   font-size: 1.25em;
   margin: 0;
   color: #5a421b;
