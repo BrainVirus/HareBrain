@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://cards.scryfall.io/art_crop/front/9/f/9fc6f0e9-eb5f-4bc0-b3d7-756644b66d12.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="HareBrain — MTG Hare Apparent Rabbit Token Calculator">
-<meta name="twitter:description" content="Fast, flexible MTG calculator for Hare Apparent decks. Handles standard casts, Ripple chains, Flicker/Mass Reanimate, and Offspring.">
+<meta name="twitter:description" content="Rabbit token calculator for Hare Apparent. Crunches the bunny math so your turn doesn't take 20 minutes.">
 <meta name="twitter:image" content="https://cards.scryfall.io/art_crop/front/9/f/9fc6f0e9-eb5f-4bc0-b3d7-756644b66d12.jpg">
 
 <!-- 🔍 STRUCTURED DATA (JSON-LD) -->
@@ -29,7 +29,7 @@
   "name": "HareBrain",
   "alternateName": "Hare Apparent MTG Calculator",
   "url": "https://harebrain.win/",
-  "description": "A fast, flexible Magic: The Gathering token and trigger calculator for Hare Apparent decks. Calculates Rabbit tokens, trigger multipliers, ETB damage, lifegain, and Offspring.",
+  "description": "Magic: The Gathering token and trigger calculator for Hare Apparent decks. Calculates Rabbit tokens, trigger multipliers, ETB damage, lifegain, and Offspring.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "All",
   "offers": {
@@ -83,9 +83,8 @@
       <span id="themeIcon">🌙</span> <span id="themeText">Dark Theme</span>
     </button>
   </div>
-  <span class="tag-badge">MTG Hare Apparent Token Calculator</span>
   <h1>🐇 HareBrain 🧠</h1>
-  <p class="subtitle">A fast, flexible Rabbit Token calculator for <strong>Hare Apparent Decks</strong>.<br>Handles standard casts, Ripple chains, Flicker/Mass Reanimate, and optional <em>Offspring</em>.</p>
+  <p class="subtitle">Rabbit token calculator for <strong>Hare Apparent</strong>.<br>Crunches the bunny math so your turn doesn't take 20 minutes.</p>
 
   <!-- ↺ RESET BUTTON -->
   <div class="presets-wrap">
@@ -94,20 +93,20 @@
 
   <!-- 🧮 INPUTS -->
   <div class="slider-group">
-    <label for="H">🐇 Existing Hare Apparents on Board (H):</label>
+    <label for="H">🐇 Existing Hare Apparents on Board:</label>
     <input id="H" type="range" min="0" max="40" value="0" oninput="syncInputs('H')">
     <input id="Hnum" type="number" value="0" min="0" max="200" oninput="syncSliders('H')">
   </div>
 
   <div class="slider-group">
-    <label for="C">🪄 Hare Apparents Entering (C):</label>
+    <label for="C">🪄 Hare Apparents Entering:</label>
     <input id="C" type="range" min="1" max="40" value="1" oninput="syncInputs('C')">
     <input id="Cnum" type="number" value="1" min="1" max="200" oninput="syncSliders('C')">
   </div>
 
   <!-- 💥 Entry Mode Selector (Visible when C > 1) -->
-  <div id="modeToggleWrap" class="mode-toggle-group advanced-only" style="display: none;">
-    <span class="mode-label">Entry Mode for C &gt; 1:</span>
+  <div id="modeToggleWrap" class="mode-toggle-group" style="display: none;">
+    <span class="mode-label">Entry Mode:</span>
     <div class="mode-pills">
       <div id="modeSequential" class="mode-pill active" onclick="setEntryMode('sequential')" title="Cast one by one or ripple through Thrumming Stone">⚡ Sequential (Ripple / Casts)</div>
       <div id="modeSimultaneous" class="mode-pill" onclick="setEntryMode('simultaneous')" title="Enter all at once via Ghostway, Eerie Interlude, Patriarch's Bidding, Raise the Past, Return to the Ranks">💥 Simultaneous (Flicker/Mass Reanimate)</div>
@@ -116,40 +115,40 @@
 
   <!-- 🐣 Offspring Toggle -->
   <div class="mode-toggle-group" style="margin: 6px auto 14px;">
-    <span class="mode-label">🐣 Pay Offspring ({2}):</span>
+    <span class="mode-label">🐣 Pay Offspring:</span>
     <div class="mode-pills">
-      <div id="offspringNo" class="mode-pill active" onclick="setOffspring(false)" title="Standard cast without paying {2} Offspring">No (Standard)</div>
-      <div id="offspringYes" class="mode-pill" onclick="setOffspring(true)" title="Pay {2} additional cost to create a 1/1 token copy of Hare Apparent">Yes (+{2} Offspring)</div>
+      <div id="offspringNo" class="mode-pill active" onclick="setOffspring(false)" title="Standard cast without paying {2} Offspring">No</div>
+      <div id="offspringYes" class="mode-pill" onclick="setOffspring(true)" title="Pay {2} additional cost to create a 1/1 token copy of Hare Apparent">Yes</div>
     </div>
   </div>
 
   <!-- 🐣 Offspring Count Selector (Visible when payOffspring is true and C > 1) -->
   <div id="offspringCountWrap" class="mode-toggle-group offspring-count-group" style="display: none;">
-    <span class="mode-label">🐣 Times Paying Offspring (K):</span>
+    <span class="mode-label">🐣 Times Paying Offspring:</span>
     <input id="K" type="range" min="1" max="2" value="1" oninput="syncInputs('K')">
     <input id="Knum" type="number" value="1" min="1" max="2" oninput="syncSliders('K')">
   </div>
 
   <div class="slider-group advanced-only">
-    <label for="T">✨ Token Doublers (T):</label>
+    <label for="T">✨ Token Doublers:</label>
     <input id="T" type="range" min="0" max="20" value="0" oninput="syncInputs('T')">
     <input id="Tnum" type="number" value="0" min="0" max="40" oninput="syncSliders('T')">
   </div>
 
   <div class="slider-group advanced-only">
-    <label for="O">⚜️ Token Triplers (O):</label>
+    <label for="O">⚜️ Token Triplers:</label>
     <input id="O" type="range" min="0" max="5" value="0" oninput="syncInputs('O')">
     <input id="Onum" type="number" value="0" min="0" max="20" oninput="syncSliders('O')">
   </div>
 
   <div class="slider-group advanced-only">
-    <label for="A">🔁 Additional Triggers (A):</label>
+    <label for="A">🔁 Additional Triggers:</label>
     <input id="A" type="range" min="0" max="20" value="0" oninput="syncInputs('A')">
     <input id="Anum" type="number" value="0" min="0" max="40" oninput="syncSliders('A')">
   </div>
 
   <div class="slider-group advanced-only">
-    <label for="Rnum">🐰 Existing Rabbit Tokens (R):</label>
+    <label for="Rnum">🐰 Existing Rabbit Tokens:</label>
     <input id="Rnum" type="number" value="0" min="0" max="1000000000" oninput="updateResult()">
   </div>
 
@@ -165,33 +164,32 @@
     <span class="synergy-subtitle">Damage dealt to opponents, life lost by you, and life gained by you per entering creature or token</span>
     
     <div class="slider-group" style="margin: 8px auto 4px;">
-      <label for="D">🔥 Damage Dealt per ETB (D):</label>
+      <label for="D">🔥 Damage Dealt per ETB:</label>
       <input id="D" type="range" min="0" max="10" value="0" oninput="syncInputs('D')">
       <input id="Dnum" type="number" value="0" min="0" max="100" oninput="syncSliders('D')">
     </div>
 
     <div class="slider-group" style="margin: 8px auto 4px;">
-      <label for="B">💀 Life Lost per ETB (B):</label>
+      <label for="B">💀 Life Lost per ETB:</label>
       <input id="B" type="range" min="0" max="10" value="0" oninput="syncInputs('B')">
       <input id="Bnum" type="number" value="0" min="0" max="100" oninput="syncSliders('B')">
     </div>
 
     <div class="slider-group" style="margin: 8px auto 4px;">
-      <label for="L">❤️ Life Gained per ETB (L):</label>
+      <label for="L">❤️ Life Gained per ETB:</label>
       <input id="L" type="range" min="0" max="10" value="0" oninput="syncInputs('L')">
       <input id="Lnum" type="number" value="0" min="0" max="100" oninput="syncSliders('L')">
     </div>
   </div>
 
   <!-- 🔬 SWITCH TO ADVANCED MODE HINT (Visible in Simple Mode) -->
-  <div id="simpleModeHint" class="simple-mode-hint" onclick="setUiMode('advanced')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setUiMode('advanced');}" role="button" tabindex="0" title="Switch to Advanced Mode for Token Doublers, Triplers, Ripple cascades, Delney, and ETB Burn">
-    <span>🔬 Need <strong>Token 2x/3x</strong>, <strong>Flicker/Mass Reanimate</strong>, <strong>Additional Triggers</strong>, or <strong>ETB Burn/Life Gain</strong>?</span>
-    <span class="simple-hint-action">Switch to Advanced Mode ➔</span>
+  <div id="simpleModeHint" class="simple-mode-hint" onclick="setUiMode('advanced')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setUiMode('advanced');}" role="button" tabindex="0" title="Switch to Advanced Mode for Doublers, Extra Triggers, and ETB Triggers">
+    <span>🔬 Need <strong>Doublers</strong>, <strong>Extra Triggers</strong>, or <strong>ETB Triggers</strong>?</span>
+    <span class="simple-hint-action">Switch to Advanced ➔</span>
   </div>
 
   <!-- 📜 RESULT DISPLAY -->
   <div id="result">Rabbit Tokens Created: 0</div>
-  <div id="milestoneBadge" class="milestone-badge" style="display: none;"></div>
 
   <!-- 🪄 ACTION BUTTONS -->
   <div class="btn-group">
@@ -267,25 +265,17 @@
     </div>
   </div>
 
-  <!-- 📜 CREDITS & ACKNOWLEDGMENTS -->
-  <div class="credits-box">
-    <div class="credits-heading">✨ Credits &amp; Acknowledgments ✨</div>
-    <p>💡 <strong>Original Concept &amp; Inspiration:</strong> A huge shoutout and heartfelt credit to <a href="https://solveforhare.com/" target="_blank" rel="noopener noreferrer">solveforhare.com</a> for the wonderful original idea!</p>
-    <p>🤖 <strong>Created with AI:</strong> Designed, adapted, and engineered with the help of Antigravity AI.</p>
-    <p>🐇 <strong>HareBrain:</strong> Dedicated to every MTG player who loves filling the battlefield with hundreds of rabbits.</p>
-  </div>
-
-  <!-- 💬 FEEDBACK & BUG REPORT TRIGGER -->
-  <div class="feedback-trigger-wrap">
-    <button type="button" class="feedback-trigger-btn" onclick="openFeedbackModal()" title="Report a bug, suggest a feature, or send feedback">
+  <!-- 🦶 CLEAN CONSOLIDATED FOOTER -->
+  <footer class="app-footer">
+    <div class="footer-meta">
+      <span>Brought to you by <strong>BrainVirus</strong> & AI</span>
+      <span class="footer-sep">•</span>
+      <span>Inspired by <a href="https://solveforhare.com/" target="_blank" rel="noopener noreferrer">solveforhare.com</a></span>
+    </div>
+    <button type="button" class="footer-feedback-btn" onclick="openFeedbackModal()" title="Report a bug, suggest a feature, or send feedback">
       💬 Feedback &amp; Bug Reports
     </button>
-  </div>
-
-  <!-- ✒️ AUTHOR SIGNATURE -->
-  <div class="signature-box">
-    Brought to you by <strong>BrainVirus</strong>
-  </div>
+  </footer>
 </div>
 
 <!-- 💬 FEEDBACK & BUG REPORT MODAL -->

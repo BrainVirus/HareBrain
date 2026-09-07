@@ -271,6 +271,7 @@ input[type="number"]:focus {
   gap: 10px;
   flex-wrap: wrap;
   margin-top: 18px;
+  scroll-margin-top: 16px;
 }
 
 button {
@@ -337,6 +338,40 @@ button.resolving .btn-resolve-main {
 
 button.resolving .btn-resolve-sub {
   color: #e8f0fe;
+}
+
+button.btn-resolve.active {
+  background: linear-gradient(135deg, #fdf6e7, #f3e5c8);
+  border-color: #b58c29;
+}
+
+button.btn-resolve.active .btn-resolve-main {
+  color: #8c2525;
+}
+
+button.btn-resolve.active .btn-resolve-sub {
+  color: #725a2e;
+}
+
+html[data-theme="dark"] button.btn-resolve.active,
+body[data-theme="dark"] button.btn-resolve.active,
+body.dark-mode button.btn-resolve.active {
+  background: linear-gradient(135deg, #262114, #18150a) !important;
+  border-color: #ffd54f !important;
+  box-shadow: 0 0 14px rgba(255, 213, 79, 0.25) !important;
+}
+
+html[data-theme="dark"] button.btn-resolve.active .btn-resolve-main,
+body[data-theme="dark"] button.btn-resolve.active .btn-resolve-main,
+body.dark-mode button.btn-resolve.active .btn-resolve-main {
+  color: #ff9999 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="dark"] button.btn-resolve.active .btn-resolve-sub,
+body[data-theme="dark"] button.btn-resolve.active .btn-resolve-sub,
+body.dark-mode button.btn-resolve.active .btn-resolve-sub {
+  color: #ded7c8 !important;
 }
 
 .btn-secondary {
@@ -1939,6 +1974,94 @@ body.dark-mode .feedback-status.error {
   justify-content: flex-end;
   gap: 10px;
   margin-top: 14px;
+}
+
+/* ══════════════════════════════════════════════ */
+/* 🦶 CLEAN CONSOLIDATED FOOTER */
+/* ══════════════════════════════════════════════ */
+.app-footer {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(216, 181, 82, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9em;
+  color: #634e26;
+}
+
+.footer-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.footer-sep {
+  opacity: 0.4;
+}
+
+.footer-meta a {
+  color: #1a5694;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.footer-meta a:hover {
+  text-decoration: underline;
+}
+
+.footer-feedback-btn {
+  background: rgba(42, 104, 165, 0.08);
+  border: 1.5px solid #d8b552;
+  border-radius: 18px;
+  padding: 5px 16px;
+  font-family: inherit;
+  font-size: 0.88em;
+  font-weight: 700;
+  color: #4a3617;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.footer-feedback-btn:hover {
+  background: rgba(42, 104, 165, 0.16);
+  border-color: #2a68a5;
+  color: #124e88;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(42, 104, 165, 0.15);
+}
+
+html[data-theme="dark"] .app-footer,
+body[data-theme="dark"] .app-footer,
+body.dark-mode .app-footer {
+  border-color: rgba(212, 175, 55, 0.25) !important;
+  color: #a89f91 !important;
+}
+
+html[data-theme="dark"] .footer-meta a,
+body[data-theme="dark"] .footer-meta a,
+body.dark-mode .footer-meta a {
+  color: #60a5fa !important;
+}
+
+html[data-theme="dark"] .footer-feedback-btn,
+body[data-theme="dark"] .footer-feedback-btn,
+body.dark-mode .footer-feedback-btn {
+  background: rgba(37, 99, 235, 0.15) !important;
+  border-color: #d4af37 !important;
+  color: #ffd54f !important;
+}
+
+html[data-theme="dark"] .footer-feedback-btn:hover,
+body[data-theme="dark"] .footer-feedback-btn:hover,
+body.dark-mode .footer-feedback-btn:hover {
+  background: rgba(37, 99, 235, 0.25) !important;
+  border-color: #ffd54f !important;
+  box-shadow: 0 0 12px rgba(255, 213, 79, 0.25) !important;
 }
 
 

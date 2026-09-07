@@ -9,7 +9,7 @@ You built a Commander deck with 30 copies of **[Hare Apparent](https://scryfall.
 
 Many Hare Apparent decks don't actually run or focus on paying for *Offspring* — prioritizing trigger multipliers and synergy pieces like *Delney*, *Elesh Norn*, *Panharmonicon*, and *Thrumming Stone*. Existing calculators often assumed every cast paid the {2} Offspring cost, making it tricky to calculate standard turns or Ripple cascades.
 
-Enter **HareBrain**: a fast, flexible Rabbit Token calculator for Hare Apparent decks that handles standard casts, Ripple sequences, and Flicker/Mass Reanimate without assuming Offspring — while still giving you the option to toggle Offspring on when you do pay the {2}!
+Enter **HareBrain**: a Rabbit Token calculator for Hare Apparent decks that handles normal casts, Ripple sequences, and mass reanimation without assuming Offspring — while still letting you toggle Offspring on when you pay the {2}!
 
 ---
 
@@ -83,5 +83,4 @@ Total entering creatures $E = C + \text{Offspring Hares} + X$. Every entering cr
 
 - 💡 **Original Concept & Inspiration**: Immense credit to [solveforhare.com](https://solveforhare.com/) for the brilliant concept and idea that sparked this project!
 - 👤 **Brought to you by**: **BrainVirus**
-- 🤖 **Created with AI**: Developed, calculated, and refined with the help of **Antigravity AI**.
 - 🃏 **Magic: The Gathering**: All card names and mechanics are copyright Wizards of the Coast LLC.

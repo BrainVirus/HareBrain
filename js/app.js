@@ -139,13 +139,14 @@ function calcHareMath(H, C, T, A, O, mode, payOffspring, D = 0, L = 0, K = 1, B 
 function readInputs() {
   const H = Math.max(0, parseInt(document.getElementById('Hnum')?.value, 10) || 0);
   const C = Math.max(1, parseInt(document.getElementById('Cnum')?.value, 10) || 1);
-  const T = Math.max(0, parseInt(document.getElementById('Tnum')?.value, 10) || 0);
-  const A = Math.max(0, parseInt(document.getElementById('Anum')?.value, 10) || 0);
-  const O = Math.max(0, parseInt(document.getElementById('Onum')?.value, 10) || 0);
-  const R = Math.max(0, parseInt(document.getElementById('Rnum')?.value, 10) || 0);
-  const D = Math.max(0, parseInt(document.getElementById('Dnum')?.value, 10) || 0);
-  const B = Math.max(0, parseInt(document.getElementById('Bnum')?.value, 10) || 0);
-  const L = Math.max(0, parseInt(document.getElementById('Lnum')?.value, 10) || 0);
+  const isAdv = (uiMode === 'advanced');
+  const T = isAdv ? Math.max(0, parseInt(document.getElementById('Tnum')?.value, 10) || 0) : 0;
+  const A = isAdv ? Math.max(0, parseInt(document.getElementById('Anum')?.value, 10) || 0) : 0;
+  const O = isAdv ? Math.max(0, parseInt(document.getElementById('Onum')?.value, 10) || 0) : 0;
+  const R = isAdv ? Math.max(0, parseInt(document.getElementById('Rnum')?.value, 10) || 0) : 0;
+  const D = isAdv ? Math.max(0, parseInt(document.getElementById('Dnum')?.value, 10) || 0) : 0;
+  const B = isAdv ? Math.max(0, parseInt(document.getElementById('Bnum')?.value, 10) || 0) : 0;
+  const L = isAdv ? Math.max(0, parseInt(document.getElementById('Lnum')?.value, 10) || 0) : 0;
   let K = 1;
   if (payOffspring) {
     if (C > 1) {
@@ -194,10 +195,10 @@ function checkModeToggle() {
   const C = parseInt(document.getElementById('Cnum')?.value, 10) || 1;
   const isAdvanced = (uiMode === 'advanced');
 
-  // Sequential vs Simultaneous entry toggle (only visible in Advanced mode when C > 1)
+  // Sequential vs Simultaneous entry toggle (visible whenever C > 1 in both Simple and Advanced modes)
   const modeWrap = document.getElementById('modeToggleWrap');
   if (modeWrap) {
-    modeWrap.style.display = (isAdvanced && C > 1) ? 'flex' : 'none';
+    modeWrap.style.display = C > 1 ? 'flex' : 'none';
   }
 
   // Always enforce K bounds: 1 <= K <= C
@@ -339,8 +340,7 @@ function updateResult() {
   html += `
     <div style="margin-top: 8px;">
       <span class="result-stat-pill">🐇 Total Hares: ${finalHares.toLocaleString()}${offspringHares > 0n ? ` (${offspringHares.toLocaleString()} from Offspring)` : ''}</span>
-      <span class="result-stat-pill">⚔️ Total Board Power: ${totalPower.toLocaleString()}</span>
-      <span class="result-stat-pill">🛡️ Total Toughness: ${totalPower.toLocaleString()}</span>
+      <span class="result-stat-pill">Total: ⚔️ ${totalPower.toLocaleString()} | 🛡️ ${totalPower.toLocaleString()}</span>
     </div>
   `;
 
@@ -401,22 +401,16 @@ function updateResult() {
 
   resultBox.innerHTML = html;
 
-  // 💥 Milestone Badge
-  const badge = document.getElementById("milestoneBadge");
-  if (badge) {
-    const m = getMilestone(grandRabbits);
-    if (m) {
-      badge.style.display = "block";
-      badge.innerHTML = `<span class="milestone-title">${m.title}</span><span class="milestone-subtitle">${m.subtitle}</span>`;
-    } else {
-      badge.style.display = "none";
-    }
-  }
-
   updateUrlState();
   const synBox = document.getElementById("synergyBox");
   const isSynOpen = synBox && synBox.style.display === "block";
   updateSynergyBtnLabel(isSynOpen);
+
+  // 🔄 Live recalculation of narrative walkthrough if currently open
+  const narrativeBox = document.getElementById("narrative");
+  if (narrativeBox && narrativeBox.style.display === "block") {
+    resolveStack(true); // true = isLiveUpdate
+  }
 }
 
 function buildStackDisplay(groups) {
@@ -431,21 +425,50 @@ function buildStackDisplay(groups) {
   return html;
 }
 
-function resolveStack() {
+function resolveStack(isLiveUpdate = false) {
+  const narrativeBox = document.getElementById("narrative");
   const btn = document.getElementById("resolveBtn");
   const mainText = document.getElementById("resolveBtnText");
-  if (mainText) {
-    mainText.textContent = "Resolving...";
-  } else {
-    btn.textContent = "Resolving...";
+  const subText = btn?.querySelector(".btn-resolve-sub");
+
+  // Toggle close: if user clicked the button when narrative is already open, close it!
+  if (!isLiveUpdate && narrativeBox && narrativeBox.style.display === "block") {
+    narrativeBox.style.display = "none";
+    narrativeBox.innerHTML = "";
+    narrativeBox.classList.remove("show-scroll");
+    if (mainText) {
+      mainText.textContent = "Resolve Stack";
+    } else if (btn) {
+      btn.textContent = "Resolve Stack";
+    }
+    if (subText) subText.textContent = "Step-by-step walkthrough of token creation";
+    if (btn) {
+      btn.classList.remove("resolving", "active");
+      btn.setAttribute("title", "Step-by-step walkthrough of the token creation");
+    }
+    const scrollTarget = btn?.closest(".btn-group") || btn;
+    if (scrollTarget) {
+      scrollTarget.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+    return;
   }
-  btn.classList.add("resolving");
+
+  if (!isLiveUpdate) {
+    if (mainText) {
+      mainText.textContent = "Resolving...";
+    } else if (btn) {
+      btn.textContent = "Resolving...";
+    }
+    if (btn) btn.classList.add("resolving");
+  }
 
   const { H, C, T, A, O, R, D, B, L, K } = readInputs();
   const data = calcHareMath(H, C, T, A, O, entryMode, payOffspring, D, L, K, B);
   const grandRabbits = data.totalRabbits + BigInt(R);
 
-  updateResult();
+  if (!isLiveUpdate) {
+    updateResult();
+  }
 
   const perToken = data.perToken;
   const trigs = data.trigsPerHare;
@@ -700,24 +723,47 @@ function resolveStack() {
   }
 
   nar += `
-    <div style="text-align: center; margin-top: 20px; padding-top: 14px; border-top: 1px dashed rgba(216, 181, 82, 0.4);">
+    <div style="text-align: center; margin-top: 20px; padding-top: 14px; border-top: 1px dashed rgba(216, 181, 82, 0.4); display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+      <button type="button" class="btn-secondary" onclick="resolveStack()" title="Close step-by-step resolution">
+        ▴ Close Walkthrough
+      </button>
       <button type="button" class="btn-secondary" onclick="copyBreakdown()" title="Copy formatted text summary of this board to clipboard">
         📋 Copy Text Summary
       </button>
     </div>
   `;
 
-  const narrativeBox = document.getElementById("narrative");
   if (narrativeBox) {
     narrativeBox.style.display = "block";
     narrativeBox.innerHTML = nar;
 
-    // Smooth scroll and unroll animation
-    narrativeBox.classList.remove("show-scroll");
-    void narrativeBox.offsetWidth; // trigger reflow
-    narrativeBox.classList.add("show-scroll");
+    if (!isLiveUpdate) {
+      // Smooth scroll and unroll animation only on explicit button click
+      narrativeBox.classList.remove("show-scroll");
+      void narrativeBox.offsetWidth; // trigger reflow
+      narrativeBox.classList.add("show-scroll");
+      const scrollTarget = btn?.closest(".btn-group") || btn || narrativeBox;
+      scrollTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
 
-    narrativeBox.scrollIntoView({ behavior: "smooth", block: "start" });
+    const setOpenedButtonState = () => {
+      if (!narrativeBox || narrativeBox.style.display !== "block") return;
+      if (mainText) {
+        mainText.textContent = "Close Walkthrough ▴";
+      } else if (btn) {
+        btn.textContent = "Close Walkthrough ▴";
+      }
+      if (subText) {
+        subText.textContent = "Click to collapse step-by-step resolution";
+      }
+      if (btn) {
+        btn.classList.remove("resolving");
+        btn.classList.add("active");
+        btn.setAttribute("title", "Click to collapse step-by-step resolution");
+      }
+    };
+
+    setOpenedButtonState();
 
     // MathJax re-render if available
     if (window.MathJax && window.MathJax.typesetPromise) {
@@ -727,28 +773,36 @@ function resolveStack() {
         } catch (e) {}
       }
       window.MathJax.typesetPromise([narrativeBox]).catch(() => {}).finally(() => {
-        if (mainText) {
-          mainText.textContent = "Resolve Stack";
-        } else {
-          btn.textContent = "Resolve Stack";
-        }
-        btn.classList.remove("resolving");
+        setOpenedButtonState();
       });
-    } else {
-      setTimeout(() => {
-        if (mainText) {
-          mainText.textContent = "Resolve Stack";
-        } else {
-          btn.textContent = "Resolve Stack";
-        }
-        btn.classList.remove("resolving");
-      }, 400);
     }
   }
 }
 
 // ↺ RESET ALL HANDLER
 function resetInputs() {
+  const narrativeBox = document.getElementById("narrative");
+  if (narrativeBox) {
+    narrativeBox.classList.remove("show-scroll");
+    narrativeBox.style.display = "none";
+    narrativeBox.innerHTML = "";
+  }
+  const resolveBtn = document.getElementById("resolveBtn");
+  const resolveText = document.getElementById("resolveBtnText");
+  const resolveSub = resolveBtn?.querySelector(".btn-resolve-sub");
+  if (resolveText) {
+    resolveText.textContent = "Resolve Stack";
+  } else if (resolveBtn) {
+    resolveBtn.textContent = "Resolve Stack";
+  }
+  if (resolveSub) {
+    resolveSub.textContent = "Step-by-step walkthrough of token creation";
+  }
+  if (resolveBtn) {
+    resolveBtn.classList.remove("resolving", "active");
+    resolveBtn.setAttribute("title", "Step-by-step walkthrough of the token creation");
+  }
+
   setOffspring(false);
   ['H', 'T', 'O', 'A', 'D', 'B', 'L'].forEach(id => {
     const slider = document.getElementById(id);
@@ -769,13 +823,6 @@ function resetInputs() {
   toggleSynergySection(false);
   checkModeToggle();
   updateResult();
-  const narrativeBox = document.getElementById("narrative");
-  if (narrativeBox) {
-    narrativeBox.classList.remove("show-scroll");
-    narrativeBox.style.display = "none";
-  }
-  const badge = document.getElementById("milestoneBadge");
-  if (badge) badge.style.display = "none";
   showToast("↺ All inputs reset to default");
 }
 
@@ -941,7 +988,7 @@ function copyBreakdown() {
   const finalHares = data.finalHaresOnBoard;
   const totalPower = data.nontokenHaresOnBoard * 2n + data.offspringHaresCreated + grandRabbits;
 
-  let offspringStr = "No (Standard)";
+  let offspringStr = "No";
   if (payOffspring) {
     if (C > 1) {
       offspringStr = `Yes ({2} paid on ${data.K} of ${C} Hares)`;
@@ -975,13 +1022,13 @@ function copyBreakdown() {
 🐇 Rabbit Tokens Created: ${data.totalRabbits.toLocaleString()}
 🐰 Total Rabbits on Board: ${grandRabbits.toLocaleString()}
 🐇 Total Hare Apparents: ${finalHares.toLocaleString()}${data.offspringHaresCreated > 0n ? ` (${data.offspringHaresCreated.toLocaleString()} from Offspring)` : ''}
-⚔️ Total Board Power/Toughness: ${totalPower.toLocaleString()}/${totalPower.toLocaleString()}`;
+Total: ⚔️ ${totalPower.toLocaleString()} | 🛡️ ${totalPower.toLocaleString()}`;
 
   const m = getMilestone(grandRabbits);
   if (m) text += `\n🏆 Milestone: ${m.title} — ${m.subtitle}`;
 
   text += `\n🔗 View Board: ${window.location.href}`;
-  text += `\n💡 Original concept by solveforhare.com | Built with AI`;
+  text += `\n💡 Original concept by solveforhare.com`;
 
   navigator.clipboard.writeText(text).then(() => {
     showToast("📋 Summary copied to clipboard!");
