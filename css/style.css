@@ -316,10 +316,10 @@ button.resolving {
 }
 
 .btn-resolve-main {
-  font-family: "Cinzel", Georgia, serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   font-size: 1.15em;
-  letter-spacing: 1px;
+  letter-spacing: 0.2px;
   color: #124e88;
   text-shadow: 0 0 5px rgba(255,255,255,0.6);
 }
